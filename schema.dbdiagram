@@ -1,0 +1,142 @@
+{
+  "version": "3.0.0",
+  "darkMode": true,
+  "gridEnabling": false,
+  "currentViewName": null,
+  "defaultView": {
+    "detailLevel": "All",
+    "relationshipMode": "All",
+    "tablePositions": [
+      {
+        "name": "usuario_sistema",
+        "schemaName": "public",
+        "x": 716.41552734375,
+        "y": 53
+      },
+      {
+        "name": "propietario",
+        "schemaName": "public",
+        "x": 12,
+        "y": 250
+      },
+      {
+        "name": "cliente",
+        "schemaName": "public",
+        "x": 12,
+        "y": 12
+      },
+      {
+        "name": "municipio",
+        "schemaName": "public",
+        "x": 12,
+        "y": 662
+      },
+      {
+        "name": "tipo_alojamiento",
+        "schemaName": "public",
+        "x": 12,
+        "y": 804
+      },
+      {
+        "name": "alojamiento",
+        "schemaName": "public",
+        "x": 716.41552734375,
+        "y": 388
+      },
+      {
+        "name": "tipo_habitacion",
+        "schemaName": "public",
+        "x": 12,
+        "y": 456
+      },
+      {
+        "name": "habitacion",
+        "schemaName": "public",
+        "x": 1345.32861328125,
+        "y": 53
+      },
+      {
+        "name": "comodidad",
+        "schemaName": "public",
+        "x": 12,
+        "y": 946
+      },
+      {
+        "name": "alojamiento_comodidad",
+        "schemaName": "public",
+        "x": 1345.32861328125,
+        "y": 1198
+      },
+      {
+        "name": "temporada",
+        "schemaName": "public",
+        "x": 12,
+        "y": 1152
+      },
+      {
+        "name": "tarifa",
+        "schemaName": "public",
+        "x": 1998.8046875,
+        "y": 74
+      },
+      {
+        "name": "auditoria_tarifa",
+        "schemaName": "public",
+        "x": 2621.7177734375,
+        "y": 12
+      },
+      {
+        "name": "reserva",
+        "schemaName": "public",
+        "x": 1998.8046875,
+        "y": 280
+      },
+      {
+        "name": "reserva_habitacion",
+        "schemaName": "public",
+        "x": 2621.7177734375,
+        "y": 616
+      },
+      {
+        "name": "pago",
+        "schemaName": "public",
+        "x": 2621.7177734375,
+        "y": 314
+      },
+      {
+        "name": "servicio",
+        "schemaName": "public",
+        "x": 1345.32861328125,
+        "y": 292
+      },
+      {
+        "name": "reserva_servicio",
+        "schemaName": "public",
+        "x": 2621.7177734375,
+        "y": 822
+      },
+      {
+        "name": "resena",
+        "schemaName": "public",
+        "x": 1345.32861328125,
+        "y": 530
+      },
+      {
+        "name": "liquidacion_mensual",
+        "schemaName": "public",
+        "x": 1337.730780420241,
+        "y": 801.8994582152523
+      },
+      {
+        "name": "historico_reserva",
+        "schemaName": "public",
+        "x": 27.19566572201802,
+        "y": 1390.9497291076261
+      }
+    ],
+    "tableGroupCollapseStates": [],
+    "stickyNoteLayouts": [],
+    "referencePaths": []
+  },
+  "views": {}
+}

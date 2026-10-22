@@ -1,0 +1,439 @@
+// =============================================================================
+// PROYECTO INTEGRADOR BDII - TURISMO UQ
+// Plataforma de reservas turísticas del Quindío
+// Motor: Oracle XE 21c
+// Dialecto: DBML (para renderizado en dbdiagram.io)
+// Modelo Físico Completo y Normalizado (21 Tablas - Entrega 1)
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// 1. ENUMERACIONES (DOMINIOS Y RESTRICCIONES CHECK)
+// -----------------------------------------------------------------------------
+
+Enum tipo_usuario_enum {
+  CLIENTE
+  PROPIETARIO
+  RECEPCION
+  ADMIN_ALOJAMIENTO
+  GERENTE
+  AUDITOR
+}
+
+Enum estado_usuario_enum {
+  ACTIVO
+  INACTIVO
+  BLOQUEADO
+}
+
+Enum tipo_documento_enum {
+  CC
+  CE
+  PASAPORTE
+  TI
+  NIT
+}
+
+Enum estado_alojamiento_enum {
+  ACTIVO
+  INACTIVO
+  MANTENIMIENTO
+}
+
+Enum estado_habitacion_enum {
+  DISPONIBLE
+  MANTENIMIENTO
+  FUERA_SERVICIO
+}
+
+Enum categoria_comodidad_enum {
+  RECREACION
+  CONECTIVIDAD
+  BIENESTAR
+  LOGISTICA
+}
+
+Enum tipo_temporada_enum {
+  ALTA
+  MEDIA
+  BAJA
+}
+
+Enum operacion_auditoria_enum {
+  UPDATE
+  DELETE
+}
+
+Enum estado_reserva_enum {
+  PENDIENTE
+  CONFIRMADA
+  CHECKED_IN
+  FINALIZADA
+  CANCELADA
+}
+
+Enum metodo_pago_enum {
+  TARJETA_CREDITO
+  TARJETA_DEBITO
+  TRANSFERENCIA
+  PSE
+  EFECTIVO
+}
+
+Enum estado_pago_enum {
+  APROBADO
+  PENDIENTE
+  RECHAZADO
+  REEMBOLSADO
+}
+
+Enum estado_servicio_enum {
+  ACTIVO
+  INACTIVO
+}
+
+Enum estado_liquidacion_enum {
+  CALCULADA
+  DISPERSADA
+  PAGADA
+}
+
+// -----------------------------------------------------------------------------
+// 2. TABLAS DEL MODELO FÍSICO
+// -----------------------------------------------------------------------------
+
+// Supertipo de Seguridad y Autenticación
+Table usuario_sistema {
+  id_usuario number [pk, increment, note: 'PK: Identificador único de usuario']
+  username varchar2(30) [unique, not null, note: 'Nombre de usuario único para login']
+  password_hash varchar2(128) [not null, note: 'Hash criptográfico seguro']
+  nombre_completo varchar2(100) [not null, note: 'Nombres y apellidos']
+  email varchar2(100) [unique, not null, note: 'Correo electrónico único']
+  tipo_usuario tipo_usuario_enum [not null, note: 'Discriminador de la jerarquía "Es un"']
+  estado estado_usuario_enum [not null, default: 'ACTIVO']
+  fecha_registro timestamp [not null, default: `systimestamp`]
+
+  Note: 'Supertipo de autenticación centralizada para el sistema'
+}
+
+// Especialización: Propietario de Alojamiento
+Table propietario {
+  id_usuario number [pk, note: 'PK y FK heredada de usuario_sistema (Especialización 1:1)']
+  documento_identidad varchar2(25) [unique, not null, note: 'Cédula o NIT']
+  telefono_contacto varchar2(25) [not null, note: 'Línea de atención comercial']
+  numero_cuenta_bancaria varchar2(30) [note: 'Cuenta bancaria para liquidación mensual']
+
+  Note: 'Subtipo de usuario responsable de alojamientos en el Quindío'
+}
+
+// Especialización: Cliente / Turista
+Table cliente {
+  id_usuario number [pk, note: 'PK y FK heredada de usuario_sistema (Especialización 1:1)']
+  tipo_documento tipo_documento_enum [not null]
+  numero_documento varchar2(25) [unique, not null, note: 'Documento legal de identidad']
+  telefono varchar2(25) [not null, note: 'Teléfono de contacto para confirmaciones']
+  ciudad_origen varchar2(80) [note: 'Procedencia para analítica turística regional']
+
+  Note: 'Subtipo de usuario turista que realiza reservas y pagos (3.000 clientes)'
+}
+
+// División Geográfica Regional (12 municipios)
+Table municipio {
+  id_municipio number [pk, increment, note: 'PK secuencial']
+  nombre varchar2(60) [unique, not null, note: 'Nombre oficial del municipio del Quindío']
+
+  Note: 'División territorial del Quindío para agregaciones y PIVOT'
+}
+
+// Categoría / Modalidad de Hospedaje
+Table tipo_alojamiento {
+  id_tipo_alojamiento number [pk, increment, note: 'PK secuencial']
+  nombre varchar2(50) [unique, not null, note: 'Finca cafetera, Hotel, Glamping, Hostal']
+
+  Note: 'Clasificación de hospedaje para análisis con ROLLUP y CUBE'
+}
+
+// Establecimiento Turístico Comercial (60 alojamientos)
+Table alojamiento {
+  id_alojamiento number [pk, increment, note: 'PK: Código único del alojamiento']
+  id_propietario number [not null, note: 'FK: Propietario que crea y administra el establecimiento']
+  id_municipio number [not null, note: 'FK: Municipio de ubicación']
+  id_tipo_alojamiento number [not null, note: 'FK: Modalidad de alojamiento']
+  nombre varchar2(120) [not null, note: 'Nombre comercial del establecimiento']
+  direccion varchar2(200) [not null, note: 'Dirección o vereda']
+  telefono varchar2(25) [not null, note: 'Línea telefónica de atención']
+  estado estado_alojamiento_enum [not null, default: 'ACTIVO']
+
+  Note: 'Establecimiento turístico comercial sujeto a liquidación mensual'
+}
+
+// Tipología y Capacidad de Habitación (Normalización 3FN)
+Table tipo_habitacion {
+  id_tipo_habitacion number [pk, increment, note: 'PK secuencial de categoría']
+  nombre varchar2(50) [unique, not null, note: 'Sencilla, Doble estándar, Familiar, Suite, Cabaña']
+  capacidad_estandar number [not null, note: 'Aforo estándar (> 0)']
+  descripcion varchar2(300) [note: 'Especificaciones de confort y distribución']
+
+  Note: 'Normalización 3FN de tipología y capacidad para desacoplar aforo'
+}
+
+// Unidades Físicas de Hospedaje (400 habitaciones)
+Table habitacion {
+  id_habitacion number [pk, increment, note: 'PK: Código único de habitación']
+  id_alojamiento number [not null, note: 'FK: Alojamiento al que pertenece']
+  id_tipo_habitacion number [not null, note: 'FK: Categoría tipológica normalizada']
+  numero_habitacion varchar2(20) [not null, note: 'Identificador interno (101, Cabaña 2)']
+  estado estado_habitacion_enum [not null, default: 'DISPONIBLE']
+
+  indexes {
+    (id_alojamiento, numero_habitacion) [unique]
+  }
+  Note: 'Unidad física individual para control de inventario y concurrencia'
+}
+
+// Catálogo de Comodidades e Instalaciones (Normalización 1FN)
+Table comodidad {
+  id_comodidad number [pk, increment, note: 'PK de la comodidad']
+  nombre varchar2(60) [unique, not null, note: 'Piscina, Wifi, Jacuzzi, Mirador cafetero, etc.']
+  categoria categoria_comodidad_enum [not null, note: 'Agrupador temático']
+  icono varchar2(50) [note: 'Identificador visual o emoji']
+
+  Note: 'Catálogo de comodidades para normalización 1FN de alojamientos'
+}
+
+// Tabla Intermedia M:N Alojamiento - Comodidad
+Table alojamiento_comodidad {
+  id_alojamiento number [not null, note: 'FK: Alojamiento que dispone de la instalación']
+  id_comodidad number [not null, note: 'FK: Comodidad ofrecida']
+  es_gratuito char(1) [not null, default: 'S', note: 'S: Incluido en la tarifa, N: Costo extra']
+
+  indexes {
+    (id_alojamiento, id_comodidad) [pk]
+  }
+  Note: 'Relación N:M entre alojamientos y catálogo de comodidades'
+}
+
+// Calendario Estacional de Demanda
+Table temporada {
+  id_temporada number [pk, increment, note: 'PK de temporada estacional']
+  nombre varchar2(60) [not null, note: 'Semana Santa, Mitad de año, Puentes, Fin de año, Baja']
+  fecha_inicio date [not null, note: 'Inicio de vigencia']
+  fecha_fin date [not null, note: 'Fin de vigencia (fin >= inicio)']
+  tipo_temporada tipo_temporada_enum [not null]
+
+  Note: 'Periodos de demanda que gobiernan las tarifas dinámicas'
+}
+
+// Matriz de Precios por Habitación y Temporada
+Table tarifa {
+  id_tarifa number [pk, increment, note: 'PK de registro tarifario']
+  id_habitacion number [not null, note: 'FK: Habitación tarifada']
+  id_temporada number [not null, note: 'FK: Temporada de aplicación']
+  precio_noche number(12,2) [not null, note: 'Valor noche (> 0), insumo de fn_valor_estadia']
+
+  indexes {
+    (id_habitacion, id_temporada) [unique]
+  }
+  Note: 'Tarifa aplicable sujeta a trigger de auditoría de sentencia'
+}
+
+// Auditoría Física de Variaciones de Precios (Entrega 2 DDL)
+Table auditoria_tarifa {
+  id_auditoria number [pk, increment, note: 'PK secuencial de auditoría']
+  id_tarifa number [not null, note: 'FK: Tarifa objeto de la modificación']
+  usuario_oracle varchar2(30) [not null, note: 'Usuario Oracle que ejecutó la sentencia (USER)']
+  fecha_cambio timestamp [not null, default: `systimestamp`, note: 'Fecha y hora exacta del cambio']
+  precio_anterior number(12,2) [not null, note: 'Valor previo a la actualización']
+  precio_nuevo number(12,2) [not null, note: 'Nuevo valor establecido']
+  operacion operacion_auditoria_enum [not null, note: 'Operación DML interceptada']
+
+  Note: 'Histórico físico para el disparador de sentencia de la Entrega 2'
+}
+
+// Cabecera Transaccional de Reserva (25.000 reservas)
+Table reserva {
+  id_reserva number [pk, increment, note: 'PK: Consecutivo único de reserva']
+  id_cliente number [not null, note: 'FK: Cliente titular que formaliza la estadía']
+  id_alojamiento number [note: 'FK: Alojamiento principal de la reserva']
+  fecha_reserva timestamp [not null, default: `systimestamp`]
+  fecha_checkin date [not null, note: 'Fecha de ingreso']
+  fecha_checkout date [not null, note: 'Fecha de salida (checkout > checkin)']
+  estado estado_reserva_enum [not null, default: 'PENDIENTE']
+  valor_total number(12,2) [not null, default: 0, note: 'Total consolidado de la reserva']
+
+  Note: 'Cabecera de contrato de hospedaje para 2024-2026'
+}
+
+// Tabla de Referencia Cruzada N:M: Reserva - Habitación
+Table reserva_habitacion {
+  id_reserva number [not null, note: 'FK: Reserva padre']
+  id_habitacion number [not null, note: 'FK: Habitación asignada']
+  personas_hospedadas number [not null, note: 'Ocupantes asignados a la habitación (> 0)']
+  precio_estadia_habitacion number(12,2) [not null, note: 'Liquidado por fn_valor_estadia']
+
+  indexes {
+    (id_reserva, id_habitacion) [pk]
+  }
+  Note: 'Resuelve la relación N:M permitiendo múltiples habitaciones por reserva'
+}
+
+// Transacciones Financieras de Reserva
+Table pago {
+  id_pago number [pk, increment, note: 'PK: Consecutivo de pago']
+  id_reserva number [not null, note: 'FK: Reserva que genera el compromiso']
+  id_cliente number [not null, note: 'FK: Cliente que realiza el desembolso']
+  fecha_pago timestamp [not null, default: `systimestamp`]
+  monto number(12,2) [not null, note: 'Valor pagado (> 0)']
+  metodo_pago metodo_pago_enum [not null]
+  estado_pago estado_pago_enum [not null, default: 'APROBADO']
+
+  Note: 'Registro de pago para procedimiento atómico con SAVEPOINT'
+}
+
+// Catálogo de Servicios Complementarios
+Table servicio {
+  id_servicio number [pk, increment, note: 'PK: Identificador de servicio']
+  id_alojamiento number [not null, note: 'FK: Establecimiento que presta el servicio']
+  nombre varchar2(80) [not null, note: 'Tour del café, Pasadía, Cabalgata, etc.']
+  precio_unitario number(10,2) [not null, note: 'Precio estándar (>= 0)']
+  estado estado_servicio_enum [not null, default: 'ACTIVO']
+
+  Note: 'Oferta de actividades complementarias al alojamiento'
+}
+
+// Tabla de Referencia Cruzada N:M: Reserva - Servicio (40.000 líneas)
+Table reserva_servicio {
+  id_reserva number [not null, note: 'FK: Reserva contratante']
+  id_servicio number [not null, note: 'FK: Servicio adquirido']
+  cantidad number [not null, note: 'Cantidad consumida (> 0)']
+  precio_unitario_aplicado number(10,2) [not null, note: 'Precio congelado al contratar']
+  subtotal number(12,2) [not null, note: 'cantidad * precio_unitario_aplicado']
+
+  indexes {
+    (id_reserva, id_servicio) [pk]
+  }
+  Note: 'Detalle de servicios complementarios consumidos'
+}
+
+// Evaluaciones y Calificaciones
+Table resena {
+  id_resena number [pk, increment, note: 'PK secuencial de reseña']
+  id_reserva number [unique, not null, note: 'FK: Reserva evaluada (1 reseña por reserva)']
+  id_alojamiento number [not null, note: 'FK: Alojamiento referenciado']
+  calificacion number [not null, note: 'Escala 1 a 5 estrellas']
+  comentario varchar2(1000) [note: 'Opinión textual del turista']
+  fecha_resena timestamp [not null, default: `systimestamp`]
+
+  Note: 'Opinión y valoración de calidad de la estadía'
+}
+
+// Persistencia de Cortes Contables Mensuales (Entrega 2 DDL)
+Table liquidacion_mensual {
+  id_liquidacion number [pk, increment, note: 'PK de corte mensual']
+  id_alojamiento number [not null, note: 'FK: Establecimiento liquidado']
+  periodo_anio number(4) [not null, note: 'Año contable (ej. 2025)']
+  periodo_mes number(2) [not null, note: 'Mes contable (1..12)']
+  total_hospedaje number(14,2) [not null, default: 0, note: 'Sumatoria de habitaciones']
+  total_servicios number(14,2) [not null, default: 0, note: 'Sumatoria de servicios']
+  comision_plataforma number(14,2) [not null, default: 0, note: 'Comisión retenida por TurismoUQ']
+  neto_propietario number(14,2) [not null, default: 0, note: 'Saldo a favor del propietario']
+  fecha_liquidacion date [not null, default: `sysdate`, note: 'Fecha de cierre contable']
+  estado estado_liquidacion_enum [not null, default: 'CALCULADA']
+
+  indexes {
+    (id_alojamiento, periodo_anio, periodo_mes) [unique]
+  }
+  Note: 'Persistencia de cortes mensuales procesados por el cursor masivo de la Entrega 2'
+}
+
+// Histórico de Reservas (Tablespace Dedicado TS_HISTORICO_RESERVAS)
+Table historico_reserva {
+  id_reserva number [pk, note: 'PK: Consecutivo original de reserva archivada']
+  id_cliente number [not null, note: 'ID del cliente titular']
+  id_alojamiento number [not null, note: 'ID del establecimiento']
+  fecha_reserva timestamp [not null, note: 'Fecha de creación original']
+  fecha_checkin date [not null, note: 'Fecha de ingreso']
+  fecha_checkout date [not null, note: 'Fecha de salida']
+  estado varchar2(20) [not null, note: 'Estado final (FINALIZADA, CANCELADA)']
+  valor_total number(12,2) [not null, note: 'Monto total consolidado']
+  fecha_archivado timestamp [not null, default: `systimestamp`, note: 'Fecha de migración al tablespace histórico']
+
+  Note: 'Almacenado físicamente en el tablespace TS_HISTORICO_RESERVAS (Entrega 1)'
+}
+
+// -----------------------------------------------------------------------------
+// 3. DEFINICIÓN DE RELACIONES (FOREIGN KEYS)
+// -----------------------------------------------------------------------------
+
+// Jerarquía de Especialización 1:1 ("Es un")
+Ref: propietario.id_usuario - usuario_sistema.id_usuario
+Ref: cliente.id_usuario - usuario_sistema.id_usuario
+
+// Oferta y Geografía
+Ref: alojamiento.id_propietario > propietario.id_usuario
+Ref: alojamiento.id_municipio > municipio.id_municipio
+Ref: alojamiento.id_tipo_alojamiento > tipo_alojamiento.id_tipo_alojamiento
+Ref: habitacion.id_alojamiento > alojamiento.id_alojamiento
+Ref: habitacion.id_tipo_habitacion > tipo_habitacion.id_tipo_habitacion
+Ref: servicio.id_alojamiento > alojamiento.id_alojamiento
+
+// Comodidades M:N
+Ref: alojamiento_comodidad.id_alojamiento > alojamiento.id_alojamiento
+Ref: alojamiento_comodidad.id_comodidad > comodidad.id_comodidad
+
+// Tarifas, Temporadas y Auditoría
+Ref: tarifa.id_habitacion > habitacion.id_habitacion
+Ref: tarifa.id_temporada > temporada.id_temporada
+Ref: auditoria_tarifa.id_tarifa > tarifa.id_tarifa
+
+// Reservas y Referencias Cruzadas
+Ref: reserva.id_cliente > cliente.id_usuario
+Ref: reserva.id_alojamiento > alojamiento.id_alojamiento
+Ref: reserva_habitacion.id_reserva > reserva.id_reserva
+Ref: reserva_habitacion.id_habitacion > habitacion.id_habitacion
+Ref: reserva_servicio.id_reserva > reserva.id_reserva
+Ref: reserva_servicio.id_servicio > servicio.id_servicio
+
+// Pagos, Reseñas, Liquidaciones e Histórico
+Ref: pago.id_reserva > reserva.id_reserva
+Ref: pago.id_cliente > cliente.id_usuario
+Ref: resena.id_reserva - reserva.id_reserva
+Ref: resena.id_alojamiento > alojamiento.id_alojamiento
+Ref: liquidacion_mensual.id_alojamiento > alojamiento.id_alojamiento
+Ref: historico_reserva.id_reserva - reserva.id_reserva
+
+// -----------------------------------------------------------------------------
+// 4. AGRUPACIONES LÓGICAS (TABLEGROUPS PARA DBDiagram)
+// -----------------------------------------------------------------------------
+
+TableGroup Seguridad_Identidad {
+  usuario_sistema
+  propietario
+  cliente
+}
+
+TableGroup Oferta_Hospedaje {
+  municipio
+  tipo_alojamiento
+  alojamiento
+  tipo_habitacion
+  habitacion
+  comodidad
+  alojamiento_comodidad
+  servicio
+}
+
+TableGroup Politica_Precios {
+  temporada
+  tarifa
+  auditoria_tarifa
+}
+
+TableGroup Reservas_Transacciones {
+  reserva
+  reserva_habitacion
+  reserva_servicio
+  pago
+  resena
+  liquidacion_mensual
+  historico_reserva
+}
