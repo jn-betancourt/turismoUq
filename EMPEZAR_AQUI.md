@@ -1,4 +1,6 @@
-# Empezar aquí — TurismoUQ corregido
+# Empezar aquí — Entrega 1 de TurismoUQ
+
+Esta guía corresponde a los informes de **Entrega 1** en `TURISMOUQ_E1`. Para ejecutar la capa PL/SQL implementada de **Entrega 2**, utiliza el esquema separado `TURISMOUQ_E2` y su [guía de sustentación](docs/entrega2/guia_sustentacion.md).
 
 El esquema para usar la entrega es **`TURISMOUQ_E1`**. Ya contiene el modelo y la carga corregidos. El esquema original **`TURISMOUQ`** se conserva para comparación.
 
@@ -99,4 +101,4 @@ EXIT
 - [Contrato analítico](docs/entrega1/contrato_analitico.md): significado de los informes.
 - [README](README.md): instalación nueva, migración y reproducción de pruebas.
 
-La **Entrega 2 de PL/SQL sigue pendiente**. Esta corrección de Entrega 1 no implementa la función de estadía, el procedimiento de reserva, el cursor de liquidación, el paquete ni los disparadores.
+La **Entrega 2 de PL/SQL está implementada y probada en esquemas separados**: paquete, cotización de estadía, creación de reservas, cursor de liquidación y tres triggers compuestos. Su [resultado de validación](docs/entrega2/resultado_validacion.md) registra 40 casos E2, 23 casos de regresión E1 y las ocho consultas aprobadas. La conexión y los ejemplos PL/SQL se describen en la [guía de Entrega 2](docs/entrega2/guia_sustentacion.md); los pasos anteriores permanecen dedicados a Entrega 1.

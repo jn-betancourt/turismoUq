@@ -1,0 +1,8 @@
+DECLARE
+*
+ERROR at line 1:
+ORA-20401: Columna ausente o incompatible: AUDITORIA_TARIFA.ID_SENTENCIA
+ORA-06512: at line 57
+ORA-06512: at line 206
+
+

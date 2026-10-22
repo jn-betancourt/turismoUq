@@ -1,0 +1,465 @@
+{
+  "columns": [
+    [
+      "AUDITORIA_TARIFA",
+      "ID_AUDITORIA",
+      "NUMBER",
+      null,
+      null,
+      0,
+      22,
+      "N",
+      45
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "ID_TARIFA",
+      "NUMBER",
+      null,
+      null,
+      0,
+      22,
+      "N",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "USUARIO_ORACLE",
+      "VARCHAR2",
+      null,
+      null,
+      30,
+      30,
+      "N",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "FECHA_CAMBIO",
+      "TIMESTAMP(6)",
+      null,
+      6,
+      0,
+      11,
+      "N",
+      13
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "PRECIO_ANTERIOR",
+      "NUMBER",
+      12,
+      2,
+      0,
+      22,
+      "N",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "PRECIO_NUEVO",
+      "NUMBER",
+      12,
+      2,
+      0,
+      22,
+      "N",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "OPERACION",
+      "VARCHAR2",
+      null,
+      null,
+      6,
+      6,
+      "N",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "ID_SENTENCIA",
+      "RAW",
+      null,
+      null,
+      0,
+      8,
+      "Y",
+      null
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "ID_LIQUIDACION",
+      "NUMBER",
+      null,
+      null,
+      0,
+      22,
+      "N",
+      45
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "ID_ALOJAMIENTO",
+      "NUMBER",
+      null,
+      null,
+      0,
+      22,
+      "N",
+      null
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "PERIODO_ANIO",
+      "NUMBER",
+      4,
+      0,
+      0,
+      22,
+      "N",
+      null
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "PERIODO_MES",
+      "NUMBER",
+      2,
+      0,
+      0,
+      22,
+      "N",
+      null
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "TOTAL_HOSPEDAJE",
+      "NUMBER",
+      14,
+      2,
+      0,
+      22,
+      "N",
+      2
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "TOTAL_SERVICIOS",
+      "NUMBER",
+      14,
+      2,
+      0,
+      22,
+      "N",
+      2
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "COMISION_PLATAFORMA",
+      "NUMBER",
+      14,
+      2,
+      0,
+      22,
+      "N",
+      2
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "NETO_PROPIETARIO",
+      "NUMBER",
+      14,
+      2,
+      0,
+      22,
+      "N",
+      2
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "FECHA_LIQUIDACION",
+      "DATE",
+      null,
+      null,
+      0,
+      7,
+      "N",
+      8
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "ESTADO",
+      "VARCHAR2",
+      null,
+      null,
+      10,
+      10,
+      "N",
+      12
+    ]
+  ],
+  "constraints": [
+    [
+      "AUDITORIA_TARIFA",
+      "CK_AUDITORIA_OPERACION",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "operacion IN ('UPDATE', 'DELETE')"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "CK_AUDITORIA_PRECIOS",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "precio_anterior > 0 AND precio_nuevo > 0"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "FK_AUDITORIA_TARIFA",
+      "R",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "PK_AUDITORIA_TARIFA",
+      "P",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      null
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011282",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"ID_AUDITORIA\" IS NOT NULL"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011283",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"ID_TARIFA\" IS NOT NULL"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011284",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"USUARIO_ORACLE\" IS NOT NULL"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011285",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"FECHA_CAMBIO\" IS NOT NULL"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011286",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"PRECIO_ANTERIOR\" IS NOT NULL"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011287",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"PRECIO_NUEVO\" IS NOT NULL"
+    ],
+    [
+      "AUDITORIA_TARIFA",
+      "SYS_C0011288",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"OPERACION\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "CK_LIQUIDACION_ANIO",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "periodo_anio BETWEEN 2000 AND 9999"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "CK_LIQUIDACION_CALCULO",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\n            neto_propietario =\n                ROUND(total_hospedaje + total_servicios - comision_plataforma, 2)\n        "
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "CK_LIQUIDACION_ESTADO",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "estado IN ('CALCULADA', 'DISPERSADA', 'PAGADA')"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "CK_LIQUIDACION_MES",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "periodo_mes BETWEEN 1 AND 12"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "CK_LIQUIDACION_MONTOS",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\n            total_hospedaje >= 0\n            AND total_servicios >= 0\n            AND comision_plataforma >= 0\n            AND neto_propietario >= 0\n        "
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "FK_LIQUIDACION_ALOJAMIENTO",
+      "R",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      null
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "PK_LIQUIDACION_MENSUAL",
+      "P",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      null
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011366",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"ID_LIQUIDACION\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011367",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"ID_ALOJAMIENTO\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011368",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"PERIODO_ANIO\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011369",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"PERIODO_MES\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011370",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"TOTAL_HOSPEDAJE\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011371",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"TOTAL_SERVICIOS\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011372",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"COMISION_PLATAFORMA\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011373",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"NETO_PROPIETARIO\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011374",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"FECHA_LIQUIDACION\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "SYS_C0011375",
+      "C",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      "\"ESTADO\" IS NOT NULL"
+    ],
+    [
+      "LIQUIDACION_MENSUAL",
+      "UQ_LIQUIDACION_PERIODO",
+      "U",
+      "ENABLED",
+      "VALIDATED",
+      "NOT DEFERRABLE",
+      null
+    ]
+  ]
+}

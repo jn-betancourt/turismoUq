@@ -1,0 +1,691 @@
+
+Session altered.
+
+Consulta 1 - Ocupacion reservada sobre inventario bruto (PIVOT)
+
+MUNICIPIO							   ANIO        ENE	  FEB	     MAR	ABR	   MAY	      JUN	 JUL	    AGO        SEP	  OCT	     NOV	DIC
+------------------------------------------------------------ ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ---------- ----------
+Armenia 							   2024       21.1	 10.5	    18.4       12.7	  14.6	       28	25.7	    8.8       12.3	 17.6	      15       31.2
+Armenia 							   2025       29.9	  9.9	    14.9       21.7	  16.4	     22.3	34.2	   12.6       12.3	   16	    16.1       35.1
+Armenia 							   2026       22.9	 12.8	      18       18.1	   8.3	       23	30.7	   15.2       11.5	 18.2	      11	 28
+Armenia 							   2027 	.9
+Buenavista							   2024       21.5	  8.8	    11.3	  8	     7	     18.6	26.4	    7.1       10.5	 11.3	     8.4       23.4
+Buenavista							   2025       18.4	  6.4	     5.8	9.1	     7	     20.4	20.2	    6.7 	 9	 12.4	    11.9       25.8
+Buenavista							   2026       20.2	 10.4	     8.8       17.2	   7.5	     22.2	27.6	    7.9 	 7	 14.7	    10.3       17.1
+Buenavista							   2027        2.3
+Calarca 							   2024       25.9	  8.2	    14.7	9.4	   6.4	     23.1	28.3	   13.2 	 9	 15.7	    17.8	 26
+Calarca 							   2025       23.5	  8.6	     7.8       12.7	     9	     20.7	24.1	   10.3       10.8	 17.2	    13.3       22.1
+Calarca 							   2026       18.8	 11.1	    12.4       13.4	   8.1	     19.6	27.1	   11.3       13.3	 13.7	    12.9       22.8
+Calarca 							   2027 	.5
+Circasia							   2024       20.9	  7.8	    21.6       18.1	  11.8	     25.1	18.2	   10.2       11.6	 14.2	    15.4       26.2
+Circasia							   2025       25.6	 10.9	    10.9       21.4	  15.3	     18.6	27.2	     11       13.9	 14.3	      15       27.8
+Circasia							   2026       26.3	 14.1	     9.1       17.8	  10.7	     23.3	28.8	     13 	11	 15.4	    19.4       24.4
+Circasia							   2027 	 1
+Cordoba 							   2024       16.2	  9.5	    14.7	9.8	   9.2	       17	20.9	   12.1       11.6	 11.9	    12.5       24.7
+Cordoba 							   2025       22.2	  9.5	     5.6       16.6	  10.7	     20.9	19.4	   12.3        8.4	 15.1	    13.4       21.6
+Cordoba 							   2026       21.5	 10.9	    10.7	 14	   8.7	     21.8	25.7	    9.9       11.8	   12	     9.5       20.9
+Cordoba 							   2027        1.3
+Filandia							   2024       24.7	 14.5	      17       19.3	  14.4	     24.4	31.6	   12.8       13.4	 19.4	    19.1	 31
+Filandia							   2025       25.4	 13.5	    13.6       15.8	  14.6	       24	30.8	   13.7 	13	 18.4	    21.1       29.4
+Filandia							   2026       29.9	 17.3	    15.6       14.9	  13.3	     29.1	28.4	   11.7       13.3	 22.4	    22.3       37.5
+Filandia							   2027        1.8
+Genova								   2024       18.9	 10.9	    14.7       12.7	  15.1	     21.6	26.4	   12.1       16.7	 19.5	    14.5       27.1
+Genova								   2025       21.9	  5.8	       8       17.1	  10.2	     22.2	  29	   11.3       10.8	 13.5	    16.3       22.9
+Genova								   2026       21.9	  8.4	    10.8       16.9	  10.1	     23.8	  29	   13.6        9.1	 14.5	    14.2       33.9
+Genova								   2027 	 1
+La Tebaida							   2024       14.4	 12.3	    18.6	 13	   7.8	     22.5	26.6	   13.1       11.7	   12	    13.1       29.6
+La Tebaida							   2025       28.8	 11.8	    11.2       16.2	   9.4	     19.3	28.7	     13       11.4	 14.2	    11.8       27.5
+La Tebaida							   2026       21.2	  9.2	    11.3       17.1	   8.9	     25.6	22.8	   12.4       10.3	 13.5	    20.2       27.4
+La Tebaida							   2027        2.4
+Montenegro							   2024       37.8	 23.9	    29.1       18.1	    14	       27	  38	   15.2       14.2	 31.2	    29.2       37.7
+Montenegro							   2025 	34	 17.5	      24       31.8	  15.4	     30.6	39.9	   22.3       17.7	 24.6	    25.7       43.3
+Montenegro							   2026       30.6	 15.7	    18.7       26.7	  20.4	     40.4	37.1	   22.9       18.8	 29.8	    20.8       42.2
+Montenegro							   2027        1.6
+Pijao								   2024       21.7	 13.6	    12.8       12.2	  16.7	       21	25.5	   15.7       11.4	 15.3	    15.2	 24
+Pijao								   2025       24.2	  8.2	    10.9       20.7	     9	     23.9	25.4	    9.7       11.9	 20.2	    17.7	 26
+Pijao								   2026       21.7	  9.9	    14.4       20.1	   9.7	     21.1	29.9	   11.3       12.7	 15.5	    10.3       24.4
+Pijao								   2027 	.8
+Quimbaya							   2024 	26	 18.9	    20.4       19.4	  19.1	     33.7	40.1	   17.3       15.4	 20.2	    25.2       38.4
+Quimbaya							   2025       33.9	 17.4	    18.3	 21	  17.8	     36.4	35.5	   10.5       16.6	 23.9	    21.4       38.4
+Quimbaya							   2026       34.7	 14.8	    12.6       17.8	    19	     25.7	37.4	   17.4       14.8	 20.6	    29.1       44.7
+Quimbaya							   2027        2.4
+Salento 							   2024       26.7	 15.5	    24.1       16.6	    13	     24.3	31.6	   14.6       13.3	 27.4	    20.8       24.6
+Salento 							   2025       25.2	   14	    17.7       24.6	  14.3	     24.3	29.7	   13.7       12.8	 21.9	    23.8	 33
+Salento 							   2026       26.6	   14	     9.8       22.1	  14.8	     23.1	28.4	   15.3       11.3	   23	    16.1       32.7
+Salento 							   2027        2.2
+
+48 rows selected.
+
+Consulta 2 - Hospedaje contratado por temporada (ROLLUP / GROUPING)
+
+MUNICIPIO						     TIPO_ALOJAMIENTO					TEMPORADA		       NIVEL_AGREGACION INGRESO_HOSPEDAJE IMPORTE_SIN_DESGLOSE DETALLES_SIN_DESGLOSE
+------------------------------------------------------------ -------------------------------------------------- ------------------------------ ---------------- ----------------- -------------------- ---------------------
+Armenia 						     Cabana campestre					ALTA					      0 	111353000		     0			   0
+Armenia 						     Cabana campestre					BAJA					      0 	 92994000		     0			   0
+Armenia 						     Cabana campestre					MEDIA					      0 	 24659000		     0			   0
+Armenia 						     Cabana campestre					* Subtotal tipo *			      1 	229006000		     0			   0
+Armenia 						     Finca cafetera					ALTA					      0 	179755000		     0			   0
+Armenia 						     Finca cafetera					BAJA					      0 	150420000		     0			   0
+Armenia 						     Finca cafetera					MEDIA					      0 	 46640000		     0			   0
+Armenia 						     Finca cafetera					* Subtotal tipo *			      1 	376815000		     0			   0
+Armenia 						     Glamping						ALTA					      0 	279202000		     0			   0
+Armenia 						     Glamping						BAJA					      0 	212420000		     0			   0
+Armenia 						     Glamping						MEDIA					      0 	 71653000		     0			   0
+Armenia 						     Glamping						* Subtotal tipo *			      1 	563275000		     0			   0
+Armenia 						     Hostal						ALTA					      0 	 48969000		     0			   0
+Armenia 						     Hostal						BAJA					      0 	 46581000		     0			   0
+Armenia 						     Hostal						MEDIA					      0 	 17057000		     0			   0
+Armenia 						     Hostal						* Subtotal tipo *			      1 	112607000		     0			   0
+Armenia 						     Hotel boutique					ALTA					      0 	380704000		     0			   0
+Armenia 						     Hotel boutique					BAJA					      0 	272742000		     0			   0
+Armenia 						     Hotel boutique					MEDIA					      0 	103441000		     0			   0
+Armenia 						     Hotel boutique					* Subtotal tipo *			      1 	756887000		     0			   0
+Armenia 						     ** Subtotal municipio **									      3        2038590000		     0			   0
+Buenavista						     Cabana campestre					ALTA					      0 	127248000		     0			   0
+Buenavista						     Cabana campestre					BAJA					      0 	107671000		     0			   0
+Buenavista						     Cabana campestre					MEDIA					      0 	 28506000		     0			   0
+Buenavista						     Cabana campestre					* Subtotal tipo *			      1 	263425000		     0			   0
+Buenavista						     Finca cafetera					ALTA					      0 	190694000		     0			   0
+Buenavista						     Finca cafetera					BAJA					      0 	124997000		     0			   0
+Buenavista						     Finca cafetera					MEDIA					      0 	 49271000		     0			   0
+Buenavista						     Finca cafetera					* Subtotal tipo *			      1 	364962000		     0			   0
+Buenavista						     Hostal						ALTA					      0 	 44279000		     0			   0
+Buenavista						     Hostal						BAJA					      0 	 28775000		     0			   0
+Buenavista						     Hostal						MEDIA					      0 	  7894000		     0			   0
+Buenavista						     Hostal						* Subtotal tipo *			      1 	 80948000		     0			   0
+Buenavista						     Hotel						ALTA					      0 	133568000		     0			   0
+Buenavista						     Hotel						BAJA					      0 	105329000		     0			   0
+Buenavista						     Hotel						MEDIA					      0 	 29864000		     0			   0
+Buenavista						     Hotel						* Subtotal tipo *			      1 	268761000		     0			   0
+Buenavista						     Hotel boutique					ALTA					      0 	215463000		     0			   0
+Buenavista						     Hotel boutique					BAJA					      0 	153843000		     0			   0
+Buenavista						     Hotel boutique					MEDIA					      0 	 58080000		     0			   0
+Buenavista						     Hotel boutique					* Subtotal tipo *			      1 	427386000		     0			   0
+Buenavista						     ** Subtotal municipio **									      3        1405482000		     0			   0
+Calarca 						     Cabana campestre					ALTA					      0 	139241000		     0			   0
+Calarca 						     Cabana campestre					BAJA					      0 	 97011000		     0			   0
+Calarca 						     Cabana campestre					MEDIA					      0 	 35794000		     0			   0
+Calarca 						     Cabana campestre					* Subtotal tipo *			      1 	272046000		     0			   0
+Calarca 						     Finca cafetera					ALTA					      0 	219153000		     0			   0
+Calarca 						     Finca cafetera					BAJA					      0 	172839000		     0			   0
+Calarca 						     Finca cafetera					MEDIA					      0 	 80764000		     0			   0
+Calarca 						     Finca cafetera					* Subtotal tipo *			      1 	472756000		     0			   0
+Calarca 						     Glamping						ALTA					      0 	240075000		     0			   0
+Calarca 						     Glamping						BAJA					      0 	194753000		     0			   0
+Calarca 						     Glamping						MEDIA					      0 	 88160000		     0			   0
+Calarca 						     Glamping						* Subtotal tipo *			      1 	522988000		     0			   0
+Calarca 						     Hotel						ALTA					      0 	145048000		     0			   0
+Calarca 						     Hotel						BAJA					      0 	139208000		     0			   0
+Calarca 						     Hotel						MEDIA					      0 	 47033000		     0			   0
+Calarca 						     Hotel						* Subtotal tipo *			      1 	331289000		     0			   0
+Calarca 						     Hotel boutique					ALTA					      0 	150859000		     0			   0
+Calarca 						     Hotel boutique					BAJA					      0 	 98113000		     0			   0
+Calarca 						     Hotel boutique					MEDIA					      0 	 30586000		     0			   0
+Calarca 						     Hotel boutique					* Subtotal tipo *			      1 	279558000		     0			   0
+Calarca 						     ** Subtotal municipio **									      3        1878637000		     0			   0
+Circasia						     Finca cafetera					ALTA					      0 	191915000		     0			   0
+Circasia						     Finca cafetera					BAJA					      0 	168995000		     0			   0
+Circasia						     Finca cafetera					MEDIA					      0 	 55024000		     0			   0
+Circasia						     Finca cafetera					* Subtotal tipo *			      1 	415934000		     0			   0
+Circasia						     Glamping						ALTA					      0 	323315000		     0			   0
+Circasia						     Glamping						BAJA					      0 	356302000		     0			   0
+Circasia						     Glamping						MEDIA					      0 	 83893000		     0			   0
+Circasia						     Glamping						* Subtotal tipo *			      1 	763510000		     0			   0
+Circasia						     Hostal						ALTA					      0 	 35906000		     0			   0
+Circasia						     Hostal						BAJA					      0 	 31296000		     0			   0
+Circasia						     Hostal						MEDIA					      0 	 13008000		     0			   0
+Circasia						     Hostal						* Subtotal tipo *			      1 	 80210000		     0			   0
+Circasia						     Hotel						ALTA					      0 	199839000		     0			   0
+Circasia						     Hotel						BAJA					      0 	155607000		     0			   0
+Circasia						     Hotel						MEDIA					      0 	 53564000		     0			   0
+Circasia						     Hotel						* Subtotal tipo *			      1 	409010000		     0			   0
+Circasia						     Hotel boutique					ALTA					      0 	122676000		     0			   0
+Circasia						     Hotel boutique					BAJA					      0 	 99940000		     0			   0
+Circasia						     Hotel boutique					MEDIA					      0 	 28609000		     0			   0
+Circasia						     Hotel boutique					* Subtotal tipo *			      1 	251225000		     0			   0
+Circasia						     ** Subtotal municipio **									      3        1919889000		     0			   0
+Cordoba 						     Cabana campestre					ALTA					      0 	208103000		     0			   0
+Cordoba 						     Cabana campestre					BAJA					      0 	204827000		     0			   0
+Cordoba 						     Cabana campestre					MEDIA					      0 	 56927000		     0			   0
+Cordoba 						     Cabana campestre					* Subtotal tipo *			      1 	469857000		     0			   0
+Cordoba 						     Finca cafetera					ALTA					      0 	178471000		     0			   0
+Cordoba 						     Finca cafetera					BAJA					      0 	123619000		     0			   0
+Cordoba 						     Finca cafetera					MEDIA					      0 	 32907000		     0			   0
+Cordoba 						     Finca cafetera					* Subtotal tipo *			      1 	334997000		     0			   0
+Cordoba 						     Glamping						ALTA					      0 	160012000		     0			   0
+Cordoba 						     Glamping						BAJA					      0 	121113000		     0			   0
+Cordoba 						     Glamping						MEDIA					      0 	 36610000		     0			   0
+Cordoba 						     Glamping						* Subtotal tipo *			      1 	317735000		     0			   0
+Cordoba 						     Hostal						ALTA					      0 	 48013000		     0			   0
+Cordoba 						     Hostal						BAJA					      0 	 40827000		     0			   0
+Cordoba 						     Hostal						MEDIA					      0 	 13643000		     0			   0
+Cordoba 						     Hostal						* Subtotal tipo *			      1 	102483000		     0			   0
+Cordoba 						     Hotel						ALTA					      0 	163017000		     0			   0
+Cordoba 						     Hotel						BAJA					      0 	124288000		     0			   0
+Cordoba 						     Hotel						MEDIA					      0 	 50239000		     0			   0
+Cordoba 						     Hotel						* Subtotal tipo *			      1 	337544000		     0			   0
+Cordoba 						     ** Subtotal municipio **									      3        1562616000		     0			   0
+Filandia						     Cabana campestre					ALTA					      0 	124142000		     0			   0
+Filandia						     Cabana campestre					BAJA					      0 	103920000		     0			   0
+Filandia						     Cabana campestre					MEDIA					      0 	 43334000		     0			   0
+Filandia						     Cabana campestre					* Subtotal tipo *			      1 	271396000		     0			   0
+Filandia						     Glamping						ALTA					      0 	363579000		     0			   0
+Filandia						     Glamping						BAJA					      0 	312109000		     0			   0
+Filandia						     Glamping						MEDIA					      0 	102538000		     0			   0
+Filandia						     Glamping						* Subtotal tipo *			      1 	778226000		     0			   0
+Filandia						     Hostal						ALTA					      0 	 50936000		     0			   0
+Filandia						     Hostal						BAJA					      0 	 51058000		     0			   0
+Filandia						     Hostal						MEDIA					      0 	 18932000		     0			   0
+Filandia						     Hostal						* Subtotal tipo *			      1 	120926000		     0			   0
+Filandia						     Hotel						ALTA					      0 	129349000		     0			   0
+Filandia						     Hotel						BAJA					      0 	137487000		     0			   0
+Filandia						     Hotel						MEDIA					      0 	 48520000		     0			   0
+Filandia						     Hotel						* Subtotal tipo *			      1 	315356000		     0			   0
+Filandia						     Hotel boutique					ALTA					      0 	302089000		     0			   0
+Filandia						     Hotel boutique					BAJA					      0 	263439000		     0			   0
+Filandia						     Hotel boutique					MEDIA					      0 	 92889000		     0			   0
+Filandia						     Hotel boutique					* Subtotal tipo *			      1 	658417000		     0			   0
+Filandia						     ** Subtotal municipio **									      3        2144321000		     0			   0
+Genova							     Cabana campestre					ALTA					      0 	124441000		     0			   0
+Genova							     Cabana campestre					BAJA					      0 	104439000		     0			   0
+Genova							     Cabana campestre					MEDIA					      0 	 36239000		     0			   0
+Genova							     Cabana campestre					* Subtotal tipo *			      1 	265119000		     0			   0
+Genova							     Finca cafetera					ALTA					      0 	259564000		     0			   0
+Genova							     Finca cafetera					BAJA					      0 	179933000		     0			   0
+Genova							     Finca cafetera					MEDIA					      0 	 65767000		     0			   0
+Genova							     Finca cafetera					* Subtotal tipo *			      1 	505264000		     0			   0
+Genova							     Glamping						ALTA					      0 	275142000		     0			   0
+Genova							     Glamping						BAJA					      0 	209182000		     0			   0
+Genova							     Glamping						MEDIA					      0 	 86405000		     0			   0
+Genova							     Glamping						* Subtotal tipo *			      1 	570729000		     0			   0
+Genova							     Hostal						ALTA					      0 	 46707000		     0			   0
+Genova							     Hostal						BAJA					      0 	 43834000		     0			   0
+Genova							     Hostal						MEDIA					      0 	 16319000		     0			   0
+Genova							     Hostal						* Subtotal tipo *			      1 	106860000		     0			   0
+Genova							     Hotel boutique					ALTA					      0 	247520000		     0			   0
+Genova							     Hotel boutique					BAJA					      0 	192574000		     0			   0
+Genova							     Hotel boutique					MEDIA					      0 	 47147000		     0			   0
+Genova							     Hotel boutique					* Subtotal tipo *			      1 	487241000		     0			   0
+Genova							     ** Subtotal municipio **									      3        1935213000		     0			   0
+La Tebaida						     Cabana campestre					ALTA					      0 	163699000		     0			   0
+La Tebaida						     Cabana campestre					BAJA					      0 	131479000		     0			   0
+La Tebaida						     Cabana campestre					MEDIA					      0 	 49883000		     0			   0
+La Tebaida						     Cabana campestre					* Subtotal tipo *			      1 	345061000		     0			   0
+La Tebaida						     Finca cafetera					ALTA					      0 	141386000		     0			   0
+La Tebaida						     Finca cafetera					BAJA					      0 	104271000		     0			   0
+La Tebaida						     Finca cafetera					MEDIA					      0 	 30779000		     0			   0
+La Tebaida						     Finca cafetera					* Subtotal tipo *			      1 	276436000		     0			   0
+La Tebaida						     Hostal						ALTA					      0 	 55736000		     0			   0
+La Tebaida						     Hostal						BAJA					      0 	 43131000		     0			   0
+La Tebaida						     Hostal						MEDIA					      0 	 12548000		     0			   0
+La Tebaida						     Hostal						* Subtotal tipo *			      1 	111415000		     0			   0
+La Tebaida						     Hotel						ALTA					      0 	150578000		     0			   0
+La Tebaida						     Hotel						BAJA					      0 	135027000		     0			   0
+La Tebaida						     Hotel						MEDIA					      0 	 50798000		     0			   0
+La Tebaida						     Hotel						* Subtotal tipo *			      1 	336403000		     0			   0
+La Tebaida						     Hotel boutique					ALTA					      0 	169375000		     0			   0
+La Tebaida						     Hotel boutique					BAJA					      0 	169233000		     0			   0
+La Tebaida						     Hotel boutique					MEDIA					      0 	 37224000		     0			   0
+La Tebaida						     Hotel boutique					* Subtotal tipo *			      1 	375832000		     0			   0
+La Tebaida						     ** Subtotal municipio **									      3        1445147000		     0			   0
+Montenegro						     Cabana campestre					ALTA					      0 	208000000		     0			   0
+Montenegro						     Cabana campestre					BAJA					      0 	182797000		     0			   0
+Montenegro						     Cabana campestre					MEDIA					      0 	 70626000		     0			   0
+Montenegro						     Cabana campestre					* Subtotal tipo *			      1 	461423000		     0			   0
+Montenegro						     Finca cafetera					ALTA					      0 	271605000		     0			   0
+Montenegro						     Finca cafetera					BAJA					      0 	299922000		     0			   0
+Montenegro						     Finca cafetera					MEDIA					      0 	 86330000		     0			   0
+Montenegro						     Finca cafetera					* Subtotal tipo *			      1 	657857000		     0			   0
+Montenegro						     Glamping						ALTA					      0 	358189000		     0			   0
+Montenegro						     Glamping						BAJA					      0 	333917000		     0			   0
+Montenegro						     Glamping						MEDIA					      0 	119152000		     0			   0
+Montenegro						     Glamping						* Subtotal tipo *			      1 	811258000		     0			   0
+Montenegro						     Hotel						ALTA					      0 	273431000		     0			   0
+Montenegro						     Hotel						BAJA					      0 	248590000		     0			   0
+Montenegro						     Hotel						MEDIA					      0 	 98141000		     0			   0
+Montenegro						     Hotel						* Subtotal tipo *			      1 	620162000		     0			   0
+Montenegro						     Hotel boutique					ALTA					      0 	285156000		     0			   0
+Montenegro						     Hotel boutique					BAJA					      0 	263141000		     0			   0
+Montenegro						     Hotel boutique					MEDIA					      0 	 76127000		     0			   0
+Montenegro						     Hotel boutique					* Subtotal tipo *			      1 	624424000		     0			   0
+Montenegro						     ** Subtotal municipio **									      3        3175124000		     0			   0
+Pijao							     Finca cafetera					ALTA					      0 	 80729000		     0			   0
+Pijao							     Finca cafetera					BAJA					      0 	 80126000		     0			   0
+Pijao							     Finca cafetera					MEDIA					      0 	 19493000		     0			   0
+Pijao							     Finca cafetera					* Subtotal tipo *			      1 	180348000		     0			   0
+Pijao							     Glamping						ALTA					      0 	213850000		     0			   0
+Pijao							     Glamping						BAJA					      0 	169457000		     0			   0
+Pijao							     Glamping						MEDIA					      0 	 53173000		     0			   0
+Pijao							     Glamping						* Subtotal tipo *			      1 	436480000		     0			   0
+
+MUNICIPIO						     TIPO_ALOJAMIENTO					TEMPORADA		       NIVEL_AGREGACION INGRESO_HOSPEDAJE IMPORTE_SIN_DESGLOSE DETALLES_SIN_DESGLOSE
+------------------------------------------------------------ -------------------------------------------------- ------------------------------ ---------------- ----------------- -------------------- ---------------------
+Pijao							     Hostal						ALTA					      0 	 26390000		     0			   0
+Pijao							     Hostal						BAJA					      0 	 31646000		     0			   0
+Pijao							     Hostal						MEDIA					      0 	  9536000		     0			   0
+Pijao							     Hostal						* Subtotal tipo *			      1 	 67572000		     0			   0
+Pijao							     Hotel						ALTA					      0 	 87545000		     0			   0
+Pijao							     Hotel						BAJA					      0 	 93457000		     0			   0
+Pijao							     Hotel						MEDIA					      0 	 27085000		     0			   0
+Pijao							     Hotel						* Subtotal tipo *			      1 	208087000		     0			   0
+Pijao							     Hotel boutique					ALTA					      0 	263561000		     0			   0
+Pijao							     Hotel boutique					BAJA					      0 	238237000		     0			   0
+Pijao							     Hotel boutique					MEDIA					      0 	 71267000		     0			   0
+Pijao							     Hotel boutique					* Subtotal tipo *			      1 	573065000		     0			   0
+Pijao							     ** Subtotal municipio **									      3        1465552000		     0			   0
+Quimbaya						     Cabana campestre					ALTA					      0 	187611000		     0			   0
+Quimbaya						     Cabana campestre					BAJA					      0 	143913000		     0			   0
+Quimbaya						     Cabana campestre					MEDIA					      0 	 64614000		     0			   0
+Quimbaya						     Cabana campestre					* Subtotal tipo *			      1 	396138000		     0			   0
+Quimbaya						     Finca cafetera					ALTA					      0 	225785000		     0			   0
+Quimbaya						     Finca cafetera					BAJA					      0 	178520000		     0			   0
+Quimbaya						     Finca cafetera					MEDIA					      0 	 88487000		     0			   0
+Quimbaya						     Finca cafetera					* Subtotal tipo *			      1 	492792000		     0			   0
+Quimbaya						     Glamping						ALTA					      0 	391534000		     0			   0
+Quimbaya						     Glamping						BAJA					      0 	371266000		     0			   0
+Quimbaya						     Glamping						MEDIA					      0 	125641000		     0			   0
+Quimbaya						     Glamping						* Subtotal tipo *			      1 	888441000		     0			   0
+Quimbaya						     Hostal						ALTA					      0 	 67301000		     0			   0
+Quimbaya						     Hostal						BAJA					      0 	 63235000		     0			   0
+Quimbaya						     Hostal						MEDIA					      0 	 20225000		     0			   0
+Quimbaya						     Hostal						* Subtotal tipo *			      1 	150761000		     0			   0
+Quimbaya						     Hotel						ALTA					      0 	167827000		     0			   0
+Quimbaya						     Hotel						BAJA					      0 	141213000		     0			   0
+Quimbaya						     Hotel						MEDIA					      0 	 57160000		     0			   0
+Quimbaya						     Hotel						* Subtotal tipo *			      1 	366200000		     0			   0
+Quimbaya						     ** Subtotal municipio **									      3        2294332000		     0			   0
+Salento 						     Cabana campestre					ALTA					      0 	191052000		     0			   0
+Salento 						     Cabana campestre					BAJA					      0 	176200000		     0			   0
+Salento 						     Cabana campestre					MEDIA					      0 	 58596000		     0			   0
+Salento 						     Cabana campestre					* Subtotal tipo *			      1 	425848000		     0			   0
+Salento 						     Glamping						ALTA					      0 	228144000		     0			   0
+Salento 						     Glamping						BAJA					      0 	263000000		     0			   0
+Salento 						     Glamping						MEDIA					      0 	 77984000		     0			   0
+Salento 						     Glamping						* Subtotal tipo *			      1 	569128000		     0			   0
+Salento 						     Hostal						ALTA					      0 	 55027000		     0			   0
+Salento 						     Hostal						BAJA					      0 	 50888000		     0			   0
+Salento 						     Hostal						MEDIA					      0 	 19808000		     0			   0
+Salento 						     Hostal						* Subtotal tipo *			      1 	125723000		     0			   0
+Salento 						     Hotel						ALTA					      0 	164969000		     0			   0
+Salento 						     Hotel						BAJA					      0 	137680000		     0			   0
+Salento 						     Hotel						MEDIA					      0 	 52378000		     0			   0
+Salento 						     Hotel						* Subtotal tipo *			      1 	355027000		     0			   0
+Salento 						     Hotel boutique					ALTA					      0 	214482000		     0			   0
+Salento 						     Hotel boutique					BAJA					      0 	156293000		     0			   0
+Salento 						     Hotel boutique					MEDIA					      0 	 80191000		     0			   0
+Salento 						     Hotel boutique					* Subtotal tipo *			      1 	450966000		     0			   0
+Salento 						     ** Subtotal municipio **									      3        1926692000		     0			   0
+*** TOTAL GENERAL ***																	      7        2.3192E+10		     0			   0
+
+253 rows selected.
+
+Consulta 3 - Mayores ingresos contratados por municipio (RANK)
+
+MUNICIPIO							 PUESTO ALOJAMIENTO														 NUM_RESERVAS INGRESO_TOTAL
+------------------------------------------------------------ ---------- ------------------------------------------------------------------------------------------------------------------------ ------------ -------------
+Armenia 							      1 Hotel Boutique Monte Azul													  491	  896950000
+Armenia 							      2 Glamping El Yarumo														  352	  684920000
+Armenia 							      3 Finca Los Guaduales														  390	  511644000
+Buenavista							      1 Hotel Boutique El Mirador													  290	  537050000
+Buenavista							      2 Finca El Arriero														  317	  467914000
+Buenavista							      3 Hotel La Montana														  240	  360189000
+Calarca 							      1 Glamping La Colina														  338	  612301000
+Calarca 							      2 Finca El Yarumo 														  406	  596617000
+Calarca 							      3 Hotel La Cascada														  393	  475195000
+Circasia							      1 Glamping El Cafetal														  419	  901343000
+Circasia							      2 Hotel El Barranquero														  413	  549692000
+Circasia							      3 Finca El Bambu															  411	  535955000
+Cordoba 							      1 Cabanas El Yarumo														  427	  655942000
+Cordoba 							      2 Hotel La Palma de Cera														  369	  453708000
+Cordoba 							      3 Finca Tierra Paisa														  211	  412892000
+Filandia							      1 Glamping Brisas del Quindio													  519	  908709000
+Filandia							      2 Hotel Boutique El Barranquero													  453	  796297000
+Filandia							      3 Hotel La Esperanza														  383	  439929000
+Genova								      1 Glamping Los Balcones														  338	  691965000
+Genova								      2 Finca Las Heliconias														  453	  691451000
+Genova								      3 Hotel Boutique La Palma de Cera 												  294	  581908000
+La Tebaida							      1 Hotel Boutique La Esperanza													  333	  483850000
+La Tebaida							      2 Hotel Villa Cafe														  384	  463191000
+La Tebaida							      3 Cabanas Los Guaduales														  427	  460338000
+Montenegro							      1 Glamping Tierra Paisa														  530	 1035367000
+Montenegro							      2 Finca Los Balcones														  534	  822443000
+Montenegro							      3 Hotel Rio Verde 														  576	  817394000
+Pijao								      1 Hotel Boutique La Cascada													  425	  718353000
+Pijao								      2 Glamping Los Guaduales														  341	  538809000
+Pijao								      3 Hotel Monte Azul														  295	  288203000
+Quimbaya							      1 Glamping El Arriero														  526	 1072247000
+Quimbaya							      2 Finca El Cafetal														  477	  657925000
+Quimbaya							      3 Cabanas Los Balcones														  463	  529039000
+Salento 							      1 Glamping El Yarumo														  414	  700254000
+Salento 							      2 Hotel Boutique Monte Azul													  319	  598888000
+Salento 							      3 Cabanas La Colina														  444	  572458000
+
+36 rows selected.
+
+Consulta 4 - Variacion mensual por mes del check-in (LAG)
+
+MES	   INGRESO INGRESO_MES_ANTERIOR INGRESO_MISMO_MES_ANIO_ANT VARIACION_ABSOLUTA VARIACION_PCT VARIACION_ANUAL_PCT
+------- ---------- -------------------- -------------------------- ------------------ ------------- -------------------
+2024-01 1138775000
+2024-02  451196000	     1138775000 				   -687579000	     -60.38
+2024-03  865544000	      451196000 				    414348000	      91.83
+2024-04  505193000	      865544000 				   -360351000	     -41.63
+2024-05  472811000	      505193000 				    -32382000	      -6.41
+2024-06 1173757000	      472811000 				    700946000	     148.25
+2024-07 1321726000	     1173757000 				    147969000	      12.61
+2024-08  493157000	     1321726000 				   -828569000	     -62.69
+2024-09  512011000	      493157000 				     18854000	       3.82
+2024-10  742349000	      512011000 				    230338000	      44.99
+2024-11  698739000	      742349000 				    -43610000	      -5.87
+2024-12 1414732000	      698739000 				    715993000	     102.47
+2025-01 1232904000	     1414732000 		1138775000	   -181828000	     -12.85		   8.27
+2025-02  398057000	     1232904000 		 451196000	   -834847000	     -67.71		 -11.78
+2025-03  485854000	      398057000 		 865544000	     87797000	      22.06		 -43.87
+2025-04  900222000	      485854000 		 505193000	    414368000	      85.29		  78.19
+2025-05  513182000	      900222000 		 472811000	   -387040000	     -42.99		   8.54
+2025-06 1201090000	      513182000 		1173757000	    687908000	     134.05		   2.33
+2025-07 1428968000	     1201090000 		1321726000	    227878000	      18.97		   8.11
+2025-08  512251000	     1428968000 		 493157000	   -916717000	     -64.15		   3.87
+2025-09  475094000	      512251000 		 512011000	    -37157000	      -7.25		  -7.21
+2025-10  763694000	      475094000 		 742349000	    288600000	      60.75		   2.88
+2025-11  782570000	      763694000 		 698739000	     18876000	       2.47		     12
+2025-12 1536868000	      782570000 		1414732000	    754298000	      96.39		   8.63
+2026-01 1195664000	     1536868000 		1232904000	   -341204000	      -22.2		  -3.02
+2026-02  501841000	     1195664000 		 398057000	   -693823000	     -58.03		  26.07
+2026-03  658417000	      501841000 		 485854000	    156576000	       31.2		  35.52
+2026-04  770584000	      658417000 		 900222000	    112167000	      17.04		  -14.4
+2026-05  527563000	      770584000 		 513182000	   -243021000	     -31.54		    2.8
+2026-06 1345245000	      527563000 		1201090000	    817682000	     154.99		     12
+2026-07 1502702000	     1345245000 		1428968000	    157457000	       11.7		   5.16
+2026-08  582719000	     1502702000 		 512251000	   -919983000	     -61.22		  13.76
+2026-09  512107000	      582719000 		 475094000	    -70612000	     -12.12		   7.79
+2026-10  835798000	      512107000 		 763694000	    323691000	      63.21		   9.44
+2026-11  767649000	      835798000 		 782570000	    -68149000	      -8.15		  -1.91
+2026-12 1596647000	      767649000 		1536868000	    828998000	     107.99		   3.89
+2027-01 	 0	     1596647000 		1195664000	   -1.597E+09	       -100		   -100
+
+37 rows selected.
+
+Consulta 5 - Rango de check-in con variables de enlace
+
+Session altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+
+FECHA_INI
+--------------------------------
+2025-06-01
+
+
+FECHA_FIN
+--------------------------------
+2025-07-31
+
+
+MUNICIPIO						     ALOJAMIENTO													      NUM_RESERVAS INGRESO_TOTAL TICKET_PROMEDIO NOCHES_PROMEDIO
+------------------------------------------------------------ ------------------------------------------------------------------------------------------------------------------------ ------------ ------------- --------------- ---------------
+Quimbaya						     Glamping El Arriero														42	93109000      2216880.95	       3
+Armenia 						     Hotel Boutique Monte Azul														49	92029000      1878142.86	     2.8
+Montenegro						     Glamping Tierra Paisa														43	76208000      1772279.07	     2.6
+Filandia						     Glamping Brisas del Quindio													39	73406000      1882205.13	     2.7
+Circasia						     Glamping El Cafetal														31	73100000      2358064.52	     2.9
+Montenegro						     Finca Los Balcones 														40	71109000	 1777725	       3
+Genova							     Glamping Los Balcones														31	67878000       2189612.9	     3.1
+Montenegro						     Hotel Boutique La Montana														35	67525000      1929285.71	     3.2
+Pijao							     Glamping Los Guaduales														34	66309000      1950264.71	     2.9
+Filandia						     Hotel Boutique El Barranquero													33	66020000      2000606.06	     2.7
+Genova							     Finca Las Heliconias														35	65929000      1883685.71	     3.2
+Pijao							     Hotel Boutique La Cascada														37	64949000      1755378.38	     2.5
+Montenegro						     Hotel Rio Verde															39	61690000      1581794.87	     2.9
+Salento 						     Glamping El Yarumo 														33	56298000	 1706000	     2.5
+Armenia 						     Glamping El Yarumo 														25	55286000	 2211440	       3
+Quimbaya						     Finca El Cafetal															40	52398000	 1309950	     2.7
+Montenegro						     Cabanas El Arriero 														32	52307000      1634593.75	     2.9
+Calarca 						     Finca El Yarumo															29	52200000	 1800000	       3
+Quimbaya						     Cabanas Los Balcones														40	50001000	 1250025	     2.8
+Genova							     Hotel Boutique La Palma de Cera													21	49980000	 2380000	     3.1
+Salento 						     Cabanas La Colina															39	49514000      1269589.74	     2.6
+Quimbaya						     Hotel El Mirador															39	48711000	 1249000	     2.7
+Cordoba 						     Cabanas El Yarumo															34	47987000      1411382.35	     2.7
+Salento 						     Hotel Boutique Monte Azul														22	47067000      2139409.09	     3.3
+Circasia						     Hotel El Barranquero														29	46863000      1615965.52	     3.4
+Buenavista						     Hotel Boutique El Mirador														24	46538000      1939083.33	     2.9
+La Tebaida						     Cabanas Los Guaduales														43	45383000       1055418.6	     2.7
+Cordoba 						     Hotel La Palma de Cera														33	44889000      1360272.73	     2.8
+Calarca 						     Glamping La Colina 														24	44799000	 1866625	     2.8
+Calarca 						     Hotel La Cascada															32	43388000	 1355875	     3.4
+Armenia 						     Finca Los Guaduales														25	42055000	 1682200	       3
+Buenavista						     Cabanas El Cafetal 														27	41565000      1539444.44	     3.4
+Cordoba 						     Glamping Las Heliconias														18	40443000      2246833.33	     2.9
+Salento 						     Hotel Bosque de Niebla														27	40256000      1490962.96	     2.8
+Circasia						     Finca El Bambu															29	39984000      1378758.62	     3.2
+La Tebaida						     Hotel Boutique La Esperanza													24	36775000      1532291.67	     2.7
+Calarca 						     Hotel Boutique Bosque de Niebla													21	36769000      1750904.76	     2.2
+Filandia						     Cabanas El Bambu															28	35753000      1276892.86	     3.1
+Buenavista						     Hotel La Montana															24	35507000      1479458.33	     2.7
+La Tebaida						     Hotel Villa Cafe															27	34924000      1293481.48	     3.1
+Filandia						     Hotel La Esperanza 														33	34853000      1056151.52	     2.6
+Circasia						     Hotel Boutique Villa Cafe														20	34016000	 1700800	     2.9
+Buenavista						     Finca El Arriero															25	33984000	 1359360	     3.2
+La Tebaida						     Finca Brisas del Quindio														21	31237000      1487476.19	       3
+Armenia 						     Cabanas La Colina															34	28448000       836705.88	     2.8
+Calarca 						     Cabanas Las Heliconias														27	28364000      1050518.52	     2.4
+Quimbaya						     Hostal La Montana															37	28339000       765918.92	     2.8
+Pijao							     Hotel Monte Azul															24	27891000	 1162125	     3.1
+Armenia 						     Hostal La Cascada															36	27555000       765416.67	     3.3
+Genova							     Cabanas Tierra Paisa														24	26522000      1105083.33	     2.8
+Cordoba 						     Finca Tierra Paisa 														16	25142000	 1571375	     2.5
+La Tebaida						     Hostal Monte Azul															30	22576000       752533.33	     3.1
+Filandia						     Hostal Villa Cafe															34	20066000       590176.47	     3.4
+Pijao							     Finca La Colina															17	18883000      1110764.71	     2.6
+Genova							     Hostal Rio Verde															36	18466000       512944.44	     2.9
+Pijao							     Hostal La Esperanza														22	14389000       654045.45	     2.3
+Cordoba 						     Hostal Bosque de Niebla														27	14320000       530370.37	     2.9
+Salento 						     Hostal La Cascada															25	13532000	  541280	     2.6
+Circasia						     Hostal El Mirador															17	12568000       739294.12	     2.8
+Buenavista						     Hostal El Barranquero														19	12006000       631894.74	     3.2
+
+60 rows selected.
+
+Consulta 6 - Alojamientos con ocupacion inferior al 30 por ciento
+
+MUNICIPIO						     ALOJAMIENTO													      MES     NOCHES_OCUPADAS CAPACIDAD_NOCHES_BRUTA
+------------------------------------------------------------ ------------------------------------------------------------------------------------------------------------------------ ------- --------------- ----------------------
+PCT_OCUPACION_BRUTA
+-------------------
+Genova							     Hotel Boutique La Palma de Cera											      2025-12		   23			 217
+	       10.6
+
+Calarca 						     Hotel Boutique Bosque de Niebla											      2025-12		   29			 217
+	      13.36
+
+Pijao							     Finca La Colina													      2025-12		   25			 186
+	      13.44
+
+Buenavista						     Cabanas El Cafetal 												      2025-12		   32			 217
+	      14.75
+
+Calarca 						     Cabanas Las Heliconias												      2025-12		   32			 217
+	      14.75
+
+Buenavista						     Hotel La Montana													      2025-12		   34			 217
+	      15.67
+
+Cordoba 						     Finca Tierra Paisa 												      2025-12		   37			 217
+	      17.05
+
+Cordoba 						     Glamping Las Heliconias												      2025-12		   37			 217
+	      17.05
+
+Filandia						     Cabanas El Bambu													      2025-12		   37			 217
+	      17.05
+
+Salento 						     Hotel Bosque de Niebla												      2025-12		   32			 186
+	       17.2
+
+La Tebaida						     Finca Brisas del Quindio												      2025-12		   38			 217
+	      17.51
+
+Genova							     Glamping Los Balcones												      2025-12		   39			 217
+	      17.97
+
+Genova							     Hostal Rio Verde													      2025-12		   39			 217
+	      17.97
+
+Pijao							     Hotel Monte Azul													      2025-12		   34			 186
+	      18.28
+
+Circasia						     Hostal El Mirador													      2025-12		   40			 217
+	      18.43
+
+Filandia						     Hotel La Esperanza 												      2025-12		   41			 217
+	      18.89
+
+Cordoba 						     Hostal Bosque de Niebla												      2025-12		   46			 217
+	       21.2
+
+Genova							     Cabanas Tierra Paisa												      2025-12		   48			 217
+	      22.12
+
+Buenavista						     Hostal El Barranquero												      2025-12		   49			 217
+	      22.58
+
+La Tebaida						     Hostal Monte Azul													      2025-12		   49			 217
+	      22.58
+
+Circasia						     Hotel Boutique Villa Cafe												      2025-12		   52			 217
+	      23.96
+
+Calarca 						     Finca El Yarumo													      2025-12		   54			 217
+	      24.88
+
+Calarca 						     Glamping La Colina 												      2025-12		   55			 217
+	      25.35
+
+Circasia						     Glamping El Cafetal												      2025-12		   55			 217
+	      25.35
+
+Cordoba 						     Hotel La Palma de Cera												      2025-12		   56			 217
+	      25.81
+
+Quimbaya						     Hotel El Mirador													      2025-12		   48			 186
+	      25.81
+
+Cordoba 						     Cabanas El Yarumo													      2025-12		   58			 217
+	      26.73
+
+La Tebaida						     Hotel Boutique La Esperanza											      2025-12		   58			 217
+	      26.73
+
+Pijao							     Glamping Los Guaduales												      2025-12		   51			 186
+	      27.42
+
+Filandia						     Glamping Brisas del Quindio											      2025-12		   61			 217
+	      28.11
+
+Pijao							     Hostal La Esperanza												      2025-12		   53			 186
+	      28.49
+
+Salento 						     Hotel Boutique Monte Azul												      2025-12		   54			 186
+	      29.03
+
+Armenia 						     Finca Los Guaduales												      2025-12		   65			 217
+	      29.95
+
+
+33 rows selected.
+
+Consulta 7 - Composicion de ingreso contratado (UNPIVOT)
+
+MUNICIPIO							   ANIO CONCEPTO       VALOR PCT_DEL_TOTAL
+------------------------------------------------------------ ---------- --------- ---------- -------------
+Armenia 							   2024 HOSPEDAJE  639940000	     74.63
+Armenia 							   2024 SERVICIOS  217547000	     25.37
+Armenia 							   2025 HOSPEDAJE  717407000	     76.54
+Armenia 							   2025 SERVICIOS  219866000	     23.46
+Armenia 							   2026 HOSPEDAJE  681243000	     75.75
+Armenia 							   2026 SERVICIOS  218084000	     24.25
+Buenavista							   2024 HOSPEDAJE  430766000	     73.16
+Buenavista							   2024 SERVICIOS  158000000	     26.84
+Buenavista							   2025 HOSPEDAJE  456998000	     75.24
+Buenavista							   2025 SERVICIOS  150384000	     24.76
+Buenavista							   2026 HOSPEDAJE  517718000	     75.81
+Buenavista							   2026 SERVICIOS  165177000	     24.19
+Calarca 							   2024 HOSPEDAJE  626397000	     77.21
+Calarca 							   2024 SERVICIOS  184896000	     22.79
+Calarca 							   2025 HOSPEDAJE  612290000	     77.25
+Calarca 							   2025 SERVICIOS  180329000	     22.75
+Calarca 							   2026 HOSPEDAJE  639950000	      77.9
+Calarca 							   2026 SERVICIOS  181542000	      22.1
+Circasia							   2024 HOSPEDAJE  571701000	      74.4
+Circasia							   2024 SERVICIOS  196666000	      25.6
+Circasia							   2025 HOSPEDAJE  693011000	     76.41
+Circasia							   2025 SERVICIOS  213916000	     23.59
+Circasia							   2026 HOSPEDAJE  655177000	      75.9
+Circasia							   2026 SERVICIOS  208031000	      24.1
+Cordoba 							   2024 HOSPEDAJE  491763000	     72.81
+Cordoba 							   2024 SERVICIOS  183607000	     27.19
+Cordoba 							   2025 HOSPEDAJE  512226000	     73.15
+Cordoba 							   2025 SERVICIOS  188062000	     26.85
+Cordoba 							   2026 HOSPEDAJE  558627000	     75.21
+Cordoba 							   2026 SERVICIOS  184081000	     24.79
+Filandia							   2024 HOSPEDAJE  654915000	     75.67
+Filandia							   2024 SERVICIOS  210624000	     24.33
+Filandia							   2025 HOSPEDAJE  661411000	     75.06
+Filandia							   2025 SERVICIOS  219783000	     24.94
+Filandia							   2026 HOSPEDAJE  827995000	     77.32
+Filandia							   2026 SERVICIOS  242871000	     22.68
+Genova								   2024 HOSPEDAJE  639152000	     74.11
+Genova								   2024 SERVICIOS  223327000	     25.89
+Genova								   2025 HOSPEDAJE  585263000	     75.18
+Genova								   2025 SERVICIOS  193204000	     24.82
+Genova								   2026 HOSPEDAJE  710798000	     75.49
+Genova								   2026 SERVICIOS  230746000	     24.51
+La Tebaida							   2024 HOSPEDAJE  444344000	     69.87
+La Tebaida							   2024 SERVICIOS  191575000	     30.13
+La Tebaida							   2025 HOSPEDAJE  491303000	     71.89
+La Tebaida							   2025 SERVICIOS  192149000	     28.11
+La Tebaida							   2026 HOSPEDAJE  509500000	     70.76
+La Tebaida							   2026 SERVICIOS  210501000	     29.24
+Montenegro							   2024 HOSPEDAJE  985674000	     76.79
+Montenegro							   2024 SERVICIOS  297882000	     23.21
+Montenegro							   2025 HOSPEDAJE 1070939000	     77.45
+Montenegro							   2025 SERVICIOS  311812000	     22.55
+Montenegro							   2026 HOSPEDAJE 1118511000	     77.33
+Montenegro							   2026 SERVICIOS  327900000	     22.67
+Pijao								   2024 HOSPEDAJE  456357000	     72.03
+Pijao								   2024 SERVICIOS  177199000	     27.97
+Pijao								   2025 HOSPEDAJE  505997000	     74.53
+Pijao								   2025 SERVICIOS  172964000	     25.47
+Pijao								   2026 HOSPEDAJE  503198000	     75.29
+Pijao								   2026 SERVICIOS  165118000	     24.71
+Quimbaya							   2024 HOSPEDAJE  723571000	     75.15
+Quimbaya							   2024 SERVICIOS  239232000	     24.85
+Quimbaya							   2025 HOSPEDAJE  749561000	     73.96
+Quimbaya							   2025 SERVICIOS  263962000	     26.04
+Quimbaya							   2026 HOSPEDAJE  821200000	     75.24
+Quimbaya							   2026 SERVICIOS  270198000	     24.76
+Salento 							   2024 HOSPEDAJE  623127000	     73.76
+Salento 							   2024 SERVICIOS  221728000	     26.24
+Salento 							   2025 HOSPEDAJE  658650000	     75.89
+Salento 							   2025 SERVICIOS  209267000	     24.11
+Salento 							   2026 HOSPEDAJE  644915000	     75.98
+Salento 							   2026 SERVICIOS  203855000	     24.02
+
+72 rows selected.
+
+Consulta 8 - Anticipacion, duracion y cancelaciones por temporada
+
+TIPO_ TOTAL_RESERVAS CANCELADAS PCT_CANCELACION ANTICIPACION_PROMEDIO_DIAS ANTICIPACION_MEDIANA_DIAS NOCHES_PROMEDIO
+----- -------------- ---------- --------------- -------------------------- ------------------------- ---------------
+ALTA	       10463	   1056 	  10.09 		      47.9			  48		 2.9
+MEDIA		3573	    368 	   10.3 		      32.3			  31		 2.9
+BAJA	       10964	   1099 	  10.02 		      13.6			  13		 2.9
+
+3 rows selected.
+

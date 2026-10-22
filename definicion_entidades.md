@@ -1,12 +1,12 @@
 # Modelado de Entidades - TurismoUQ
 
-Documento de análisis conceptual y definición de propiedades para la plataforma de reservas turísticas del Quindío (**TurismoUQ**), basado en el contexto del proyecto (código 12338, motor **Oracle XE 21c**) y las extensiones del modelo para la Entrega 1. El contrato ejecutable está en `01_DDL_TURISMOUQ_ORACLE21C.sql`; `schema.dbml` y `schema.dbdiagram` lo representan.
+Documento de análisis conceptual y definición de propiedades para la plataforma de reservas turísticas del Quindío (**TurismoUQ**), basado en el contexto del proyecto (código 12338, motor **Oracle XE 21c**) y los incrementos de Entrega 1 y Entrega 2. El contrato ejecutable está en `01_DDL_TURISMOUQ_ORACLE21C.sql`; `schema.dbml` y `schema.dbdiagram` lo representan.
 
 La infraestructura física se prepara aparte con `scripts/crear_tablespace.sql`. El DDL instala las 22 tablas en un esquema nuevo. Una base ya cargada utiliza `migraciones/001_tramos_tarifarios.sql`, que solo agrega la estructura de tramos si falta y no inventa precios históricos. La migración verifica los objetos existentes y falla si no cumplen el contrato esperado.
 
 Los precios contratados se conservan en tramos `[fecha_inicio_tramo, fecha_fin_tramo)`: la fecha final queda excluida. Las comprobaciones de cobertura, ausencia de solapamientos y conciliación del importe son validaciones del conjunto de tramos; una PK o un CHECK por fila no las demuestra por sí solo. Las reservas históricas sin evidencia suficiente deben permanecer pendientes de conciliación.
 
-Las funciones, procedimientos, cursores, paquetes y disparadores solicitados para la Entrega 2 siguen pendientes. Las tablas de auditoría y liquidación constituyen soporte estructural, sin acreditar esos procesos. Se conserva el contrato previo de `RESERVA`: `id_alojamiento` nullable y fechas `DATE` sin añadir una restricción de hora a la cabecera.
+La Entrega 2 amplía auditoría y liquidación mediante `migraciones/002_soporte_plsql.sql` e implementa `pkg_turismouq` y tres triggers compuestos en [plsql/](plsql/). El instalador es [04_instalar_capa_plsql.sql](04_instalar_capa_plsql.sql). La corrida `2026-10-22_123445` aprobó 40 casos de Entrega 2, 23 de regresión E1 y las ocho consultas; los resultados y límites se documentan en el [informe de Entrega 2](docs/entrega2/resultado_validacion.md). La instalación y las pruebas se realizaron en esquemas separados de `TURISMOUQ` y `TURISMOUQ_E1`. Se conserva el contrato previo del DDL de `RESERVA`: `id_alojamiento` nullable y fechas `DATE` sin añadir una restricción de hora a la cabecera; el paquete valida alojamiento obligatorio y fechas de día completo para sus operaciones.
 
 ## 1. Evidencia del Modelo Conceptual y Jerarquía de Usuarios
 
@@ -152,7 +152,7 @@ A continuación se definen las 22 entidades del modelo físico para la Entrega 1
   - `precio_noche` (NUMBER(12,2), NOT NULL, CHECK > 0): Valor monetario por noche en moneda local.
 - **Análisis de normalización:**
   - *Restricción compuesta:* `UNIQUE (id_habitacion, id_temporada)` que garantiza unicidad de precio por par habitación-temporada.
-  - *Catálogo frente a importe contratado:* El catálogo puede cambiar. Los importes de reservas se conservan en `RESERVA_HABITACION_TARIFA_APLICADA` y no se recalculan desde la tarifa vigente. La auditoría automática de cambios del catálogo está pendiente de Entrega 2.
+  - *Catálogo frente a importe contratado:* El catálogo puede cambiar. Los importes de reservas se conservan en `RESERVA_HABITACION_TARIFA_APLICADA` y no se recalculan desde la tarifa vigente. El trigger compuesto `TRG_AUDITAR_TARIFA`, implementado en [plsql/03_trg_auditar_tarifa.sql](plsql/03_trg_auditar_tarifa.sql), captura los cambios efectivos de precio por fila y persiste su auditoría en `AFTER STATEMENT`.
 
 ---
 
@@ -175,7 +175,7 @@ A continuación se definen las 22 entidades del modelo físico para la Entrega 1
 
 ### 11. RESERVA_HABITACION (Tabla de Referencia Cruzada N:M)
 - **Razón:** Resolver la relación muchos a muchos entre reservas y habitaciones, respondiendo a la decisión de diseño de soportar que una reserva tome varias habitaciones simultáneas.
-- **Rol:** Detallar individualmente cada habitación asignada a la reserva, registrar el número de huéspedes hospedados (para validar capacidad) y almacenar el importe contratado. `fn_valor_estadia` es una implementación pendiente de Entrega 2.
+- **Rol:** Detallar individualmente cada habitación asignada a la reserva, registrar el número de huéspedes hospedados (para validar capacidad) y almacenar el importe contratado. `pkg_turismouq.fn_valor_estadia` cotiza el hospedaje con las temporadas y tarifas vigentes; `pkg_turismouq.sp_crear_reserva` utiliza la misma valoración interna y captura los tramos contratados. Ambas operaciones están implementadas en [el cuerpo del paquete](plsql/02_pkg_turismouq.pkb).
 - **Propiedades:**
   - `id_reserva` (NUMBER, FK -> `RESERVA.id_reserva`, NOT NULL): Reserva a la que pertenece el renglón.
   - `id_habitacion` (NUMBER, FK -> `HABITACION.id_habitacion`, NOT NULL): Habitación reservada.
@@ -283,25 +283,27 @@ A continuación se definen las 22 entidades del modelo físico para la Entrega 1
 
 ---
 
-### 19. AUDITORIA_TARIFA (Persistencia de Auditoría DDL)
-- **Razón:** Preparar la persistencia de la trazabilidad de cambios de precio por noche.
-- **Rol:** Servir de receptáculo físico para la auditoría de la Entrega 2, almacenando quién, cuándo y los valores anterior y nuevo. Todavía no hay un disparador que lo alimente ni un control que haga inmutable esta tabla.
+### 19. AUDITORIA_TARIFA (Persistencia de Auditoría de Precios)
+- **Razón:** Conservar la trazabilidad de los cambios efectivos de precio por noche.
+- **Rol:** Conservar actor, momento y precios anterior/nuevo de los cambios mediante UPDATE de `TARIFA.precio_noche`. El soporte no convierte esta tabla en un registro inmutable frente al propietario administrativo.
 - **Propiedades:**
   - `id_auditoria` (NUMBER, PK): Identificador secuencial del evento de auditoría.
   - `id_tarifa` (NUMBER, FK -> `TARIFA.id_tarifa`, NOT NULL): Tarifa objeto del cambio.
-  - `usuario_oracle` (VARCHAR2, NOT NULL): Usuario del motor de base de datos que ejecutó la sentencia (`USER` o `SYS_CONTEXT`).
-  - `fecha_cambio` (TIMESTAMP, NOT NULL, DEFAULT SYSTIMESTAMP): Marca de tiempo precisa de la modificación.
+  - `usuario_oracle` (VARCHAR2(128), NOT NULL): `SESSION_USER` de la conexión que ejecutó el cambio, distinto del contexto de ejecución del paquete.
+  - `fecha_cambio` (TIMESTAMP, NOT NULL, DEFAULT SYSTIMESTAMP): Los eventos nuevos emitidos por el trigger usan UTC explícito; los timestamps históricos no se reinterpretan porque se desconoce su zona original.
   - `precio_anterior` (NUMBER(12,2), NOT NULL): Valor de la tarifa previo a la actualización.
   - `precio_nuevo` (NUMBER(12,2), NOT NULL): Nuevo valor asignado a la tarifa.
   - `operacion` (VARCHAR2, NOT NULL, CHECK in ('UPDATE', 'DELETE')): Tipo de operación DML interceptada.
+  - `id_sentencia` (RAW(16), NULLABLE, sin default): Identificador común de los cambios de una sentencia nueva. NULL conserva la agrupación desconocida de un evento legado; no se genera una identidad retrospectiva.
 - **Análisis de normalización:**
-  - *Pendiente de Entrega 2:* La operación `DELETE` admitida por el dominio no es compatible con conservar esta FK a `TARIFA` y exigir un `precio_nuevo` positivo. Antes de implementarla debe definirse el alcance de auditoría y ajustar esa estructura. Esta entrega conserva el contrato anterior y no implementa disparadores.
+  - *Alcance confirmado:* Solo cambios efectivos de precio mediante UPDATE. INSERT y DELETE no se auditan en este incremento. El dominio anterior conserva DELETE por compatibilidad, pero esa operación no queda habilitada como auditoría: la FK y el precio nuevo obligatorio siguen siendo incompatibles con conservar una tarifa borrada.
+  - *Migración conservadora:* Se amplía el nombre del actor y se añade el ID nullable sin actualizar filas históricas. `TRG_AUDITAR_TARIFA` está implementado como objeto PL/SQL separado: captura por fila y escribe por sentencia, dentro de la misma transacción del UPDATE. Su compilación y comportamiento se comprobaron en la corrida de Entrega 2; la estructura de esta tabla por sí sola no demuestra esos resultados.
 
 ---
 
 ### 20. LIQUIDACION_MENSUAL (Persistencia de Cortes Contables)
 - **Razón:** Almacenar los resultados financieros consolidados del proceso masivo de liquidación mensual por alojamiento.
-- **Rol:** Persistir el corte de ingresos devengados por hospedaje y servicios complementarios, la comisión retenida por TurismoUQ y el valor neto a transferir al propietario, sirviendo de destino para el cursor explícito parametrizado de la Entrega 2.
+- **Rol:** Persistir cortes por alojamiento de reservas `FINALIZADA`, asignando el importe completo al mes del checkout. `pkg_turismouq.sp_liquidar_mes` está implementado con un cursor explícito parametrizado y usa hospedaje y servicios contratados; no pagos, tarifas actuales ni la MV de ocupación. Esta regla difiere del informe de ingresos E1 por mes del check-in.
 - **Propiedades:**
   - `id_liquidacion` (NUMBER, PK): Identificador único del corte mensual.
   - `id_alojamiento` (NUMBER, FK -> `ALOJAMIENTO.id_alojamiento`, NOT NULL): Establecimiento liquidado.
@@ -309,12 +311,17 @@ A continuación se definen las 22 entidades del modelo físico para la Entrega 1
   - `periodo_mes` (NUMBER(2), NOT NULL, CHECK between 1 and 12): Mes liquidado.
   - `total_hospedaje` (NUMBER(14,2), NOT NULL, CHECK >= 0): Sumatoria liquidada por habitaciones.
   - `total_servicios` (NUMBER(14,2), NOT NULL, CHECK >= 0): Sumatoria liquidada por servicios adicionales.
-  - `comision_plataforma` (NUMBER(14,2), NOT NULL, CHECK >= 0): Importe monetario retenido por la plataforma. La regla para obtenerlo está pendiente de definición.
+  - `comision_plataforma` (NUMBER(14,2), NOT NULL, CHECK >= 0): `ROUND(base_comision * porcentaje_comision / 100, 2)` cuando se conocen los metadatos.
   - `neto_propietario` (NUMBER(14,2), NOT NULL, CHECK >= 0): Saldo a favor a desembolsar al propietario.
   - `fecha_liquidacion` (DATE, NOT NULL, DEFAULT SYSDATE): Fecha de procesamiento contable.
   - `estado` (VARCHAR2, NOT NULL, CHECK in ('CALCULADA', 'DISPERSADA', 'PAGADA')): Estado del pago de liquidación.
+  - `porcentaje_comision` (NUMBER(7,4), NULLABLE, sin default): Porcentaje de 0 a 100 recibido como parámetro obligatorio por el procedimiento; `12` significa 12 %.
+  - `base_comision` (NUMBER(14,2), NULLABLE, sin default): Base no negativa igual a `total_hospedaje + total_servicios`.
+  - `criterio_liquidacion` (VARCHAR2(40), NULLABLE, sin default): Identifica la política aplicada. El incremento usa `FINALIZADA_CHECKOUT_HMAS_SERV_V1`.
 - **Análisis de normalización:**
-  - *Restricción compuesta de periodicidad:* `UNIQUE (id_alojamiento, periodo_anio, periodo_mes)` impide dos filas para el mismo alojamiento y período. El manejo transaccional del cierre depende del procedimiento pendiente; no lo garantiza esta restricción.
+  - *Restricción compuesta de periodicidad:* `UNIQUE (id_alojamiento, periodo_anio, periodo_mes)` impide dos filas para el mismo alojamiento y período. El procedimiento instalado bloquea los alojamientos en orden, conserva cortes idénticos y revierte su lote ante fallo sin confirmar la transacción del llamador. Esa atomicidad no se deduce de la restricción UNIQUE; tiene pruebas propias en el informe de Entrega 2.
+  - *Metadatos y legado:* Los tres metadatos deben estar todos NULL o todos informados, con criterio no vacío. Los CHECK concilian base y comisión para registros completos. Un corte antiguo con política desconocida mantiene sus tres NULL; la migración no le atribuye una tasa cero ni infiere una tasa desde los importes.
+  - *Repetición:* El procedimiento compara importes y política antes de reutilizar un corte, y rechaza legado sin reconciliación. La estructura no registra la identidad completa de las reservas fuente ni demuestra que dos poblaciones de iguales importes sean la misma.
 
 ---
 
@@ -352,7 +359,7 @@ A continuación se definen las 22 entidades del modelo físico para la Entrega 1
   - PK `(id_reserva, id_habitacion, fecha_inicio_tramo)`; índice de apoyo de la FK `id_temporada`.
   - El DDL controla integridad de cada fila. La validación del conjunto debe acreditar cobertura completa de la estadía, ausencia de solapamientos y coincidencia entre la suma de noches por su precio aplicado y `precio_estadia_habitacion`.
   - Coincidir con un total antiguo al sumar tarifas actuales no acredita precios históricos. La migración no genera tramos ni evidencia; una reserva antigua sin soporte suficiente permanece pendiente.
-  - La captura al crear reservas operativas mediante `sp_crear_reserva` pertenece a la Entrega 2. Esta tabla no implica que ese procedimiento ya exista.
+  - `pkg_turismouq.sp_crear_reserva` ya captura estos tramos con origen `CAPTURADO`, junto con cabecera, detalles, servicios y total, sin COMMIT interno. La cotización y los valores guardados de cada habitación proceden de la misma captura. La compilación, la conciliación y los casos concurrentes se comprobaron en la corrida de Entrega 2; no se infieren de la existencia de esta tabla.
 
 ---
 

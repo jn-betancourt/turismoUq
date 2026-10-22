@@ -1,0 +1,10 @@
+USUARIO_ORACLE ampliado a 128; eventos previos conservados.
+ID_SENTENCIA agregado sin default; legado permanece NULL.
+Creada CK_LIQUIDACION_PORCENTAJE
+Creada CK_LIQUIDACION_METADATOS
+Creada CK_LIQUIDACION_BASE_COMISION
+Creada CK_LIQUIDACION_COMISION_TASA
+Soporte estructural E2 verificado; datos legados sin inferencias.
+
+PL/SQL procedure successfully completed.
+
