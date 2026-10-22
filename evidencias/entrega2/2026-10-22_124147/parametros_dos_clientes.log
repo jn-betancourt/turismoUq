@@ -1,0 +1,73 @@
+
+Session altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+RESULT_BEGIN
+
+"MUNICIPIO","ALOJAMIENTO","NUM_RESERVAS","INGRESO_TOTAL","TICKET_PROMEDIO","NOCHES_PROMEDIO"
+"Quimbaya","Glamping El Arriero",42,93109000,2216880.95,3
+"Armenia","Hotel Boutique Monte Azul",49,92029000,1878142.86,2.8
+"Montenegro","Glamping Tierra Paisa",43,76208000,1772279.07,2.6
+"Filandia","Glamping Brisas del Quindio",39,73406000,1882205.13,2.7
+"Circasia","Glamping El Cafetal",31,73100000,2358064.52,2.9
+"Montenegro","Finca Los Balcones",40,71109000,1777725,3
+"Genova","Glamping Los Balcones",31,67878000,2189612.9,3.1
+"Montenegro","Hotel Boutique La Montana",35,67525000,1929285.71,3.2
+"Pijao","Glamping Los Guaduales",34,66309000,1950264.71,2.9
+"Filandia","Hotel Boutique El Barranquero",33,66020000,2000606.06,2.7
+"Genova","Finca Las Heliconias",35,65929000,1883685.71,3.2
+"Pijao","Hotel Boutique La Cascada",37,64949000,1755378.38,2.5
+"Montenegro","Hotel Rio Verde",39,61690000,1581794.87,2.9
+"Salento","Glamping El Yarumo",33,56298000,1706000,2.5
+"Armenia","Glamping El Yarumo",25,55286000,2211440,3
+"Quimbaya","Finca El Cafetal",40,52398000,1309950,2.7
+"Montenegro","Cabanas El Arriero",32,52307000,1634593.75,2.9
+"Calarca","Finca El Yarumo",29,52200000,1800000,3
+"Quimbaya","Cabanas Los Balcones",40,50001000,1250025,2.8
+"Genova","Hotel Boutique La Palma de Cera",21,49980000,2380000,3.1
+"Salento","Cabanas La Colina",39,49514000,1269589.74,2.6
+"Quimbaya","Hotel El Mirador",39,48711000,1249000,2.7
+"Cordoba","Cabanas El Yarumo",34,47987000,1411382.35,2.7
+"Salento","Hotel Boutique Monte Azul",22,47067000,2139409.09,3.3
+"Circasia","Hotel El Barranquero",29,46863000,1615965.52,3.4
+"Buenavista","Hotel Boutique El Mirador",24,46538000,1939083.33,2.9
+"La Tebaida","Cabanas Los Guaduales",43,45383000,1055418.6,2.7
+"Cordoba","Hotel La Palma de Cera",33,44889000,1360272.73,2.8
+"Calarca","Glamping La Colina",24,44799000,1866625,2.8
+"Calarca","Hotel La Cascada",32,43388000,1355875,3.4
+"Armenia","Finca Los Guaduales",25,42055000,1682200,3
+"Buenavista","Cabanas El Cafetal",27,41565000,1539444.44,3.4
+"Cordoba","Glamping Las Heliconias",18,40443000,2246833.33,2.9
+"Salento","Hotel Bosque de Niebla",27,40256000,1490962.96,2.8
+"Circasia","Finca El Bambu",29,39984000,1378758.62,3.2
+"La Tebaida","Hotel Boutique La Esperanza",24,36775000,1532291.67,2.7
+"Calarca","Hotel Boutique Bosque de Niebla",21,36769000,1750904.76,2.2
+"Filandia","Cabanas El Bambu",28,35753000,1276892.86,3.1
+"Buenavista","Hotel La Montana",24,35507000,1479458.33,2.7
+"La Tebaida","Hotel Villa Cafe",27,34924000,1293481.48,3.1
+"Filandia","Hotel La Esperanza",33,34853000,1056151.52,2.6
+"Circasia","Hotel Boutique Villa Cafe",20,34016000,1700800,2.9
+"Buenavista","Finca El Arriero",25,33984000,1359360,3.2
+"La Tebaida","Finca Brisas del Quindio",21,31237000,1487476.19,3
+"Armenia","Cabanas La Colina",34,28448000,836705.88,2.8
+"Calarca","Cabanas Las Heliconias",27,28364000,1050518.52,2.4
+"Quimbaya","Hostal La Montana",37,28339000,765918.92,2.8
+"Pijao","Hotel Monte Azul",24,27891000,1162125,3.1
+"Armenia","Hostal La Cascada",36,27555000,765416.67,3.3
+"Genova","Cabanas Tierra Paisa",24,26522000,1105083.33,2.8
+"Cordoba","Finca Tierra Paisa",16,25142000,1571375,2.5
+"La Tebaida","Hostal Monte Azul",30,22576000,752533.33,3.1
+"Filandia","Hostal Villa Cafe",34,20066000,590176.47,3.4
+"Pijao","Finca La Colina",17,18883000,1110764.71,2.6
+"Genova","Hostal Rio Verde",36,18466000,512944.44,2.9
+"Pijao","Hostal La Esperanza",22,14389000,654045.45,2.3
+"Cordoba","Hostal Bosque de Niebla",27,14320000,530370.37,2.9
+"Salento","Hostal La Cascada",25,13532000,541280,2.6
+"Circasia","Hostal El Mirador",17,12568000,739294.12,2.8
+"Buenavista","Hostal El Barranquero",19,12006000,631894.74,3.2
+RESULT_END

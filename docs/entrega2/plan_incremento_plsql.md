@@ -1,6 +1,8 @@
 # Plan del incremento de Entrega 2: capa PL/SQL
 
-Fecha: 22 de octubre de 2026. **Estado: planificación; la capa PL/SQL todavía no está implementada.**
+Fecha: 22 de octubre de 2026. **Documento de planificación conservado como referencia.** La implementación y su evidencia posterior se describen en el [resultado de validación](resultado_validacion.md).
+
+Decisión posterior del usuario: autorizó implementar el plan y escoger la solución técnica más completa sin esperar una respuesta de la profesora. Se adoptaron los triggers compuestos aquí recomendados; la consulta académica sobre su clasificación no bloquea esta implementación ni se presenta como una aceptación docente obtenida.
 
 Base: correcciones de Entrega 1, commit `06f5bd452ab22143ceb4f7a7760248ac5137f85d`, incorporadas mediante el [PR #1](https://github.com/jn-betancourt/turismoUq/pull/1). La [validación de Entrega 1](../entrega1/resultado_validacion.md) aprobó ocho consultas y 23 casos. Esos resultados no acreditan ninguna función, procedimiento o trigger de Entrega 2.
 

@@ -104,11 +104,12 @@ def schema_fingerprint(connection, schema):
 
 
 class SqlPlusRunner:
-    def __init__(self, executable, service, evidence, passwords):
+    def __init__(self, executable, service, evidence, passwords, *, allow_compilation_warnings=False):
         self.executable = executable
         self.service = service
         self.evidence = evidence
         self.passwords = passwords
+        self.allow_compilation_warnings = allow_compilation_warnings
 
     def execute(self, schema, content, label, *, expect_failure=False):
         arguments = [self.executable, '-L', '-S']
@@ -139,6 +140,10 @@ WHENEVER SQLERROR EXIT SQL.SQLCODE ROLLBACK
             output = output.replace(password, '[REDACTED]')
         (self.evidence / (label + '.log')).write_text(output, encoding='utf-8')
         errors = re.findall(r'(?m)^\s*(?:ORA|SP2|PLS)-\d+[^\r\n]*', output)
+        if self.allow_compilation_warnings:
+            # SP2-0810 informa advertencias; USER_ERRORS/ATTRIBUTE=ERROR y
+            # los estados VALID del instalador siguen siendo obligatorios.
+            errors = [error for error in errors if not re.search(r'\bSP2-0810:', error)]
         failed = process.returncode != 0 or bool(errors)
         if failed and not expect_failure:
             raise RuntimeError(label + ': ' + '; '.join(errors or ['salida=' + str(process.returncode)]))
@@ -202,6 +207,9 @@ def integrity_negative_tests(connection):
     verify()
     cursor.execute('''SELECT a.id_reserva,b.id_reserva FROM reserva_habitacion a
                       JOIN reserva_habitacion b ON b.id_habitacion=a.id_habitacion AND b.id_reserva>a.id_reserva
+                      JOIN reserva ra ON ra.id_reserva=a.id_reserva
+                      JOIN reserva rb ON rb.id_reserva=b.id_reserva
+                      WHERE ra.estado <> 'CANCELADA' AND rb.estado <> 'CANCELADA'
                       ORDER BY a.id_reserva,b.id_reserva FETCH FIRST 1 ROW ONLY''')
     first_reservation, second_reservation = cursor.fetchone()
     cursor.execute('SAVEPOINT overlapping_case')

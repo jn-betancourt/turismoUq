@@ -1,0 +1,1192 @@
+[
+  {
+    "id": "F01",
+    "status": "PASS",
+    "expected": {
+      "amount": 300,
+      "written_rows": 0
+    },
+    "observed": {
+      "amount": 300.0,
+      "written_rows": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F02",
+    "status": "PASS",
+    "expected": {
+      "amount": 500,
+      "segment_nights": [
+        2,
+        2
+      ]
+    },
+    "observed": {
+      "amount": 500.0,
+      "segments": [
+        {
+          "id_habitacion": 1,
+          "fecha_inicio_tramo": "2025-06-29T00:00:00",
+          "fecha_fin_tramo": "2025-07-01T00:00:00",
+          "id_temporada": 1,
+          "tipo_temporada_aplicado": "ALTA",
+          "precio_noche_aplicado": 100.0,
+          "origen_dato": "CAPTURADO"
+        },
+        {
+          "id_habitacion": 1,
+          "fecha_inicio_tramo": "2025-07-01T00:00:00",
+          "fecha_fin_tramo": "2025-07-03T00:00:00",
+          "id_temporada": 2,
+          "tipo_temporada_aplicado": "BAJA",
+          "precio_noche_aplicado": 150.0,
+          "origen_dato": "CAPTURADO"
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F03",
+    "status": "PASS",
+    "expected": {
+      "amount": 100
+    },
+    "observed": {
+      "amount": 100.0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F04",
+    "status": "PASS",
+    "expected": {
+      "nights": 367,
+      "amount": 3670
+    },
+    "observed": {
+      "amount": 3670.0,
+      "written_rows": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F05",
+    "status": "PASS",
+    "expected": {
+      "invalid_dates_rejected": true,
+      "written_rows": 0
+    },
+    "observed": {
+      "cases": [
+        {
+          "scenario": "Fechas None/2025-06-02",
+          "oracle_code": 20302
+        },
+        {
+          "scenario": "Fechas 2025-06-01/None",
+          "oracle_code": 20302
+        },
+        {
+          "scenario": "Fechas 2025-06-01T01:00:00/2025-06-02",
+          "oracle_code": 20302
+        },
+        {
+          "scenario": "Fechas 2025-06-01/2025-06-02T01:00:00",
+          "oracle_code": 20302
+        },
+        {
+          "scenario": "Fechas 2025-06-01/2025-06-01",
+          "oracle_code": 20301
+        },
+        {
+          "scenario": "Fechas 2025-06-02/2025-06-01",
+          "oracle_code": 20301
+        },
+        {
+          "scenario": "Fechas 9999-12-30/9999-12-31",
+          "oracle_code": 20302
+        }
+      ],
+      "written_rows": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F06",
+    "status": "PASS",
+    "expected": {
+      "coverage_anomalies_rejected": 5
+    },
+    "observed": {
+      "cases": [
+        {
+          "scenario": "hueco",
+          "oracle_code": 20308
+        },
+        {
+          "scenario": "superposicion",
+          "oracle_code": 20309
+        },
+        {
+          "scenario": "tarifa ausente",
+          "oracle_code": 20310
+        },
+        {
+          "scenario": "temporada con hora",
+          "oracle_code": 20302
+        },
+        {
+          "scenario": "hueco y superposicion compensados",
+          "oracle_code": 20308
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F07",
+    "status": "PASS",
+    "expected": {
+      "historical": 500,
+      "new_quote": 540
+    },
+    "observed": {
+      "historical": 500,
+      "new_quote": 540.0,
+      "segments": [
+        {
+          "id_habitacion": 1,
+          "fecha_inicio_tramo": "2025-06-29T00:00:00",
+          "fecha_fin_tramo": "2025-07-01T00:00:00",
+          "id_temporada": 1,
+          "tipo_temporada_aplicado": "ALTA",
+          "precio_noche_aplicado": 100.0,
+          "origen_dato": "CAPTURADO"
+        },
+        {
+          "id_habitacion": 1,
+          "fecha_inicio_tramo": "2025-07-01T00:00:00",
+          "fecha_fin_tramo": "2025-07-03T00:00:00",
+          "id_temporada": 2,
+          "tipo_temporada_aplicado": "BAJA",
+          "precio_noche_aplicado": 150.0,
+          "origen_dato": "CAPTURADO"
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "F08",
+    "status": "PASS",
+    "expected": {
+      "oracle_code": 20311,
+      "partial_rows": 0
+    },
+    "observed": {
+      "cases": [
+        {
+          "scenario": "Cotizacion fuera de capacidad",
+          "oracle_code": 20311
+        },
+        {
+          "scenario": "Reserva fuera de capacidad",
+          "oracle_code": 20311
+        }
+      ],
+      "partial_rows": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "R01",
+    "status": "PASS",
+    "expected": {
+      "room_amounts": [
+        400,
+        600
+      ],
+      "services": [
+        60,
+        40
+      ],
+      "total": 1100
+    },
+    "observed": {
+      "reservation": {
+        "id_reserva": 45,
+        "valor_total": 1100.0
+      },
+      "room_amounts": [
+        {
+          "importe": 400.0
+        },
+        {
+          "importe": 600.0
+        }
+      ],
+      "services": [
+        60,
+        40
+      ],
+      "payments": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "R02",
+    "status": "PASS",
+    "expected": {
+      "exact_capacity_accepted": true,
+      "invalid_people_quantities_rejected": true
+    },
+    "observed": {
+      "exact_capacity": {
+        "id_reserva": 46,
+        "valor_total": 100.0
+      },
+      "rejected": [
+        {
+          "scenario": "Personas 3",
+          "oracle_code": 20305
+        },
+        {
+          "scenario": "Personas 1.5",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Personas 0",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Personas -1",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Personas None",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Cantidad 1.5",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Cantidad 0",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Cantidad -1",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "Cantidad None",
+          "oracle_code": 20307
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "R03",
+    "status": "PASS",
+    "expected": {
+      "invalid_references_and_operational_states_rejected": true,
+      "date_error_before_overlap": true
+    },
+    "observed": {
+      "cases": [
+        {
+          "scenario": "habitacion inexistente",
+          "oracle_code": 20303
+        },
+        {
+          "scenario": "habitacion duplicada",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "habitaciones vacias",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "otra sede",
+          "oracle_code": 20306
+        },
+        {
+          "scenario": "cliente inexistente",
+          "oracle_code": 20306
+        },
+        {
+          "scenario": "alojamiento inexistente",
+          "oracle_code": 20306
+        },
+        {
+          "scenario": "servicio inexistente",
+          "oracle_code": 20313
+        },
+        {
+          "scenario": "servicio de otra sede",
+          "oracle_code": 20313
+        },
+        {
+          "scenario": "servicio duplicado",
+          "oracle_code": 20307
+        },
+        {
+          "scenario": "MANTENIMIENTO",
+          "oracle_code": 20304
+        },
+        {
+          "scenario": "FUERA_SERVICIO",
+          "oracle_code": 20304
+        },
+        {
+          "scenario": "Fecha invalida antes del solape",
+          "oracle_code": 20301
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "R04",
+    "status": "PASS",
+    "expected": {
+      "error": 20991,
+      "partial_rows": 0,
+      "prior_work_preserved": true
+    },
+    "observed": {
+      "error": {
+        "scenario": "Fallo despues de detalles",
+        "oracle_code": 20991
+      },
+      "partial_rows": 0,
+      "prior_work_visible_to_caller": 1,
+      "prior_work_committed": false
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "R05",
+    "status": "PASS",
+    "expected": {
+      "remaining_contract_rows": 0
+    },
+    "observed": {
+      "created_before_rollback": {
+        "id_reserva": 49,
+        "valor_total": 120.0
+      },
+      "remaining_contract_rows": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "C01",
+    "status": "PASS",
+    "expected": {
+      "persisted": 1,
+      "second_error": 20304
+    },
+    "observed": {
+      "first": {
+        "id_reserva": 50,
+        "valor_total": 100.0
+      },
+      "first_committed": true,
+      "second": {
+        "oracle_code": 20304,
+        "elapsed_seconds": 0.294
+      },
+      "persisted": 1
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "C02",
+    "status": "PASS",
+    "expected": {
+      "persisted": 1,
+      "second_accepted_after_rollback": true
+    },
+    "observed": {
+      "first": {
+        "id_reserva": 51,
+        "valor_total": 100.0
+      },
+      "first_committed": false,
+      "second": {
+        "id_reserva": 52,
+        "valor_total": 100.0
+      },
+      "persisted": 1
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "C03",
+    "status": "PASS",
+    "expected": {
+      "oracle_code": 20312,
+      "partial_rows": 0
+    },
+    "observed": {
+      "oracle_code": 20312,
+      "elapsed_seconds": 5.039
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "C04",
+    "status": "PASS",
+    "expected": {
+      "independent_room_accepted": true,
+      "reverse_order_deadlocks": 0
+    },
+    "observed": {
+      "independent": {
+        "id_reserva": 54,
+        "valor_total": 100.0
+      },
+      "reverse_order": {
+        "id_reserva": 56,
+        "valor_total": 200.0
+      },
+      "deadlocks": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "C05",
+    "status": "PASS",
+    "expected": {
+      "captured_price": 100,
+      "new_quote": 480,
+      "barrier_observed": true
+    },
+    "observed": {
+      "barrier_observed": true,
+      "contract": {
+        "id_reserva": 57,
+        "valor_total": 400.0
+      },
+      "captured_price": 100,
+      "new_quote": 480
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "C06",
+    "status": "PASS",
+    "expected": {
+      "header_update_error": 20304,
+      "committed_detail": 1,
+      "header_preserved": true
+    },
+    "observed": {
+      "header_update": {
+        "oracle_code": 20304,
+        "elapsed_seconds": 0.314
+      },
+      "preserved_header": {
+        "fecha_checkin": "2025-06-01T00:00:00",
+        "fecha_checkout": "2025-06-02T00:00:00"
+      },
+      "committed_detail": 1
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "T01",
+    "status": "PASS",
+    "expected": {
+      "contiguous_accepted": true,
+      "overlap_shapes_rejected": 3
+    },
+    "observed": {
+      "contiguous_accepted": true,
+      "rejected": [
+        {
+          "scenario": "parcial",
+          "oracle_code": 20304
+        },
+        {
+          "scenario": "contenido",
+          "oracle_code": 20304
+        },
+        {
+          "scenario": "contenedor",
+          "oracle_code": 20304
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "T02",
+    "status": "PASS",
+    "expected": {
+      "insert_update_statements_rejected": true,
+      "mutating_table_errors": 0
+    },
+    "observed": {
+      "insert": {
+        "scenario": "INSERT multirregistro",
+        "oracle_code": 20304
+      },
+      "update": {
+        "scenario": "UPDATE multirregistro",
+        "oracle_code": 20304
+      },
+      "mutating_table_errors": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "T03",
+    "status": "PASS",
+    "expected": {
+      "invalid_reactivation_dates_rejected": true
+    },
+    "observed": {
+      "reactivation": {
+        "scenario": "Reactivacion solapada",
+        "oracle_code": 20304
+      },
+      "dates": {
+        "scenario": "Cambio de fechas solapado",
+        "oracle_code": 20304
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "T04",
+    "status": "PASS",
+    "expected": {
+      "cancelled_reused": true,
+      "pending_blocks_third": true
+    },
+    "observed": {
+      "cancelled_reused": true,
+      "pending": {
+        "id_reserva": 70,
+        "valor_total": 100.0
+      },
+      "third_request": {
+        "scenario": "Pendiente bloquea tercera solicitud",
+        "oracle_code": 20304
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "A01",
+    "status": "PASS",
+    "expected": {
+      "actor": "SESSION_USER",
+      "before": 100,
+      "after": 120,
+      "time": "UTC",
+      "statement_raw_bytes": 16
+    },
+    "observed": {
+      "id_tarifa": 1,
+      "usuario_oracle": "TURISMOUQ_E2_TEST",
+      "fecha_cambio": "2026-10-22T17:42:21.757000",
+      "precio_anterior": 100.0,
+      "precio_nuevo": 120.0,
+      "operacion": "UPDATE",
+      "id_sentencia": "d25fd100a29c4d92a7e4da90c71960ed"
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "A02",
+    "status": "PASS",
+    "expected": {
+      "events": 100,
+      "statement_ids": 1
+    },
+    "observed": {
+      "events": 100,
+      "statement_ids": 1,
+      "timestamps": 1,
+      "first": {
+        "id_tarifa": 1,
+        "usuario_oracle": "TURISMOUQ_E2_TEST",
+        "fecha_cambio": "2026-10-22T17:42:22.393000",
+        "precio_anterior": 100.0,
+        "precio_nuevo": 101.0,
+        "id_sentencia": "5366f85952974f78aaa1b8ad699ffef8"
+      },
+      "last": {
+        "id_tarifa": 100,
+        "usuario_oracle": "TURISMOUQ_E2_TEST",
+        "fecha_cambio": "2026-10-22T17:42:22.393000",
+        "precio_anterior": 100.0,
+        "precio_nuevo": 101.0,
+        "id_sentencia": "5366f85952974f78aaa1b8ad699ffef8"
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "A03",
+    "status": "PASS",
+    "expected": {
+      "events": 0
+    },
+    "observed": {
+      "events": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "A04",
+    "status": "PASS",
+    "expected": {
+      "price": 100,
+      "events": 0
+    },
+    "observed": {
+      "price": 100,
+      "events": 0
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "A05",
+    "status": "PASS",
+    "expected": {
+      "oracle_code": 2290,
+      "events": 0,
+      "prices_preserved": true
+    },
+    "observed": {
+      "error": {
+        "scenario": "UPDATE masivo invalido",
+        "oracle_code": 2290
+      },
+      "events": 0,
+      "prices_preserved": true
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L01",
+    "status": "PASS",
+    "expected": {
+      "january_created": 0,
+      "base": 250,
+      "commission": 30,
+      "net": 220
+    },
+    "observed": {
+      "january": {
+        "created": 0,
+        "preserved": 0
+      },
+      "february": {
+        "created": 1,
+        "preserved": 0
+      },
+      "cut": {
+        "id_liquidacion": 9,
+        "id_alojamiento": 1,
+        "periodo_anio": 2025,
+        "periodo_mes": 2,
+        "total_hospedaje": 200.0,
+        "total_servicios": 50.0,
+        "comision_plataforma": 30.0,
+        "neto_propietario": 220.0,
+        "fecha_liquidacion": "2026-10-22T12:42:25",
+        "estado": "CALCULADA",
+        "porcentaje_comision": 12.0,
+        "base_comision": 250.0,
+        "criterio_liquidacion": "FINALIZADA_CHECKOUT_HMAS_SERV_V1"
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L02",
+    "status": "PASS",
+    "expected": {
+      "ineligible_states_excluded": 4,
+      "created": 0
+    },
+    "observed": {
+      "excluded_states": [
+        "PENDIENTE",
+        "CONFIRMADA",
+        "CHECKED_IN",
+        "CANCELADA"
+      ],
+      "result": {
+        "created": 0,
+        "preserved": 0
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L03",
+    "status": "PASS",
+    "expected": {
+      "base": 330,
+      "commission": 39.6,
+      "net": 290.4
+    },
+    "observed": {
+      "total_hospedaje": 300.0,
+      "total_servicios": 30.0,
+      "base_comision": 330.0,
+      "comision_plataforma": 39.6,
+      "neto_propietario": 290.4
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L04",
+    "status": "PASS",
+    "expected": {
+      "identical_preserved": true,
+      "changed_or_empty_source_rejected": true,
+      "closed_cuts_preserved": true
+    },
+    "observed": {
+      "repeated": {
+        "created": 0,
+        "preserved": 1
+      },
+      "changed_source": {
+        "scenario": "Fuente monetaria distinta",
+        "oracle_code": 20321
+      },
+      "changed_rate": {
+        "scenario": "Porcentaje distinto",
+        "oracle_code": 20321
+      },
+      "empty_source": {
+        "scenario": "Fuente ahora vacia",
+        "oracle_code": 20321
+      },
+      "closed_states": [
+        {
+          "scenario": "DISPERSADA",
+          "oracle_code": 20322
+        },
+        {
+          "scenario": "PAGADA",
+          "oracle_code": 20322
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L05",
+    "status": "PASS",
+    "expected": {
+      "persisted": 1,
+      "second_preserved": 1
+    },
+    "observed": {
+      "first": {
+        "created": 1,
+        "preserved": 0
+      },
+      "second": {
+        "created": 0,
+        "preserved": 1
+      },
+      "persisted": 1
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L06",
+    "status": "PASS",
+    "expected": {
+      "error": 20992,
+      "partial_cuts": 0,
+      "prior_work_preserved": true
+    },
+    "observed": {
+      "error": {
+        "scenario": "Fallo en segundo alojamiento del lote",
+        "oracle_code": 20992
+      },
+      "partial_cuts": 0,
+      "prior_work_preserved": true,
+      "prior_work_committed": false
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L07",
+    "status": "PASS",
+    "expected": {
+      "empty_month_created": 0,
+      "invalid_parameters_rejected": true
+    },
+    "observed": {
+      "empty_month_created": 0,
+      "rejected": [
+        {
+          "scenario": "Porcentaje None",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Porcentaje -1",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Porcentaje 101",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Porcentaje 12.34567",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Periodo 2025/0",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Periodo 2025/13",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Periodo 2025/None",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Periodo 2025.5/2",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Periodo None/2",
+          "oracle_code": 20320
+        },
+        {
+          "scenario": "Periodo 9999/12",
+          "oracle_code": 20320
+        }
+      ]
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "L08",
+    "status": "PASS",
+    "expected": {
+      "legacy_error": 20323,
+      "contract_amount_preserved": 200
+    },
+    "observed": {
+      "legacy_rejection": {
+        "scenario": "Corte legado sin politica",
+        "oracle_code": 20323
+      },
+      "cut_from_stored_contract": {
+        "total_hospedaje": 200.0,
+        "total_servicios": 50.0,
+        "base_comision": 250.0,
+        "comision_plataforma": 30.0,
+        "neto_propietario": 220.0
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "I01",
+    "status": "PASS",
+    "expected": {
+      "production_objects_valid": 5,
+      "triggers_enabled": 3,
+      "installation_runs": 2
+    },
+    "observed": {
+      "objects": [
+        {
+          "object_name": "PKG_TURISMOUQ",
+          "object_type": "PACKAGE",
+          "status": "VALID"
+        },
+        {
+          "object_name": "PKG_TURISMOUQ",
+          "object_type": "PACKAGE BODY",
+          "status": "VALID"
+        },
+        {
+          "object_name": "TRG_AUDITAR_TARIFA",
+          "object_type": "TRIGGER",
+          "status": "VALID"
+        },
+        {
+          "object_name": "TRG_RESERVA",
+          "object_type": "TRIGGER",
+          "status": "VALID"
+        },
+        {
+          "object_name": "TRG_RESERVA_HABITACION",
+          "object_type": "TRIGGER",
+          "status": "VALID"
+        }
+      ],
+      "triggers": [
+        {
+          "trigger_name": "TRG_AUDITAR_TARIFA",
+          "status": "ENABLED",
+          "trigger_type": "COMPOUND"
+        },
+        {
+          "trigger_name": "TRG_RESERVA",
+          "status": "ENABLED",
+          "trigger_type": "COMPOUND"
+        },
+        {
+          "trigger_name": "TRG_RESERVA_HABITACION",
+          "status": "ENABLED",
+          "trigger_type": "COMPOUND"
+        }
+      ],
+      "compile_errors": [],
+      "repeated_installation": {
+        "installation_runs": 2,
+        "schema": "TURISMOUQ_E2_TEST"
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "I02",
+    "status": "PASS",
+    "expected": {
+      "direct_dml_denied": true,
+      "package_execution_accepted": true
+    },
+    "observed": {
+      "runtime_user": "TURISMOUQ_E2_RUN",
+      "direct_dml": {
+        "scenario": "DML directo denegado",
+        "oracle_code": 942
+      },
+      "package_reservation": {
+        "id_reserva": 82,
+        "valor_total": 100.0
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "I03",
+    "status": "PASS",
+    "expected": {
+      "e1_regression_passed": true,
+      "cancelled_reuse_accepted": true
+    },
+    "observed": {
+      "e1_regression": {
+        "cases": 23,
+        "sqlplus_queries": 8,
+        "query_fixture_schema_without_e2_triggers": "TURISMOUQ_E2_E1_TEST",
+        "report_schema_with_e2_triggers": "TURISMOUQ_E2"
+      },
+      "operational_cancellation": {
+        "cancelled_reused": true,
+        "pending": {
+          "id_reserva": 84,
+          "valor_total": 100.0
+        },
+        "third_request": {
+          "scenario": "Pendiente bloquea tercera solicitud",
+          "oracle_code": 20304
+        }
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  },
+  {
+    "id": "I04",
+    "status": "PASS",
+    "expected": {
+      "original_schemas_preserved": true
+    },
+    "observed": {
+      "TURISMOUQ": {
+        "tables": 21,
+        "all_rows_identical": true
+      },
+      "TURISMOUQ_E1": {
+        "tables": 22,
+        "all_rows_identical": true
+      }
+    },
+    "cleanup": {
+      "fixture_rows": 0,
+      "materialized_rows": 0,
+      "temporary_triggers": 0
+    }
+  }
+]

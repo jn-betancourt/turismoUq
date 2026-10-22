@@ -1,0 +1,262 @@
+{
+  "ALOJAMIENTO": {
+    "rows": 3,
+    "sha256": "a2f92ce3b40245adb52b0438d643106cac517371de7ce9f7203b713f85267e6d",
+    "columns": [
+      "ID_ALOJAMIENTO",
+      "ID_PROPIETARIO",
+      "ID_MUNICIPIO",
+      "ID_TIPO_ALOJAMIENTO",
+      "NOMBRE",
+      "DIRECCION",
+      "TELEFONO",
+      "ESTADO"
+    ]
+  },
+  "ALOJAMIENTO_COMODIDAD": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_ALOJAMIENTO",
+      "ID_COMODIDAD",
+      "ES_GRATUITO"
+    ]
+  },
+  "AUDITORIA_TARIFA": {
+    "rows": 1,
+    "sha256": "e85d15506f15f1eb4fe7a4f7405fc3bd8e39a2d81c776dc9beafe66ca2a1b943",
+    "columns": [
+      "ID_AUDITORIA",
+      "ID_TARIFA",
+      "USUARIO_ORACLE",
+      "FECHA_CAMBIO",
+      "PRECIO_ANTERIOR",
+      "PRECIO_NUEVO",
+      "OPERACION",
+      "ID_SENTENCIA"
+    ]
+  },
+  "CLIENTE": {
+    "rows": 1,
+    "sha256": "c2b89e4e6202b0d0b434dd67c21e1232b2a91a223333f2bf405f6661cbc00fdf",
+    "columns": [
+      "ID_USUARIO",
+      "TIPO_DOCUMENTO",
+      "NUMERO_DOCUMENTO",
+      "TELEFONO",
+      "CIUDAD_ORIGEN"
+    ]
+  },
+  "COMODIDAD": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_COMODIDAD",
+      "NOMBRE",
+      "CATEGORIA",
+      "ICONO"
+    ]
+  },
+  "HABITACION": {
+    "rows": 3,
+    "sha256": "845897f54c172ec2289c0e424991240c9c3a640fd1f463c698aa4c42db8eb818",
+    "columns": [
+      "ID_HABITACION",
+      "ID_ALOJAMIENTO",
+      "ID_TIPO_HABITACION",
+      "NUMERO_HABITACION",
+      "ESTADO"
+    ]
+  },
+  "HISTORICO_RESERVA": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_RESERVA",
+      "ID_CLIENTE",
+      "ID_ALOJAMIENTO",
+      "FECHA_RESERVA",
+      "FECHA_CHECKIN",
+      "FECHA_CHECKOUT",
+      "ESTADO",
+      "VALOR_TOTAL",
+      "FECHA_ARCHIVADO"
+    ]
+  },
+  "LIQUIDACION_MENSUAL": {
+    "rows": 1,
+    "sha256": "125c33a0e6ebfc758220068b97e33f76d10b76a06acac172c00755371751fa6a",
+    "columns": [
+      "ID_LIQUIDACION",
+      "ID_ALOJAMIENTO",
+      "PERIODO_ANIO",
+      "PERIODO_MES",
+      "TOTAL_HOSPEDAJE",
+      "TOTAL_SERVICIOS",
+      "COMISION_PLATAFORMA",
+      "NETO_PROPIETARIO",
+      "FECHA_LIQUIDACION",
+      "ESTADO",
+      "PORCENTAJE_COMISION",
+      "BASE_COMISION",
+      "CRITERIO_LIQUIDACION"
+    ]
+  },
+  "MUNICIPIO": {
+    "rows": 2,
+    "sha256": "46a60c5642512f8b545fb82c3d8ad25bbadae56cb1429000577a8186c8295ff3",
+    "columns": [
+      "ID_MUNICIPIO",
+      "NOMBRE"
+    ]
+  },
+  "PAGO": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_PAGO",
+      "ID_RESERVA",
+      "ID_CLIENTE",
+      "FECHA_PAGO",
+      "MONTO",
+      "METODO_PAGO",
+      "ESTADO_PAGO"
+    ]
+  },
+  "PROPIETARIO": {
+    "rows": 1,
+    "sha256": "893612fc2c0f595a6a23183437bba8c50c09262d1966742e7d474fc0e4ffa1a5",
+    "columns": [
+      "ID_USUARIO",
+      "DOCUMENTO_IDENTIDAD",
+      "TELEFONO_CONTACTO",
+      "NUMERO_CUENTA_BANCARIA"
+    ]
+  },
+  "RESENA": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_RESENA",
+      "ID_RESERVA",
+      "ID_ALOJAMIENTO",
+      "CALIFICACION",
+      "COMENTARIO",
+      "FECHA_RESENA"
+    ]
+  },
+  "RESERVA": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_RESERVA",
+      "ID_CLIENTE",
+      "ID_ALOJAMIENTO",
+      "FECHA_RESERVA",
+      "FECHA_CHECKIN",
+      "FECHA_CHECKOUT",
+      "ESTADO",
+      "VALOR_TOTAL"
+    ]
+  },
+  "RESERVA_HABITACION": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_RESERVA",
+      "ID_HABITACION",
+      "PERSONAS_HOSPEDADAS",
+      "PRECIO_ESTADIA_HABITACION"
+    ]
+  },
+  "RESERVA_HABITACION_TARIFA_APLICADA": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_RESERVA",
+      "ID_HABITACION",
+      "FECHA_INICIO_TRAMO",
+      "FECHA_FIN_TRAMO",
+      "ID_TEMPORADA",
+      "TIPO_TEMPORADA_APLICADO",
+      "PRECIO_NOCHE_APLICADO",
+      "ORIGEN_DATO",
+      "REFERENCIA_EVIDENCIA"
+    ]
+  },
+  "RESERVA_SERVICIO": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_RESERVA",
+      "ID_SERVICIO",
+      "CANTIDAD",
+      "PRECIO_UNITARIO_APLICADO",
+      "SUBTOTAL"
+    ]
+  },
+  "SERVICIO": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "columns": [
+      "ID_SERVICIO",
+      "ID_ALOJAMIENTO",
+      "NOMBRE",
+      "PRECIO_UNITARIO",
+      "ESTADO"
+    ]
+  },
+  "TARIFA": {
+    "rows": 1,
+    "sha256": "f26618831f30a3133dda3dffd090dbdde5e290bfb52e3d528b23cd031dffa127",
+    "columns": [
+      "ID_TARIFA",
+      "ID_HABITACION",
+      "ID_TEMPORADA",
+      "PRECIO_NOCHE"
+    ]
+  },
+  "TEMPORADA": {
+    "rows": 1,
+    "sha256": "d66e30ee1d019a09e2bc071aa5b182c62461f98687862ea53148b1b6583ec00a",
+    "columns": [
+      "ID_TEMPORADA",
+      "NOMBRE",
+      "FECHA_INICIO",
+      "FECHA_FIN",
+      "TIPO_TEMPORADA"
+    ]
+  },
+  "TIPO_ALOJAMIENTO": {
+    "rows": 1,
+    "sha256": "fd3ea1b84693dbedef3dea5f287eb112caf02c3db25ce869b8b7866ac4e47a2b",
+    "columns": [
+      "ID_TIPO_ALOJAMIENTO",
+      "NOMBRE"
+    ]
+  },
+  "TIPO_HABITACION": {
+    "rows": 1,
+    "sha256": "a2eff750db019f3da02bcdc0ad1ea6083e48b06eb25b1dfbd02f1679528f8391",
+    "columns": [
+      "ID_TIPO_HABITACION",
+      "NOMBRE",
+      "CAPACIDAD_ESTANDAR",
+      "DESCRIPCION"
+    ]
+  },
+  "USUARIO_SISTEMA": {
+    "rows": 2,
+    "sha256": "449fabfea41e14880996fd25a04bb10375e70f18d45a8f9a69632bf179118cac",
+    "columns": [
+      "ID_USUARIO",
+      "USERNAME",
+      "PASSWORD_HASH",
+      "NOMBRE_COMPLETO",
+      "EMAIL",
+      "TIPO_USUARIO",
+      "ESTADO",
+      "FECHA_REGISTRO"
+    ]
+  }
+}

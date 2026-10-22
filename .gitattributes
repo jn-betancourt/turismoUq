@@ -1,6 +1,8 @@
 # Conservar los bytes cuyos SHA-256 identifica la evidencia de validacion.
 *.sql -text whitespace=cr-at-eol
 *.py -text whitespace=cr-at-eol
+*.pks -text whitespace=cr-at-eol
+*.pkb -text whitespace=cr-at-eol
 evidencias/** -text whitespace=cr-at-eol
 # SQL*Plus termina sus registros con lineas vacias; conservar la salida original.
 evidencias/**/*.log whitespace=cr-at-eol,-blank-at-eof

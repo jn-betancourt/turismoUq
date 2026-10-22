@@ -1,0 +1,29 @@
+PROPIETARIO=TURISMOUQ_E2; ESQUEMA=TURISMOUQ_E2
+Preparacion comprobada: 22 tablas, paquete VALID y tres triggers habilitados.
+
+PL/SQL procedure successfully completed.
+
+COTIZACION: habitacion=1; noches=2; entrada=2027-01-14; salida_exclusiva=2027-01-16; valor=758000
+ERROR ESPERADO checkout: -20301 ORA-20301: El checkout debe ser posterior al check-in.
+ERROR ESPERADO capacidad: -20305 ORA-20305: Las personas exceden la capacidad de la habitacion.
+RESERVA CREADA SIN CONFIRMAR: id=25001; estado=PENDIENTE; total=758000
+ERROR ESPERADO solape: -20304 ORA-20304: La habitacion no esta disponible en el intervalo solicitado.
+AUDITORIA: actor=TURISMOUQ_E2; fecha_UTC=2026-10-22 17:42:42.167000; anterior=379000; nuevo=379001; sentencia=3BDC652691554618B46542F8F9A51EE1
+ROLLBACK DE PRECIO: tarifa y auditoria restauradas.
+LIQUIDACION SIN CONFIRMAR: alojamiento=1; anio=2025; mes=1; porcentaje_de_prueba=12; H=29469000; S=5638000; base=35107000; comision=4212840; neto=30894160
+IDEMPOTENCIA: segunda llamada crea=0, conserva=1; mismo ID=1
+DEMOSTRACION APROBADA: rollback final; conteos de reservas, auditoria y liquidaciones restaurados.
+
+PL/SQL procedure successfully completed.
+
+
+OBJECT_NAME															 OBJECT_TYPE		 STATUS
+-------------------------------------------------------------------------------------------------------------------------------- ----------------------- -------
+PKG_TURISMOUQ															 PACKAGE		 VALID
+PKG_TURISMOUQ															 PACKAGE BODY		 VALID
+TRG_AUDITAR_TARIFA														 TRIGGER		 VALID
+TRG_RESERVA															 TRIGGER		 VALID
+TRG_RESERVA_HABITACION														 TRIGGER		 VALID
+
+5 rows selected.
+

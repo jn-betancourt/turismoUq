@@ -1,0 +1,6 @@
+INSERT INTO tarifa (id_tarifa,id_habitacion,id_temporada,precio_noche) VALUES (91001,1,1,123.45);
+INSERT INTO auditoria_tarifa (id_auditoria,id_tarifa,usuario_oracle,fecha_cambio,precio_anterior,precio_nuevo,operacion)
+VALUES (92001,91001,'LEGADO_SIN_IDENTIFICADOR',TIMESTAMP '2024-02-03 04:05:06.123456',100.25,123.45,'UPDATE');
+INSERT INTO liquidacion_mensual (id_liquidacion,id_alojamiento,periodo_anio,periodo_mes,total_hospedaje,total_servicios,comision_plataforma,neto_propietario,fecha_liquidacion,estado)
+VALUES (93001,1,2024,2,200.00,50.00,30.00,220.00,DATE '2024-03-04','PAGADA');
+COMMIT;

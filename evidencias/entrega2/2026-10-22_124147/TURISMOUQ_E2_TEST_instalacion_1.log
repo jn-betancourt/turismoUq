@@ -1,0 +1,58 @@
+PREFLIGHT E2: propietario y privilegios comprobados.
+
+PL/SQL procedure successfully completed.
+
+
+Session altered.
+
+
+Session altered.
+
+Soporte estructural E2 verificado; datos legados sin inferencias.
+
+PL/SQL procedure successfully completed.
+
+
+Package created.
+
+
+SP2-0810: Package Body created with compilation warnings
+
+
+Trigger created.
+
+
+Trigger created.
+
+
+Trigger created.
+
+
+NAME																 TYPE			   LINE   POSITION
+-------------------------------------------------------------------------------------------------------------------------------- ------------------- ---------- ----------
+TEXT
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PKG_TURISMOUQ															 PACKAGE BODY		     60 	 9
+PLW-07203: parameter 'P_SALIDA' may benefit from use of the NOCOPY compiler hint
+
+PKG_TURISMOUQ															 PACKAGE BODY		    116 	 9
+PLW-07203: parameter 'P_TRAMOS' may benefit from use of the NOCOPY compiler hint
+
+PKG_TURISMOUQ															 PACKAGE BODY		    621 	17
+PLW-06010: keyword "VALUE" used as a defined name
+
+
+INSTALACION PL/SQL E2: APROBADA.
+La compilacion no sustituye las pruebas funcionales/concurrentes.
+
+PL/SQL procedure successfully completed.
+
+
+OBJECT_NAME															 OBJECT_TYPE		 STATUS
+-------------------------------------------------------------------------------------------------------------------------------- ----------------------- -------
+PKG_TURISMOUQ															 PACKAGE		 VALID
+PKG_TURISMOUQ															 PACKAGE BODY		 VALID
+TRG_AUDITAR_TARIFA														 TRIGGER		 VALID
+TRG_RESERVA															 TRIGGER		 VALID
+TRG_RESERVA_HABITACION														 TRIGGER		 VALID
+

@@ -2,6 +2,8 @@
 
 Fecha: 22 de octubre de 2026. La **corrida final aprobó 23 de 23 casos**, ejecutó las ocho consultas y reprodujo los datos de las 22 tablas en dos esquemas nuevos iniciados con calendarios distintos. La comparación del esquema original de 21 tablas no detectó cambios en sus filas.
 
+Este informe conserva el estado y la evidencia de la corrida de **Entrega 1**. La implementación posterior de la capa PL/SQL se documenta por separado en el [resultado de Entrega 2](../entrega2/resultado_validacion.md); sus pruebas no se atribuyen retrospectivamente a esta corrida.
+
 La evidencia final está en [`evidencias/entrega1/2026-10-22_114219`](../../evidencias/entrega1/2026-10-22_114219/). El [resultado estructurado](../../evidencias/entrega1/2026-10-22_114219/resultado.json) contiene `status: PASS`, los identificadores de los casos, las versiones y los hashes SHA-256 del código ejecutado.
 
 ## Entorno observado
@@ -89,4 +91,6 @@ La ocupación representa reservas no canceladas sobre inventario bruto actual. L
 
 Las bases anteriores sin precios originales por tramo conservan sus totales como `SIN DESGLOSE HISTORICO`; el verificador no las certifica hasta contar con evidencia y conciliación. La migración no inventa el precio antiguo desde el catálogo actual.
 
-La **Entrega 2 permanece pendiente**: `fn_valor_estadia`, `sp_crear_reserva`, cursor parametrizado de liquidación, paquete y disparadores. Las tablas de auditoría y liquidación son soporte estructural; no demuestran procesos PL/SQL implementados.
+**Estado histórico al cerrar esta corrida de Entrega 1:** la función de estadía, el procedimiento de reserva, el cursor parametrizado, el paquete y los disparadores de Entrega 2 estaban pendientes; las tablas de auditoría y liquidación aportaban solamente soporte estructural.
+
+**Estado posterior:** la capa PL/SQL se implementó y se probó en esquemas aislados. La corrida E2 `2026-10-22_123445` aprobó 40 casos, 23 de regresión E1 y las ocho consultas. El [informe actual de Entrega 2](../entrega2/resultado_validacion.md) identifica su código, entorno, resultados y límites. Los registros originales de la corrida E1 se conservan como evidencia histórica.

@@ -1,12 +1,30 @@
-# TurismoUQ — Entrega 1
+# TurismoUQ — Entregas 1 y 2
 
 Modelo de reservas turísticas para Oracle Database XE 21c, con 22 tablas, carga sintética reproducible y ocho consultas de análisis. Las definiciones de métricas, procedencia de precios y límites están en [el contrato analítico](docs/entrega1/contrato_analitico.md).
 
 Para usar el esquema local ya preparado, seguir [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md). La [validación final](docs/entrega1/resultado_validacion.md) aprobó 23 casos y las ocho consultas; [su evidencia](evidencias/entrega1/2026-10-22_114219/resultado.json) registra el entorno y los hashes del código ejecutado.
 
-Esta corrección conserva las reservas y los importes contratados. La capa PL/SQL de Entrega 2 —función de estadía, procedimiento de reserva, cursor de liquidación, paquete y disparadores— sigue pendiente.
+La **Entrega 2 ya tiene implementación PL/SQL**: `pkg_turismouq` agrupa la función de estadía, la creación de reservas y la liquidación con cursor explícito parametrizado. Tres triggers compuestos auditan el precio de TARIFA y protegen los detalles y la cabecera frente a solapamientos.
 
-El [plan específico del incremento de Entrega 2](docs/entrega2/plan_incremento_plsql.md) contiene las reglas confirmadas, contratos, migraciones propuestas, secuencia y pruebas de aceptación. Es planificación; no agrega objetos PL/SQL ejecutables.
+Para sustentar Entrega 2, seguir la [guía de ejecución](docs/entrega2/guia_sustentacion.md) y consultar el [resultado de validación](docs/entrega2/resultado_validacion.md). Su esquema local es **`TURISMOUQ_E2`**; los originales `TURISMOUQ` y `TURISMOUQ_E1` se conservan. El [plan del incremento](docs/entrega2/plan_incremento_plsql.md) queda como referencia del diseño.
+
+## Entrega 2: ejecución e instalación
+
+En el equipo ya preparado no repetir el DDL ni la carga. Elegir la contraseña de `TURISMOUQ_E2` y conectar siguiendo la guía; configurar `READ COMMITTED` y `NLS_CALENDAR=GREGORIAN`. Ejecutar `@scripts/verificar_entrega2.sql` y `@05_demostracion_plsql.sql`. La demostración revierte sus cambios; las columnas IDENTITY pueden consumir identificadores aunque se revierta la transacción.
+
+Para otra instalación, usar un esquema nuevo con el modelo y la carga de Entrega 1. El administrador debe conceder directamente `CREATE PROCEDURE` y `CREATE TRIGGER` al propietario. Después ejecutar `@04_instalar_capa_plsql.sql` desde la raíz del repositorio, como propietario y sin trabajo transaccional pendiente. El instalador aplica `002`, crea paquete y triggers y comprueba su compilación; no recarga datos ni cambia credenciales. El DDL confirma transacciones.
+
+La liquidación E2 usa únicamente `FINALIZADA` por mes del checkout, con porcentaje obligatorio sobre hospedaje más servicios. Los informes E1 mantienen ingreso contratado por check-in. Las canceladas liberan noches; los otros estados bloquean. La auditoría registra UPDATE del precio con actor conectado y timestamp UTC, en la misma transacción.
+
+Para repetir toda la validación en cuentas nuevas:
+
+```bat
+python tests/validar_entrega2.py --schema-prefix TURISMOUQ_E2_OTRA
+```
+
+Requiere un clon Git con el historial E1 —incluido `06f5bd4`—, el mismo Python, `oracledb` y cliente Oracle indicados más abajo, autenticación administrativa local y ambos esquemas preservados existentes. El ZIP permite instalar y demostrar mediante SQL; el ejecutor automatizado necesita además ese historial Git. Si el cliente no se detecta, usar `--sqlplus` y `--oracle-client-lib`. Rechaza cuentas ya existentes; no borra ni restablece los esquemas preservados. `--resume-owned-run` se limita a una corrida propia acreditada y rota las claves de sus cuentas de validación; usarlo solo durante diagnóstico, antes de asignar contraseñas personales a esas cuentas.
+
+El usuario operativo de prueba recibe EXECUTE del paquete y carece de DML directo. Los triggers son objetos externos al paquete y combinan fases por fila/sentencia para evitar tabla mutante; la interpretación literal de esos rótulos de la rúbrica no fue confirmada por la profesora. El usuario autorizó esta solución técnica sin esperar esa respuesta. No hay GUI en este incremento.
 
 ## Archivos y responsabilidades
 
@@ -21,6 +39,11 @@ El [plan específico del incremento de Entrega 2](docs/entrega2/plan_incremento_
 | [03_consultas_analisis.sql](03_consultas_analisis.sql) | Lanzador de las ocho consultas; no crea objetos, carga datos ni refresca la MV. |
 | [consultas/](consultas/) | Los ocho SELECT canónicos, incluido el SELECT parametrizado independiente. |
 | [migraciones/001_tramos_tarifarios.sql](migraciones/001_tramos_tarifarios.sql) | Actualización estructural de una base previa; no reconstruye ni rellena precios. |
+| [migraciones/002_soporte_plsql.sql](migraciones/002_soporte_plsql.sql) | Metadatos de auditoría/liquidación, preservando valores históricos desconocidos como NULL. |
+| [04_instalar_capa_plsql.sql](04_instalar_capa_plsql.sql) | Preflight, migración, paquete, tres triggers y comprobación de compilación. |
+| [plsql/](plsql/) | Especificación/cuerpo y triggers de Entrega 2. |
+| [05_demostracion_plsql.sql](05_demostracion_plsql.sql) | Demostración transaccional sin confirmar sus cambios. |
+| [tests/validar_entrega2.py](tests/validar_entrega2.py) | Validación aislada de 40 casos E2, 23 regresiones E1 y ocho consultas. |
 | [schema.dbml](schema.dbml), [schema.dbdiagram](schema.dbdiagram) y [definicion_entidades.md](definicion_entidades.md) | Representación y explicación del modelo. El DDL es el contrato ejecutable. |
 
 ## Entorno local y separación de esquemas

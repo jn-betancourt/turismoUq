@@ -257,8 +257,9 @@ BEGIN
     FROM reserva_habitacion a JOIN reserva ra ON ra.id_reserva = a.id_reserva
     JOIN reserva_habitacion b ON b.id_habitacion = a.id_habitacion AND b.id_reserva > a.id_reserva
     JOIN reserva rb ON rb.id_reserva = b.id_reserva
-    WHERE ra.fecha_checkin < rb.fecha_checkout AND rb.fecha_checkin < ra.fecha_checkout;
-    assert_zero('Reservas solapadas por habitacion (todos los estados)', v_cantidad, -20118);
+    WHERE ra.estado <> 'CANCELADA' AND rb.estado <> 'CANCELADA'
+      AND ra.fecha_checkin < rb.fecha_checkout AND rb.fecha_checkin < ra.fecha_checkout;
+    assert_zero('Reservas no canceladas solapadas por habitacion', v_cantidad, -20118);
 
     SELECT COUNT(*) INTO v_cantidad FROM reserva_habitacion rh
     WHERE NOT EXISTS (SELECT 1 FROM reserva_habitacion_tarifa_aplicada t

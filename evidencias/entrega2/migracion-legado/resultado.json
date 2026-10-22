@@ -1,0 +1,113 @@
+{
+  "managed_by": "prueba adicional aislada de migracion legado",
+  "status": "PASS",
+  "started_at": "2026-10-22T17:39:05.621867+00:00",
+  "service": "localhost:1521/xepdb1",
+  "pdb": "XEPDB1",
+  "base_commit": "06f5bd452ab22143ceb4f7a7760248ac5137f85d",
+  "source_sha256": {
+    "migraciones/002_soporte_plsql.sql": "e259f26a69d675abbe6ae5fa59a8e9543dfc85b7a145941c0c2f3a4a3576e583",
+    "tests/validar_local.py": "a74b7679b3bc997e7bbb19174eedcd35a615532fa8c7582b0836fc467f181d45",
+    "tests/probar_consultas.py": "29dc28fc30e777810f1bb61668139838057e534f855df12b4af3045fdfe5b483"
+  },
+  "baseline_ddl": {
+    "git_object": "06f5bd452ab22143ceb4f7a7760248ac5137f85d:01_DDL_TURISMOUQ_ORACLE21C.sql",
+    "sha256": "37580adb692c8a235e150db8c6835999cdc1be06e8b36422ef00b34b24fb2042",
+    "temporary_file": ".git\\validacion_migracion_b15yx2dk.txt"
+  },
+  "tests": [
+    {
+      "id": "MIG-L01",
+      "status": "PASS",
+      "description": "DDL de 06f5bd4 y legado no vacio: una tarifa, una auditoria y una liquidacion con comision 30 conservada sin inferir tasa."
+    },
+    {
+      "id": "MIG-L02",
+      "status": "PASS",
+      "description": "Primera migracion conserva hashes de las columnas originales en 22 tablas, timestamp, importes y NULL de procedencia; amplia actor a128 y valida4checks."
+    },
+    {
+      "id": "MIG-L03",
+      "status": "PASS",
+      "description": "Segunda ejecucion aceptada y sin cambios de filas, columnas ni restricciones."
+    },
+    {
+      "id": "MIG-L04",
+      "status": "PASS",
+      "description": "ID_SENTENCIA RAW(8) se rechaza con ORA-20401 antes de ampliar actor o agregar metadatos; estructura y filas intactas."
+    }
+  ],
+  "schemas": {
+    "legacy": {
+      "name": "TURISMOUQ_E2_MIG",
+      "created": "2026-10-22T12:39:05"
+    },
+    "incompatible": {
+      "name": "TURISMOUQ_E2_MIG_BAD",
+      "created": "2026-10-22T12:39:05"
+    }
+  },
+  "credentials_saved": false,
+  "scope": "Solo cuentas nuevas propias; sin modificar originales/E1/E2 ni codigo productivo.",
+  "fixture_additional_sql_sha256": "fd26dd5d076629f8cd70c2530b10240d3fadb6c5b63fae0fc783c2e839e9c2d3",
+  "python": "3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)]",
+  "python_oracledb": "26.0.1",
+  "oracle_client": [
+    21,
+    3,
+    0,
+    0,
+    0
+  ],
+  "operating_system": "Windows-11-10.0.26200-SP0",
+  "oracle": "Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production\nVersion 21.3.0.0.0",
+  "legacy_nulls": {
+    "audit_id_sentencia_null": [
+      [
+        92001,
+        null
+      ]
+    ],
+    "liquidacion_metadata_null": [
+      [
+        93001,
+        null,
+        null,
+        null
+      ]
+    ],
+    "audit_historic_timestamp": "2024-02-03T04:05:06.123456",
+    "liquidacion_commission_preserved": 30.0
+  },
+  "new_checks": [
+    [
+      "CK_LIQUIDACION_BASE_COMISION",
+      "ENABLED",
+      "VALIDATED"
+    ],
+    [
+      "CK_LIQUIDACION_COMISION_TASA",
+      "ENABLED",
+      "VALIDATED"
+    ],
+    [
+      "CK_LIQUIDACION_METADATOS",
+      "ENABLED",
+      "VALIDATED"
+    ],
+    [
+      "CK_LIQUIDACION_PORCENTAJE",
+      "ENABLED",
+      "VALIDATED"
+    ]
+  ],
+  "incompatible_rejection": {
+    "error": "ORA-20401",
+    "column": "AUDITORIA_TARIFA.ID_SENTENCIA",
+    "fixture_type": "RAW(8)",
+    "required_type": "RAW(16)",
+    "rows_and_structure_unchanged": true
+  },
+  "sources_unchanged_during_execution": true,
+  "finished_at": "2026-10-22T17:39:24.148166+00:00"
+}

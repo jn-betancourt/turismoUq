@@ -233,20 +233,21 @@ Table tarifa {
   indexes {
     (id_habitacion, id_temporada) [unique]
   }
-  Note: 'Catálogo vigente. El trigger de auditoría de sentencia sigue pendiente de Entrega 2'
+  Note: 'Catálogo vigente. TRG_AUDITAR_TARIFA captura cambios efectivos de precio por fila y los registra en AFTER STATEMENT. Instalación: 04_instalar_capa_plsql.sql; fuentes en plsql/; evidencia en docs/entrega2/resultado_validacion.md'
 }
 
 // Auditoría Física de Variaciones de Precios (Entrega 2 DDL)
 Table auditoria_tarifa {
   id_auditoria number [pk, increment, note: 'PK secuencial de auditoría']
   id_tarifa number [not null, note: 'FK: Tarifa objeto de la modificación']
-  usuario_oracle varchar2(30) [not null, note: 'Usuario Oracle que ejecutó la sentencia (USER)']
-  fecha_cambio timestamp [not null, default: `systimestamp`, note: 'Fecha y hora exacta del cambio']
+  usuario_oracle varchar2(128) [not null, note: 'SESSION_USER de la conexión que ejecutó la sentencia']
+  fecha_cambio timestamp [not null, default: `systimestamp`, note: 'Eventos nuevos del trigger: UTC; zona legada desconocida sin reinterpretación']
   precio_anterior number(12,2) [not null, note: 'Valor previo a la actualización']
   precio_nuevo number(12,2) [not null, note: 'Nuevo valor establecido']
   operacion operacion_auditoria_enum [not null, note: 'Operación DML interceptada']
+  id_sentencia raw(16) [note: 'SYS_GUID común a la sentencia nueva; NULL en legado sin agrupación acreditada']
 
-  Note: 'Soporte futuro de Entrega 2, sin trigger instalado. DELETE requiere rediseñar precio_nuevo y la FK antes de implementarse'
+  Note: 'Auditoría UPDATE de precio implementada por TRG_AUDITAR_TARIFA. Conserva SESSION_USER, fecha UTC y SYS_GUID común a la sentencia. INSERT/DELETE no forman parte del contrato; no se inventa agrupación de eventos legados'
 }
 
 // Cabecera Transaccional de Reserva (25.000 reservas)
@@ -268,7 +269,7 @@ Table reserva_habitacion {
   id_reserva number [not null, note: 'FK: Reserva padre']
   id_habitacion number [not null, note: 'FK: Habitación asignada']
   personas_hospedadas number [not null, note: 'Ocupantes asignados a la habitación (> 0)']
-  precio_estadia_habitacion number(12,2) [not null, note: 'Importe contratado de la habitación; fn_valor_estadia está pendiente de Entrega 2']
+  precio_estadia_habitacion number(12,2) [not null, note: 'Importe contratado capturado por pkg_turismouq.sp_crear_reserva. Comparte la valoración por tramos con fn_valor_estadia; implementación en plsql/02_pkg_turismouq.pkb']
 
   indexes {
     (id_reserva, id_habitacion) [pk]
@@ -357,11 +358,14 @@ Table liquidacion_mensual {
   neto_propietario number(14,2) [not null, default: 0, note: 'Saldo a favor del propietario']
   fecha_liquidacion date [not null, default: `sysdate`, note: 'Fecha de cierre contable']
   estado estado_liquidacion_enum [not null, default: 'CALCULADA']
+  porcentaje_comision number(7,4) [note: '0..100; tres metadatos NULL conservan política legada desconocida']
+  base_comision number(14,2) [note: 'Hospedaje más servicios; no negativa e igual a la base contratada']
+  criterio_liquidacion varchar2(40) [note: 'Política aplicada; Entrega 2: FINALIZADA_CHECKOUT_HMAS_SERV_V1']
 
   indexes {
     (id_alojamiento, periodo_anio, periodo_mes) [unique]
   }
-  Note: 'Persistencia de cortes mensuales procesados por el cursor masivo de la Entrega 2'
+  Note: 'Metadatos todos NULL o todos completos. DDL concilia base y comisión redondeada. pkg_turismouq.sp_liquidar_mes usa cursor explícito parametrizado para FINALIZADA por mes del checkout, llena metadatos y no reutiliza legado desconocido. Instalación: 04_instalar_capa_plsql.sql; evidencia: docs/entrega2/resultado_validacion.md'
 }
 
 // Histórico de Reservas (Tablespace Dedicado TS_HISTORICO_RESERVAS)
