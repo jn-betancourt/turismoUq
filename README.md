@@ -6,6 +6,8 @@ Para usar el esquema local ya preparado, seguir [EMPEZAR_AQUI.md](EMPEZAR_AQUI.m
 
 Esta corrección conserva las reservas y los importes contratados. La capa PL/SQL de Entrega 2 —función de estadía, procedimiento de reserva, cursor de liquidación, paquete y disparadores— sigue pendiente.
 
+El [plan específico del incremento de Entrega 2](docs/entrega2/plan_incremento_plsql.md) contiene las reglas confirmadas, contratos, migraciones propuestas, secuencia y pruebas de aceptación. Es planificación; no agrega objetos PL/SQL ejecutables.
+
 ## Archivos y responsabilidades
 
 | Archivo | Finalidad |
