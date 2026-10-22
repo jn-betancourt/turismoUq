@@ -1,6 +1,12 @@
 # Modelado de Entidades - TurismoUQ
 
-Documento de análisis conceptual y definición de propiedades para la plataforma de reservas turísticas del Quindío (**TurismoUQ**), basado en el contexto del proyecto (código 12338, motor **Oracle XE 21c**), el nuevo diagrama conceptual actualizado ([diagrama-e.drawio.html](file:///home/juan/obsidian/notes/bases%202/diagrama-e.drawio.html)) y las extensiones derivadas del análisis de normalización de dominio para la Entrega 1.
+Documento de análisis conceptual y definición de propiedades para la plataforma de reservas turísticas del Quindío (**TurismoUQ**), basado en el contexto del proyecto (código 12338, motor **Oracle XE 21c**) y las extensiones del modelo para la Entrega 1. El contrato ejecutable está en `01_DDL_TURISMOUQ_ORACLE21C.sql`; `schema.dbml` y `schema.dbdiagram` lo representan.
+
+La infraestructura física se prepara aparte con `scripts/crear_tablespace.sql`. El DDL instala las 22 tablas en un esquema nuevo. Una base ya cargada utiliza `migraciones/001_tramos_tarifarios.sql`, que solo agrega la estructura de tramos si falta y no inventa precios históricos. La migración verifica los objetos existentes y falla si no cumplen el contrato esperado.
+
+Los precios contratados se conservan en tramos `[fecha_inicio_tramo, fecha_fin_tramo)`: la fecha final queda excluida. Las comprobaciones de cobertura, ausencia de solapamientos y conciliación del importe son validaciones del conjunto de tramos; una PK o un CHECK por fila no las demuestra por sí solo. Las reservas históricas sin evidencia suficiente deben permanecer pendientes de conciliación.
+
+Las funciones, procedimientos, cursores, paquetes y disparadores solicitados para la Entrega 2 siguen pendientes. Las tablas de auditoría y liquidación constituyen soporte estructural, sin acreditar esos procesos. Se conserva el contrato previo de `RESERVA`: `id_alojamiento` nullable y fechas `DATE` sin añadir una restricción de hora a la cabecera.
 
 ## 1. Evidencia del Modelo Conceptual y Jerarquía de Usuarios
 
@@ -15,11 +21,11 @@ En la versión actualizada del modelo conceptual se incorporan los siguientes fu
    - **`RESERVA`** (1) —— `Tiene` —— (0..n) **`RESENA`**, la cual a su vez (0..n) —— `Referencia` —— (1) **`ALOJAMIENTO`**.
    - Tablas de referencias cruzadas: **`RESERVA_HABITACION`** (multi-habitación) y **`RESERVA_SERVICIO`** (consumos de actividades).
 3. **Tablas Extensivas de Normalización (Entrega 1):**
-   - Normalización de comodidades (`COMODIDAD`, `ALOJAMIENTO_COMODIDAD`), tipologías de cuarto (`TIPO_HABITACION`), soporte de auditoría (`AUDITORIA_TARIFA`), persistencia de liquidaciones (`LIQUIDACION_MENSUAL`) y almacenamiento en tablespace propio (`HISTORICO_RESERVA`).
+   - Normalización de comodidades (`COMODIDAD`, `ALOJAMIENTO_COMODIDAD`), tipologías de cuarto (`TIPO_HABITACION`), soporte de auditoría (`AUDITORIA_TARIFA`), persistencia de liquidaciones (`LIQUIDACION_MENSUAL`), precios contratados por tramo (`RESERVA_HABITACION_TARIFA_APLICADA`) y almacenamiento en tablespace propio (`HISTORICO_RESERVA`).
 
 ## 2. Definición de Entidades y Propiedades (Modelo Completo)
 
-A continuación se definen las 21 entidades del modelo físico para la Entrega 1, detallando sus atributos, restricciones y el análisis de normalización aplicado:
+A continuación se definen las 22 entidades del modelo físico para la Entrega 1, detallando sus atributos, restricciones y el análisis de normalización aplicado:
 
 ### 1. USUARIO_SISTEMA (Superentidad de Identidad y Seguridad)
 - **Razón:** Proveer la base de autenticación centralizada, credenciales seguras y control de acceso unificado para todas las personas que interactúan con la plataforma.
@@ -146,7 +152,7 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
   - `precio_noche` (NUMBER(12,2), NOT NULL, CHECK > 0): Valor monetario por noche en moneda local.
 - **Análisis de normalización:**
   - *Restricción compuesta:* `UNIQUE (id_habitacion, id_temporada)` que garantiza unicidad de precio por par habitación-temporada.
-  - *Segregación histórica:* No sobreescribe cambios sin registro; se conecta con `AUDITORIA_TARIFA`.
+  - *Catálogo frente a importe contratado:* El catálogo puede cambiar. Los importes de reservas se conservan en `RESERVA_HABITACION_TARIFA_APLICADA` y no se recalculan desde la tarifa vigente. La auditoría automática de cambios del catálogo está pendiente de Entrega 2.
 
 ---
 
@@ -169,7 +175,7 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
 
 ### 11. RESERVA_HABITACION (Tabla de Referencia Cruzada N:M)
 - **Razón:** Resolver la relación muchos a muchos entre reservas y habitaciones, respondiendo a la decisión de diseño de soportar que una reserva tome varias habitaciones simultáneas.
-- **Rol:** Detallar individualmente cada habitación asignada a la reserva, registrar el número de huéspedes hospedados (para validar capacidad) y almacenar el valor liquidado por las temporadas atravesadas (`fn_valor_estadia`).
+- **Rol:** Detallar individualmente cada habitación asignada a la reserva, registrar el número de huéspedes hospedados (para validar capacidad) y almacenar el importe contratado. `fn_valor_estadia` es una implementación pendiente de Entrega 2.
 - **Propiedades:**
   - `id_reserva` (NUMBER, FK -> `RESERVA.id_reserva`, NOT NULL): Reserva a la que pertenece el renglón.
   - `id_habitacion` (NUMBER, FK -> `HABITACION.id_habitacion`, NOT NULL): Habitación reservada.
@@ -181,7 +187,7 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
 ---
 
 ### 12. PAGO
-- **Razón:** Documentar las operaciones monetarias realizadas para confirmar o amortizar una reserva, garantizando atomicidad transaccional.
+- **Razón:** Documentar las operaciones monetarias realizadas para confirmar o amortizar una reserva. La atomicidad del procedimiento de pago sigue pendiente de su implementación.
 - **Rol:** Respaldar el procedimiento atómico con SAVEPOINT y rollback parcial exigido en la Entrega 3, vinculando al cliente que realiza el desembolso con la reserva que genera la obligación.
 - **Propiedades:**
   - `id_pago` (NUMBER, PK): Identificador único de la transacción.
@@ -278,8 +284,8 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
 ---
 
 ### 19. AUDITORIA_TARIFA (Persistencia de Auditoría DDL)
-- **Razón:** Registrar la trazabilidad histórica inmutable de cualquier alteración en los precios por noche de las habitaciones.
-- **Rol:** Servir de receptáculo físico en el DDL para el disparador a nivel de sentencia exigido en la Entrega 2, almacenando quién, cuándo y cuáles fueron los valores anterior y nuevo.
+- **Razón:** Preparar la persistencia de la trazabilidad de cambios de precio por noche.
+- **Rol:** Servir de receptáculo físico para la auditoría de la Entrega 2, almacenando quién, cuándo y los valores anterior y nuevo. Todavía no hay un disparador que lo alimente ni un control que haga inmutable esta tabla.
 - **Propiedades:**
   - `id_auditoria` (NUMBER, PK): Identificador secuencial del evento de auditoría.
   - `id_tarifa` (NUMBER, FK -> `TARIFA.id_tarifa`, NOT NULL): Tarifa objeto del cambio.
@@ -289,7 +295,7 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
   - `precio_nuevo` (NUMBER(12,2), NOT NULL): Nuevo valor asignado a la tarifa.
   - `operacion` (VARCHAR2, NOT NULL, CHECK in ('UPDATE', 'DELETE')): Tipo de operación DML interceptada.
 - **Análisis de normalización:**
-  - *Aislamiento temporal e histórico:* Evita sobreescribir destructivamente el estado pasado en `TARIFA`. Cumple con el principio de segregación temporal de datos operacionales vs datos de auditoría contable.
+  - *Pendiente de Entrega 2:* La operación `DELETE` admitida por el dominio no es compatible con conservar esta FK a `TARIFA` y exigir un `precio_nuevo` positivo. Antes de implementarla debe definirse el alcance de auditoría y ajustar esa estructura. Esta entrega conserva el contrato anterior y no implementa disparadores.
 
 ---
 
@@ -303,18 +309,18 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
   - `periodo_mes` (NUMBER(2), NOT NULL, CHECK between 1 and 12): Mes liquidado.
   - `total_hospedaje` (NUMBER(14,2), NOT NULL, CHECK >= 0): Sumatoria liquidada por habitaciones.
   - `total_servicios` (NUMBER(14,2), NOT NULL, CHECK >= 0): Sumatoria liquidada por servicios adicionales.
-  - `comision_plataforma` (NUMBER(14,2), NOT NULL, CHECK >= 0): Monto o porcentaje retenido por la plataforma.
+  - `comision_plataforma` (NUMBER(14,2), NOT NULL, CHECK >= 0): Importe monetario retenido por la plataforma. La regla para obtenerlo está pendiente de definición.
   - `neto_propietario` (NUMBER(14,2), NOT NULL, CHECK >= 0): Saldo a favor a desembolsar al propietario.
   - `fecha_liquidacion` (DATE, NOT NULL, DEFAULT SYSDATE): Fecha de procesamiento contable.
   - `estado` (VARCHAR2, NOT NULL, CHECK in ('CALCULADA', 'DISPERSADA', 'PAGADA')): Estado del pago de liquidación.
 - **Análisis de normalización:**
-  - *Restricción compuesta de periodicidad:* `UNIQUE (id_alojamiento, periodo_anio, periodo_mes)` para impedir dobles liquidaciones en el mismo periodo para el mismo establecimiento. Garantiza la atomicidad de los cierres contables mensuales.
+  - *Restricción compuesta de periodicidad:* `UNIQUE (id_alojamiento, periodo_anio, periodo_mes)` impide dos filas para el mismo alojamiento y período. El manejo transaccional del cierre depende del procedimiento pendiente; no lo garantiza esta restricción.
 
 ---
 
 ### 21. HISTORICO_RESERVA (Almacenamiento en Tablespace Propio)
 - **Razón:** Respaldar el requerimiento explícito de la Entrega 1 de contar con un *tablespace propio para el histórico de reservas*.
-- **Rol:** Almacenar de forma segregada y optimizada las reservas de periodos anteriores o finalizadas (volumen de 25.000 reservas en 2024–2026), evitando que el crecimiento del histórico penalice el plan de ejecución y el buffer cache de las reservas activas.
+- **Rol:** Conservar una copia de cabeceras de reservas cerradas en un espacio físico administrable por separado. La FK obliga a conservar la reserva original: no es un traslado ni una purga del origen. La tabla no copia los detalles de habitaciones, servicios ni tramos.
 - **Propiedades:**
   - `id_reserva` (NUMBER, PK): Consecutivo de la reserva archivada.
   - `id_cliente` (NUMBER, NOT NULL): Identificador del cliente titular.
@@ -324,9 +330,29 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
   - `fecha_checkout` (DATE, NOT NULL): Fecha de salida ejecutada.
   - `estado` (VARCHAR2, NOT NULL): Estado final ('FINALIZADA', 'CANCELADA').
   - `valor_total` (NUMBER(12,2), NOT NULL): Monto total consolidado.
-  - `fecha_archivado` (TIMESTAMP, NOT NULL, DEFAULT SYSTIMESTAMP): Momento en que la tupla fue transferida al tablespace histórico.
+  - `fecha_archivado` (TIMESTAMP, NOT NULL, DEFAULT SYSTIMESTAMP): Momento en que se creó la copia en el tablespace histórico.
 - **Análisis de normalización y almacenamiento físico:**
-  - *Segregación física por Tablespace:* Se ubica explícitamente en el tablespace dedicado `TS_HISTORICO_RESERVAS` (sobre datafile independiente). Permite aplicar compresión y particionamiento por rango temporal sin afectar el espacio de transaccionalidad concurrente (`SELECT ... FOR UPDATE`).
+  - *Segregación física por tablespace:* La tabla, su PK y sus índices secundarios se ubican en `TS_HISTORICO_RESERVAS`, con un datafile dedicado. Esto permite identificar y administrar su crecimiento de forma separada. No se han aplicado compresión ni particionamiento ni se atribuyen mejoras de rendimiento sin mediciones.
+
+---
+
+### 22. RESERVA_HABITACION_TARIFA_APLICADA (Importes Contratados por Tramo)
+- **Razón:** Conservar el precio realmente aplicado a cada noche sin modificarlo cuando cambie el catálogo de tarifas o el tipo de una temporada.
+- **Rol:** Descomponer el hospedaje contratado por habitación en intervalos de noches `[inicio, fin)`, con procedencia explícita y evidencia para cualquier reconstrucción histórica.
+- **Propiedades:**
+  - `id_reserva`, `id_habitacion` (NUMBER, NOT NULL): FK compuesta a `RESERVA_HABITACION`. El borrado del detalle elimina sus tramos, conservando la política de borrado de detalles existente.
+  - `fecha_inicio_tramo` (DATE, NOT NULL): Primera noche incluida, sin hora.
+  - `fecha_fin_tramo` (DATE, NOT NULL): Límite exclusivo, sin hora y posterior al inicio.
+  - `id_temporada` (NUMBER, NOT NULL): FK a `TEMPORADA`, que identifica la temporada usada al capturar el tramo.
+  - `tipo_temporada_aplicado` (VARCHAR2(5), NOT NULL): Valor congelado `ALTA`, `MEDIA` o `BAJA`; la analítica de ingreso usa esta copia y no el tipo mutable del catálogo.
+  - `precio_noche_aplicado` (NUMBER(12,2), NOT NULL, CHECK > 0): Importe contratado por cada noche del tramo.
+  - `origen_dato` (VARCHAR2(24), NOT NULL): `CAPTURADO` o `RECONSTRUIDO_VALIDADO`, sin valor por defecto que oculte la procedencia.
+  - `referencia_evidencia` (VARCHAR2(200), NULLABLE): Referencia verificable obligatoria y no vacía para `RECONSTRUIDO_VALIDADO`; opcional para `CAPTURADO`.
+- **Restricciones y límites:**
+  - PK `(id_reserva, id_habitacion, fecha_inicio_tramo)`; índice de apoyo de la FK `id_temporada`.
+  - El DDL controla integridad de cada fila. La validación del conjunto debe acreditar cobertura completa de la estadía, ausencia de solapamientos y coincidencia entre la suma de noches por su precio aplicado y `precio_estadia_habitacion`.
+  - Coincidir con un total antiguo al sumar tarifas actuales no acredita precios históricos. La migración no genera tramos ni evidencia; una reserva antigua sin soporte suficiente permanece pendiente.
+  - La captura al crear reservas operativas mediante `sp_crear_reserva` pertenece a la Entrega 2. Esta tabla no implica que ese procedimiento ya exista.
 
 ---
 
@@ -356,6 +382,8 @@ A continuación se definen las 21 entidades del modelo físico para la Entrega 1
 | **RESERVA** | 1 : 0..N | **RESENA** | `RESENA.id_reserva` | Opinión generada a partir de la estadía realizada. |
 | **RESERVA** | 1 : 1..N | **RESERVA_HABITACION** | `RESERVA_HABITACION.id_reserva` | **Referencia cruzada:** Renglones de habitaciones tomadas en la reserva. |
 | **HABITACION** | 1 : 0..N | **RESERVA_HABITACION** | `RESERVA_HABITACION.id_habitacion` | Asignación física de la habitación a la reserva. |
+| **RESERVA_HABITACION** | 1 : 0..N | **RESERVA_HABITACION_TARIFA_APLICADA** | `(id_reserva, id_habitacion)` | Tramos de precios contratados; la validación exige su cobertura completa antes de aceptar la analítica. |
+| **TEMPORADA** | 1 : 0..N | **RESERVA_HABITACION_TARIFA_APLICADA** | `id_temporada` | Temporada de origen; se conservan además tipo y precio aplicados. |
 | **RESERVA** | 1 : 0..N | **RESERVA_SERVICIO** | `RESERVA_SERVICIO.id_reserva` | **Referencia cruzada:** Servicios consumidos durante la estadía. |
 | **SERVICIO** | 1 : 0..N | **RESERVA_SERVICIO** | `RESERVA_SERVICIO.id_servicio` | Servicio facturado en una o múltiples reservas. |
-| **RESERVA** | 1 : 0..1 | **HISTORICO_RESERVA** | `HISTORICO_RESERVA.id_reserva` | Segregación física en tablespace propio `TS_HISTORICO_RESERVAS`. |
+| **RESERVA** | 1 : 0..1 | **HISTORICO_RESERVA** | `HISTORICO_RESERVA.id_reserva` | Copia en `TS_HISTORICO_RESERVAS` que conserva el origen mediante su FK. |

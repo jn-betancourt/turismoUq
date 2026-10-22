@@ -1,0 +1,378 @@
+
+PL/SQL procedure successfully completed.
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Table created.
+
+
+Comment created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+Index created.
+
+
+TOTAL_TABLAS_MODELO
+-------------------
+		 22
+
+
+C   CANTIDAD
+- ----------
+C	 175
+P	  22
+R	  27
+U	  15
+
+
+INDEX_NAME
+--------------------------------------------------------------------------------------------------------------------------------
+TABLE_NAME															 UNIQUENES
+-------------------------------------------------------------------------------------------------------------------------------- ---------
+IX_ALOJAMIENTO_PROPIETARIO
+ALOJAMIENTO															 NONUNIQUE
+
+IX_ALOJAMIENTO_TIPO
+ALOJAMIENTO															 NONUNIQUE
+
+PK_ALOJAMIENTO
+ALOJAMIENTO															 UNIQUE
+
+UQ_ALOJ_MUNICIPIO_NOMBRE
+ALOJAMIENTO															 UNIQUE
+
+IX_ALOJ_COMODIDAD_COMODIDAD
+ALOJAMIENTO_COMODIDAD														 NONUNIQUE
+
+PK_ALOJAMIENTO_COMODIDAD
+ALOJAMIENTO_COMODIDAD														 UNIQUE
+
+IX_AUDITORIA_TARIFA
+AUDITORIA_TARIFA														 NONUNIQUE
+
+PK_AUDITORIA_TARIFA
+AUDITORIA_TARIFA														 UNIQUE
+
+PK_CLIENTE
+CLIENTE 															 UNIQUE
+
+UQ_CLIENTE_DOCUMENTO
+CLIENTE 															 UNIQUE
+
+PK_COMODIDAD
+COMODIDAD															 UNIQUE
+
+UQ_COMODIDAD_NOMBRE
+COMODIDAD															 UNIQUE
+
+IX_HABITACION_TIPO
+HABITACION															 NONUNIQUE
+
+PK_HABITACION
+HABITACION															 UNIQUE
+
+UQ_HABITACION_ALOJ_NUMERO
+HABITACION															 UNIQUE
+
+IX_HIST_RESERVA_ALOJAMIENTO
+HISTORICO_RESERVA														 NONUNIQUE
+
+IX_HIST_RESERVA_CLIENTE
+HISTORICO_RESERVA														 NONUNIQUE
+
+PK_HISTORICO_RESERVA
+HISTORICO_RESERVA														 UNIQUE
+
+PK_LIQUIDACION_MENSUAL
+LIQUIDACION_MENSUAL														 UNIQUE
+
+UQ_LIQUIDACION_PERIODO
+LIQUIDACION_MENSUAL														 UNIQUE
+
+PK_MUNICIPIO
+MUNICIPIO															 UNIQUE
+
+UQ_MUNICIPIO_NOMBRE
+MUNICIPIO															 UNIQUE
+
+IX_PAGO_CLIENTE
+PAGO																 NONUNIQUE
+
+IX_PAGO_RESERVA
+PAGO																 NONUNIQUE
+
+PK_PAGO
+PAGO																 UNIQUE
+
+PK_PROPIETARIO
+PROPIETARIO															 UNIQUE
+
+UQ_PROPIETARIO_DOCUMENTO
+PROPIETARIO															 UNIQUE
+
+IX_RESENA_ALOJAMIENTO
+RESENA																 NONUNIQUE
+
+PK_RESENA
+RESENA																 UNIQUE
+
+UQ_RESENA_RESERVA
+RESENA																 UNIQUE
+
+IX_RESERVA_ALOJAMIENTO
+RESERVA 															 NONUNIQUE
+
+IX_RESERVA_CLIENTE
+RESERVA 															 NONUNIQUE
+
+PK_RESERVA
+RESERVA 															 UNIQUE
+
+IX_RESERVA_HAB_HABITACION
+RESERVA_HABITACION														 NONUNIQUE
+
+PK_RESERVA_HABITACION
+RESERVA_HABITACION														 UNIQUE
+
+IX_RESERVA_TARIFA_TEMPORADA
+RESERVA_HABITACION_TARIFA_APLICADA												 NONUNIQUE
+
+PK_RESERVA_HABITACION_TARIFA_APLICADA
+RESERVA_HABITACION_TARIFA_APLICADA												 UNIQUE
+
+IX_RESERVA_SERV_SERVICIO
+RESERVA_SERVICIO														 NONUNIQUE
+
+PK_RESERVA_SERVICIO
+RESERVA_SERVICIO														 UNIQUE
+
+PK_SERVICIO
+SERVICIO															 UNIQUE
+
+UQ_SERVICIO_ALOJ_NOMBRE
+SERVICIO															 UNIQUE
+
+IX_TARIFA_TEMPORADA
+TARIFA																 NONUNIQUE
+
+PK_TARIFA
+TARIFA																 UNIQUE
+
+UQ_TARIFA_HABITACION_TEMP
+TARIFA																 UNIQUE
+
+PK_TEMPORADA
+TEMPORADA															 UNIQUE
+
+UQ_TEMPORADA_NOMBRE_FECHAS
+TEMPORADA															 UNIQUE
+
+PK_TIPO_ALOJAMIENTO
+TIPO_ALOJAMIENTO														 UNIQUE
+
+UQ_TIPO_ALOJAMIENTO_NOMBRE
+TIPO_ALOJAMIENTO														 UNIQUE
+
+PK_TIPO_HABITACION
+TIPO_HABITACION 														 UNIQUE
+
+UQ_TIPO_HABITACION_NOMBRE
+TIPO_HABITACION 														 UNIQUE
+
+PK_USUARIO_SISTEMA
+USUARIO_SISTEMA 														 UNIQUE
+
+UQ_USUARIO_EMAIL
+USUARIO_SISTEMA 														 UNIQUE
+
+UQ_USUARIO_USERNAME
+USUARIO_SISTEMA 														 UNIQUE
+
+
+53 rows selected.
+

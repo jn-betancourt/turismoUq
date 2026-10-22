@@ -4,9 +4,11 @@
 -- Motor: Oracle Database XE 21c
 -- =============================================================================
 --
--- ORDEN: ejecutar despues de 01_ddl.sql, como el usuario del proyecto,
+-- ORDEN: ejecutar despues de 01_DDL_TURISMOUQ_ORACLE21C.sql, como el usuario del proyecto,
 --        sobre una base LIMPIA (tablas recien creadas y vacias).
---        En SQL Developer usar "Run Script" (F5). Tarda uno o dos minutos.
+--        Usar un cliente compatible con scripts SQL*Plus, en una sola conexion.
+--        No reejecutar sobre una carga existente: el control inicial la rechaza.
+--        Los unicos dos valores de configuracion editables estan abajo.
 --
 -- VOLUMEN GENERADO                          MINIMO EXIGIDO
 --   12 municipios                           12
@@ -32,14 +34,87 @@
 --   * La demanda es estacional: temporada ALTA atrae mas reservas que MEDIA
 --     y BAJA, y Salento, Filandia, Montenegro, Armenia y Quimbaya son mas
 --     populares.
---   * El estado de la reserva depende de la fecha actual (SYSDATE):
+--   * El estado de la reserva depende de la referencia temporal explicita:
 --     pasadas -> FINALIZADA / CANCELADA; en curso -> CHECKED_IN;
 --     futuras -> CONFIRMADA / PENDIENTE / CANCELADA.
---   * DBMS_RANDOM.SEED fija la semilla: la carga es reproducible.
+--   * Se conserva la tarifa aplicada por tramos [inicio, fin) al reservar.
+--     Los cambios futuros en TARIFA no alteran los importes historicos.
+--   * Semilla, referencia y recorridos ordenados hacen reproducible la carga
+--     sobre esquemas nuevos con la misma version de Oracle y del script.
 -- =============================================================================
 
-SET DEFINE OFF;
+WHENEVER OSERROR EXIT FAILURE ROLLBACK
+WHENEVER SQLERROR EXIT SQL.SQLCODE ROLLBACK
+SET DEFINE ON
+SET VERIFY OFF
 SET SERVEROUTPUT ON;
+SET SQLBLANKLINES ON
+ALTER SESSION SET NLS_CALENDAR = 'GREGORIAN';
+
+-- CONFIGURACION: editar solamente estos dos valores antes de la corrida.
+DEFINE carga_semilla = 20262
+DEFINE carga_referencia = "2026-10-22 12:00:00 America/Bogota"
+
+-- SQL*Plus admite NUMBER y VARCHAR2; la conversion temporal ocurre en PL/SQL.
+VARIABLE carga_semilla NUMBER
+VARIABLE carga_referencia VARCHAR2(64)
+
+DECLARE
+    v_referencia TIMESTAMP WITH TIME ZONE;
+    v_total_tablas PLS_INTEGER;
+    v_filas NUMBER;
+BEGIN
+    :carga_semilla := TO_NUMBER('&&carga_semilla');
+    IF :carga_semilla IS NULL OR :carga_semilla <> TRUNC(:carga_semilla)
+       OR :carga_semilla NOT BETWEEN -2147483648 AND 2147483647 THEN
+        RAISE_APPLICATION_ERROR(-20010, 'La semilla debe ser un entero de 32 bits.');
+    END IF;
+    :carga_referencia := '&&carga_referencia';
+    v_referencia := TO_TIMESTAMP_TZ(:carga_referencia, 'FXYYYY-MM-DD HH24:MI:SS TZR');
+    IF v_referencia IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20010, 'La referencia temporal debe incluir fecha, hora y region.');
+    END IF;
+
+    SELECT COUNT(*) INTO v_total_tablas
+    FROM user_tables
+    WHERE table_name IN (
+        'USUARIO_SISTEMA', 'PROPIETARIO', 'CLIENTE', 'MUNICIPIO',
+        'TIPO_ALOJAMIENTO', 'ALOJAMIENTO', 'TIPO_HABITACION', 'HABITACION',
+        'COMODIDAD', 'ALOJAMIENTO_COMODIDAD', 'TEMPORADA', 'TARIFA',
+        'AUDITORIA_TARIFA', 'RESERVA', 'RESERVA_HABITACION', 'PAGO',
+        'SERVICIO', 'RESERVA_SERVICIO', 'RESENA', 'LIQUIDACION_MENSUAL',
+        'HISTORICO_RESERVA', 'RESERVA_HABITACION_TARIFA_APLICADA'
+    );
+    IF v_total_tablas <> 22 THEN
+        RAISE_APPLICATION_ERROR(-20011,
+            'Se requieren las 22 tablas del modelo actualizado. No se modifica una base legacy.');
+    END IF;
+
+    FOR tabla IN (
+        SELECT table_name FROM user_tables
+        WHERE table_name IN (
+            'USUARIO_SISTEMA', 'PROPIETARIO', 'CLIENTE', 'MUNICIPIO',
+            'TIPO_ALOJAMIENTO', 'ALOJAMIENTO', 'TIPO_HABITACION', 'HABITACION',
+            'COMODIDAD', 'ALOJAMIENTO_COMODIDAD', 'TEMPORADA', 'TARIFA',
+            'AUDITORIA_TARIFA', 'RESERVA', 'RESERVA_HABITACION', 'PAGO',
+            'SERVICIO', 'RESERVA_SERVICIO', 'RESENA', 'LIQUIDACION_MENSUAL',
+            'HISTORICO_RESERVA', 'RESERVA_HABITACION_TARIFA_APLICADA'
+        ) ORDER BY table_name
+    ) LOOP
+        EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM "' || tabla.table_name || '"' INTO v_filas;
+        IF v_filas <> 0 THEN
+            RAISE_APPLICATION_ERROR(-20012,
+                'Carga rechazada: ' || tabla.table_name || ' contiene datos. No se borra ni se duplica.');
+        END IF;
+    END LOOP;
+
+    DBMS_RANDOM.SEED(:carga_semilla);
+    DBMS_OUTPUT.PUT_LINE('SEMILLA=' || :carga_semilla);
+    DBMS_OUTPUT.PUT_LINE('REFERENCIA=' || :carga_referencia);
+    DBMS_OUTPUT.PUT_LINE('CONTROL INICIAL: 22 tablas vacias; carga autorizada.');
+END;
+/
+SET DEFINE OFF
 
 -- =============================================================================
 -- 1. CATALOGOS
@@ -131,6 +206,7 @@ DECLARE
     v_tipo_doc  VARCHAR2(10);
     v_cuenta    VARCHAR2(30);
     v_r         NUMBER;
+    v_fecha_registro TIMESTAMP;
 
     FUNCTION al_azar(p_lista t_txt) RETURN VARCHAR2 IS
     BEGIN
@@ -148,15 +224,14 @@ DECLARE
         RETURN '3' || TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(100000000, 1000000000)));
     END;
 BEGIN
-    -- Semilla fija: la carga es reproducible.
-    DBMS_RANDOM.SEED(20262);
-
     -- Propietarios
     FOR i IN 1 .. 30 LOOP
         v_user     := 'prop' || LPAD(i, 3, '0');
         v_nombre   := nombre_aleatorio;
         v_telefono := celular;
         v_cuenta   := TO_CHAR(TRUNC(DBMS_RANDOM.VALUE(10000000000, 100000000000)));
+        v_fecha_registro := TIMESTAMP '2023-01-01 08:00:00'
+                            + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(0, 300), 'DAY');
 
         INSERT INTO usuario_sistema (
             id_usuario, username, password_hash, nombre_completo, email,
@@ -164,8 +239,7 @@ BEGIN
         ) VALUES (
             i, v_user, 'PENDIENTE_HASH', v_nombre, v_user || '@turismouq.co',
             'PROPIETARIO', 'ACTIVO',
-            TIMESTAMP '2023-01-01 08:00:00'
-                + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(0, 300), 'DAY')
+            v_fecha_registro
         );
 
         INSERT INTO propietario (
@@ -215,6 +289,8 @@ BEGIN
                           WHEN v_r < 0.95 THEN 'CE'
                           ELSE 'PASAPORTE'
                       END;
+        v_fecha_registro := TIMESTAMP '2023-06-01 08:00:00'
+                            + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(0, 900), 'DAY');
 
         INSERT INTO usuario_sistema (
             id_usuario, username, password_hash, nombre_completo, email,
@@ -223,8 +299,7 @@ BEGIN
             v_id, v_user, 'PENDIENTE_HASH', v_nombre, v_user || '@correo.com',
             'CLIENTE',
             CASE WHEN MOD(i, 60) = 0 THEN 'INACTIVO' ELSE 'ACTIVO' END,
-            TIMESTAMP '2023-06-01 08:00:00'
-                + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(0, 900), 'DAY')
+            v_fecha_registro
         );
 
         INSERT INTO cliente (
@@ -487,6 +562,7 @@ BEGIN
             SELECT id_temporada, tipo_temporada,
                    EXTRACT(YEAR FROM fecha_inicio) AS anio
             FROM   temporada
+            ORDER BY id_temporada
         ) LOOP
             v_factor_temp := CASE t.tipo_temporada
                                  WHEN 'ALTA'  THEN 1.35
@@ -553,8 +629,10 @@ DECLARE
     -- Habitaciones elegidas para la reserva en curso
     v_elegidas          t_num;
 
-    v_ahora         DATE := SYSDATE;
-    v_hoy           DATE := TRUNC(SYSDATE);
+    v_ahora         DATE := CAST(
+        TO_TIMESTAMP_TZ(:carga_referencia, 'FXYYYY-MM-DD HH24:MI:SS TZR')
+        AT TIME ZONE 'America/Bogota' AS DATE);
+    v_hoy           DATE := TRUNC(v_ahora);
     v_id_res        PLS_INTEGER := 0;
     v_intentos      PLS_INTEGER := 0;
     v_lineas_serv   PLS_INTEGER := 0;
@@ -582,12 +660,15 @@ DECLARE
     v_prob          NUMBER;
     v_precio        NUMBER;
     v_anticipacion  NUMBER;
+    v_inicio_tramo  PLS_INTEGER;
+    v_fin_tramo     PLS_INTEGER;
+    v_lineas_tramo  PLS_INTEGER := 0;
 BEGIN
     -- ---------------------------------------------------------------------
     -- Cargar a memoria lo que se necesita
     -- ---------------------------------------------------------------------
     FOR t IN (SELECT id_temporada, fecha_inicio, fecha_fin, tipo_temporada
-              FROM temporada) LOOP
+              FROM temporada ORDER BY id_temporada) LOOP
         FOR d IN (t.fecha_inicio - c_fecha_base) .. (t.fecha_fin - c_fecha_base) LOOP
             IF d >= 0 THEN
                 v_dia_temp(d) := t.id_temporada;
@@ -596,36 +677,39 @@ BEGIN
         END LOOP;
     END LOOP;
 
-    FOR t IN (SELECT id_habitacion, id_temporada, precio_noche FROM tarifa) LOOP
+    FOR t IN (SELECT id_habitacion, id_temporada, precio_noche FROM tarifa
+              ORDER BY id_habitacion, id_temporada) LOOP
         v_tarifa(t.id_habitacion * 100 + t.id_temporada) := t.precio_noche;
     END LOOP;
 
     FOR h IN (SELECT h.id_habitacion, h.estado, th.capacidad_estandar
               FROM   habitacion h
               JOIN   tipo_habitacion th
-                     ON th.id_tipo_habitacion = h.id_tipo_habitacion) LOOP
+                     ON th.id_tipo_habitacion = h.id_tipo_habitacion
+              ORDER BY h.id_habitacion) LOOP
         v_hab_cap(h.id_habitacion) := h.capacidad_estandar;
         v_hab_ok(h.id_habitacion)  := (h.estado = 'DISPONIBLE');
     END LOOP;
 
     FOR a IN (SELECT id_alojamiento, MIN(id_habitacion) AS primera, COUNT(*) AS num
-              FROM habitacion GROUP BY id_alojamiento) LOOP
+              FROM habitacion GROUP BY id_alojamiento ORDER BY id_alojamiento) LOOP
         v_aloj_primera_hab(a.id_alojamiento) := a.primera;
         v_aloj_num_hab(a.id_alojamiento)     := a.num;
     END LOOP;
 
     FOR a IN (SELECT id_alojamiento, MIN(id_servicio) AS primero, COUNT(*) AS num
-              FROM servicio GROUP BY id_alojamiento) LOOP
+              FROM servicio GROUP BY id_alojamiento ORDER BY id_alojamiento) LOOP
         v_aloj_primer_serv(a.id_alojamiento) := a.primero;
         v_aloj_num_serv(a.id_alojamiento)    := a.num;
     END LOOP;
 
-    FOR s IN (SELECT id_servicio, precio_unitario FROM servicio) LOOP
+    FOR s IN (SELECT id_servicio, precio_unitario FROM servicio ORDER BY id_servicio) LOOP
         v_serv_precio(s.id_servicio) := s.precio_unitario;
     END LOOP;
 
     -- Popularidad: los municipios mas turisticos reciben mas reservas.
-    FOR a IN (SELECT id_alojamiento, id_municipio FROM alojamiento) LOOP
+    FOR a IN (SELECT id_alojamiento, id_municipio FROM alojamiento
+              ORDER BY id_alojamiento) LOOP
         v_aloj_pop(a.id_alojamiento) :=
             DBMS_RANDOM.VALUE(0.35, 0.8)
             + CASE WHEN a.id_municipio IN (1, 6, 9, 11, 12) THEN 0.2 ELSE 0 END;
@@ -701,7 +785,7 @@ BEGIN
                 v_checkout := v_checkin + v_noches;
                 v_cliente  := TRUNC(DBMS_RANDOM.VALUE(101, 3101));
 
-                -- Estado segun la fecha actual
+                -- Estado segun la fecha de referencia de esta corrida
                 v_r := DBMS_RANDOM.VALUE;
                 IF v_checkout <= v_hoy THEN
                     v_estado := CASE WHEN v_r < 0.90 THEN 'FINALIZADA' ELSE 'CANCELADA' END;
@@ -750,6 +834,31 @@ BEGIN
                         v_id_res, v_hab, v_personas, v_precio
                     );
                     v_lineas_hab := v_lineas_hab + 1;
+
+                    -- Primero existe el detalle padre; despues se captura cada
+                    -- tramo de temporada. El fin del tramo es EXCLUSIVO.
+                    v_inicio_tramo := v_dia;
+                    WHILE v_inicio_tramo < v_dia + v_noches LOOP
+                        v_fin_tramo := v_inicio_tramo + 1;
+                        WHILE v_fin_tramo < v_dia + v_noches
+                              AND v_dia_temp(v_fin_tramo) = v_dia_temp(v_inicio_tramo) LOOP
+                            v_fin_tramo := v_fin_tramo + 1;
+                        END LOOP;
+
+                        INSERT INTO reserva_habitacion_tarifa_aplicada (
+                            id_reserva, id_habitacion, fecha_inicio_tramo,
+                            fecha_fin_tramo, id_temporada, tipo_temporada_aplicado,
+                            precio_noche_aplicado, origen_dato, referencia_evidencia
+                        ) VALUES (
+                            v_id_res, v_hab, c_fecha_base + v_inicio_tramo,
+                            c_fecha_base + v_fin_tramo, v_dia_temp(v_inicio_tramo),
+                            v_dia_tipo(v_inicio_tramo),
+                            v_tarifa(v_hab * 100 + v_dia_temp(v_inicio_tramo)),
+                            'CAPTURADO', NULL
+                        );
+                        v_lineas_tramo := v_lineas_tramo + 1;
+                        v_inicio_tramo := v_fin_tramo;
+                    END LOOP;
                 END LOOP;
 
                 v_res_aloj(v_id_res)      := v_aloj;
@@ -795,39 +904,48 @@ BEGIN
     -- ---------------------------------------------------------------------
     -- Completar hasta el minimo de 40.000 lineas de servicio si hiciera falta
     -- ---------------------------------------------------------------------
-    WHILE v_lineas_serv < c_min_lineas_serv LOOP
-        v_id := TRUNC(DBMS_RANDOM.VALUE(1, v_id_res + 1));
+    -- Recorrido acotado de todas las combinaciones elegibles. Si la capacidad
+    -- fuese insuficiente se falla expresamente, sin un bucle aleatorio infinito.
+    FOR reserva_pendiente IN 1 .. v_id_res LOOP
+        EXIT WHEN v_lineas_serv >= c_min_lineas_serv;
+        v_id := reserva_pendiente;
         IF NOT v_res_cancelada(v_id) THEN
             v_aloj   := v_res_aloj(v_id);
-            v_serv   := v_aloj_primer_serv(v_aloj)
-                        + TRUNC(DBMS_RANDOM.VALUE(0, v_aloj_num_serv(v_aloj)));
-            v_cant   := TRUNC(DBMS_RANDOM.VALUE(1, 5));
-            v_precio := v_serv_precio(v_serv);
-            BEGIN
-                INSERT INTO reserva_servicio (
-                    id_reserva, id_servicio, cantidad,
-                    precio_unitario_aplicado, subtotal
-                ) VALUES (
-                    v_id, v_serv, v_cant, v_precio, ROUND(v_cant * v_precio, 2)
-                );
-                v_lineas_serv := v_lineas_serv + 1;
-            EXCEPTION
-                WHEN DUP_VAL_ON_INDEX THEN
-                    NULL;  -- ese servicio ya estaba en la reserva; se intenta otro
-            END;
+            FOR servicio_pendiente IN 0 .. v_aloj_num_serv(v_aloj) - 1 LOOP
+                EXIT WHEN v_lineas_serv >= c_min_lineas_serv;
+                v_serv   := v_aloj_primer_serv(v_aloj) + servicio_pendiente;
+                v_cant   := TRUNC(DBMS_RANDOM.VALUE(1, 5));
+                v_precio := v_serv_precio(v_serv);
+                BEGIN
+                    INSERT INTO reserva_servicio (
+                        id_reserva, id_servicio, cantidad,
+                        precio_unitario_aplicado, subtotal
+                    ) VALUES (
+                        v_id, v_serv, v_cant, v_precio, ROUND(v_cant * v_precio, 2)
+                    );
+                    v_lineas_serv := v_lineas_serv + 1;
+                EXCEPTION
+                    WHEN DUP_VAL_ON_INDEX THEN NULL;
+                END;
+            END LOOP;
         END IF;
     END LOOP;
+    IF v_lineas_serv < c_min_lineas_serv THEN
+        RAISE_APPLICATION_ERROR(-20013,
+            'Capacidad insuficiente para completar las 40.000 lineas de servicio.');
+    END IF;
 
     COMMIT;
     DBMS_OUTPUT.PUT_LINE('Reservas: ' || v_id_res
                          || ' | habitaciones reservadas: ' || v_lineas_hab
+                         || ' | tramos capturados: ' || v_lineas_tramo
                          || ' | lineas de servicio: ' || v_lineas_serv
                          || ' | intentos: ' || v_intentos);
 END;
 /
 
 -- =============================================================================
--- 7. PROCESOS POR CONJUNTOS: valor total, pagos, resenas y contrasenas
+-- 7. VALOR TOTAL, PAGOS, RESENAS Y CONTRASENAS
 -- =============================================================================
 
 -- 7.1 Valor total de cada reserva = hospedaje + servicios
@@ -845,89 +963,117 @@ COMMIT;
 -- 7.2 Pagos
 -- Anticipo del 50 % para todas las reservas. Su estado depende de la reserva:
 -- PENDIENTE -> pago PENDIENTE; CANCELADA -> REEMBOLSADO; resto -> APROBADO.
-INSERT INTO pago (id_reserva, id_cliente, fecha_pago, monto, metodo_pago, estado_pago)
-SELECT r.id_reserva,
-       r.id_cliente,
-       r.fecha_reserva + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(5, 180), 'MINUTE'),
-       ROUND(r.valor_total * 0.5, 2),
-       CASE TRUNC(DBMS_RANDOM.VALUE(1, 6))
-           WHEN 1 THEN 'TARJETA_CREDITO'
-           WHEN 2 THEN 'TARJETA_DEBITO'
-           WHEN 3 THEN 'TRANSFERENCIA'
-           WHEN 4 THEN 'PSE'
-           ELSE 'EFECTIVO'
-       END,
-       CASE r.estado
-           WHEN 'PENDIENTE' THEN 'PENDIENTE'
-           WHEN 'CANCELADA' THEN 'REEMBOLSADO'
-           ELSE 'APROBADO'
-       END
-FROM   reserva r;
+DECLARE
+    v_referencia TIMESTAMP := CAST(
+        TO_TIMESTAMP_TZ(:carga_referencia, 'FXYYYY-MM-DD HH24:MI:SS TZR')
+        AT TIME ZONE 'America/Bogota' AS TIMESTAMP);
+    v_fecha_pago TIMESTAMP;
+    v_minutos NUMBER;
+    v_horas NUMBER;
+    v_metodo_pago VARCHAR2(20);
+    v_estado_pago VARCHAR2(12);
 
--- Saldo del 50 % al hacer check-in (solo reservas ya iniciadas o finalizadas)
-INSERT INTO pago (id_reserva, id_cliente, fecha_pago, monto, metodo_pago, estado_pago)
-SELECT r.id_reserva,
-       r.id_cliente,
-       LEAST(
-           CAST(r.fecha_checkin AS TIMESTAMP)
-               + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(14, 20), 'HOUR'),
-           LOCALTIMESTAMP
-       ),
-       r.valor_total - ROUND(r.valor_total * 0.5, 2),
-       CASE TRUNC(DBMS_RANDOM.VALUE(1, 6))
-           WHEN 1 THEN 'TARJETA_CREDITO'
-           WHEN 2 THEN 'TARJETA_DEBITO'
-           WHEN 3 THEN 'TRANSFERENCIA'
-           WHEN 4 THEN 'PSE'
-           ELSE 'EFECTIVO'
-       END,
-       'APROBADO'
-FROM   reserva r
-WHERE  r.estado IN ('FINALIZADA', 'CHECKED_IN');
+    FUNCTION metodo_aleatorio RETURN VARCHAR2 IS
+        v_seleccion PLS_INTEGER := TRUNC(DBMS_RANDOM.VALUE(1, 6));
+    BEGIN
+        RETURN CASE v_seleccion
+            WHEN 1 THEN 'TARJETA_CREDITO'
+            WHEN 2 THEN 'TARJETA_DEBITO'
+            WHEN 3 THEN 'TRANSFERENCIA'
+            WHEN 4 THEN 'PSE'
+            ELSE 'EFECTIVO'
+        END;
+    END;
+BEGIN
+    -- El cursor ordenado decide una vez cada valor aleatorio en PL/SQL.
+    FOR reserva_actual IN (
+        SELECT id_reserva, id_cliente, fecha_reserva, fecha_checkin, estado, valor_total
+        FROM reserva ORDER BY id_reserva
+    ) LOOP
+        v_minutos := DBMS_RANDOM.VALUE(5, 180);
+        v_fecha_pago := LEAST(
+            reserva_actual.fecha_reserva + NUMTODSINTERVAL(v_minutos, 'MINUTE'),
+            v_referencia);
+        v_metodo_pago := metodo_aleatorio;
+        v_estado_pago := CASE reserva_actual.estado
+            WHEN 'PENDIENTE' THEN 'PENDIENTE'
+            WHEN 'CANCELADA' THEN 'REEMBOLSADO'
+            ELSE 'APROBADO'
+        END;
+        INSERT INTO pago (id_reserva, id_cliente, fecha_pago, monto, metodo_pago, estado_pago)
+        VALUES (reserva_actual.id_reserva, reserva_actual.id_cliente, v_fecha_pago,
+                ROUND(reserva_actual.valor_total * 0.5, 2), v_metodo_pago, v_estado_pago);
 
-COMMIT;
+        -- Saldo del 50 % solo para estadias iniciadas o finalizadas.
+        IF reserva_actual.estado IN ('FINALIZADA', 'CHECKED_IN') THEN
+            v_horas := DBMS_RANDOM.VALUE(14, 20);
+            v_fecha_pago := LEAST(
+                CAST(reserva_actual.fecha_checkin AS TIMESTAMP)
+                    + NUMTODSINTERVAL(v_horas, 'HOUR'), v_referencia);
+            v_metodo_pago := metodo_aleatorio;
+            INSERT INTO pago (id_reserva, id_cliente, fecha_pago, monto, metodo_pago, estado_pago)
+            VALUES (reserva_actual.id_reserva, reserva_actual.id_cliente, v_fecha_pago,
+                    reserva_actual.valor_total - ROUND(reserva_actual.valor_total * 0.5, 2),
+                    v_metodo_pago, 'APROBADO');
+        END IF;
+    END LOOP;
+    COMMIT;
+END;
+/
 
 -- 7.3 Resenas: cerca del 40 % de las reservas finalizadas deja una.
 --     La calificacion se inclina hacia 4 y 5, como suele pasar en turismo.
-INSERT INTO resena (id_reserva, id_alojamiento, calificacion, comentario, fecha_resena)
-SELECT x.id_reserva,
-       x.id_alojamiento,
-       x.calificacion,
-       CASE x.calificacion
-           WHEN 5 THEN 'Excelente estadia, el paisaje cafetero y la atencion fueron increibles.'
-           WHEN 4 THEN 'Muy buena experiencia, volveriamos con gusto.'
-           WHEN 3 THEN 'Estadia aceptable, aunque hay aspectos por mejorar.'
-           WHEN 2 THEN 'La habitacion no correspondia a lo ofrecido.'
-           ELSE 'Mala experiencia, no la recomendamos.'
-       END,
-       LEAST(
-           CAST(x.fecha_checkout AS TIMESTAMP)
-               + NUMTODSINTERVAL(DBMS_RANDOM.VALUE(0.3, 10), 'DAY'),
-           LOCALTIMESTAMP
-       )
-FROM (
-        SELECT /*+ NO_MERGE */
-               r.id_reserva,
-               r.id_alojamiento,
-               r.fecha_checkout,
-               CASE
-                   WHEN r.azar < 0.45 THEN 5
-                   WHEN r.azar < 0.80 THEN 4
-                   WHEN r.azar < 0.92 THEN 3
-                   WHEN r.azar < 0.97 THEN 2
-                   ELSE 1
-               END AS calificacion
-        FROM (
-                SELECT /*+ NO_MERGE */
-                       id_reserva, id_alojamiento, fecha_checkout,
-                       DBMS_RANDOM.VALUE AS azar
-                FROM   reserva
-                WHERE  estado = 'FINALIZADA'
-             ) r
-     ) x
-WHERE DBMS_RANDOM.VALUE < 0.40;
-
-COMMIT;
+DECLARE
+    v_referencia TIMESTAMP := CAST(
+        TO_TIMESTAMP_TZ(:carga_referencia, 'FXYYYY-MM-DD HH24:MI:SS TZR')
+        AT TIME ZONE 'America/Bogota' AS TIMESTAMP);
+    v_incluir NUMBER;
+    v_calificacion_azar NUMBER;
+    v_demora_dias NUMBER;
+    v_calificacion PLS_INTEGER;
+    v_comentario VARCHAR2(1000);
+    v_fecha_resena TIMESTAMP;
+    v_total_finalizadas PLS_INTEGER := 0;
+    v_total_resenas PLS_INTEGER := 0;
+BEGIN
+    FOR reserva_actual IN (
+        SELECT id_reserva, id_alojamiento, fecha_checkout
+        FROM reserva WHERE estado = 'FINALIZADA' ORDER BY id_reserva
+    ) LOOP
+        v_total_finalizadas := v_total_finalizadas + 1;
+        -- Una decision por reserva; el optimizador SQL no evalua el muestreo.
+        v_incluir := DBMS_RANDOM.VALUE;
+        IF v_incluir < 0.40 THEN
+            v_calificacion_azar := DBMS_RANDOM.VALUE;
+            v_calificacion := CASE
+                WHEN v_calificacion_azar < 0.45 THEN 5
+                WHEN v_calificacion_azar < 0.80 THEN 4
+                WHEN v_calificacion_azar < 0.92 THEN 3
+                WHEN v_calificacion_azar < 0.97 THEN 2
+                ELSE 1
+            END;
+            v_comentario := CASE v_calificacion
+                WHEN 5 THEN 'Excelente estadia, el paisaje cafetero y la atencion fueron increibles.'
+                WHEN 4 THEN 'Muy buena experiencia, volveriamos con gusto.'
+                WHEN 3 THEN 'Estadia aceptable, aunque hay aspectos por mejorar.'
+                WHEN 2 THEN 'La habitacion no correspondia a lo ofrecido.'
+                ELSE 'Mala experiencia, no la recomendamos.'
+            END;
+            v_demora_dias := DBMS_RANDOM.VALUE(0.3, 10);
+            v_fecha_resena := LEAST(
+                CAST(reserva_actual.fecha_checkout AS TIMESTAMP)
+                    + NUMTODSINTERVAL(v_demora_dias, 'DAY'), v_referencia);
+            INSERT INTO resena (id_reserva, id_alojamiento, calificacion, comentario, fecha_resena)
+            VALUES (reserva_actual.id_reserva, reserva_actual.id_alojamiento,
+                    v_calificacion, v_comentario, v_fecha_resena);
+            v_total_resenas := v_total_resenas + 1;
+        END IF;
+    END LOOP;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Resenas: ' || v_total_resenas
+                         || ' de ' || v_total_finalizadas || ' reservas finalizadas.');
+END;
+/
 
 -- 7.4 Hash de contrasenas (SHA-256). La contrasena de ejemplo de cada usuario
 --     es su username seguido de ':TurismoUQ2026'. Nunca se guarda en claro.
@@ -988,6 +1134,7 @@ SELECT 'SERVICIO',                 COUNT(*)          FROM servicio              
 SELECT 'TEMPORADA',                COUNT(*)          FROM temporada             UNION ALL
 SELECT 'TARIFA',                   COUNT(*)          FROM tarifa                UNION ALL
 SELECT 'RESERVA_HABITACION',       COUNT(*)          FROM reserva_habitacion    UNION ALL
+SELECT 'TRAMOS_TARIFA_APLICADA',   COUNT(*)          FROM reserva_habitacion_tarifa_aplicada UNION ALL
 SELECT 'PAGO',                     COUNT(*)          FROM pago                  UNION ALL
 SELECT 'RESENA',                   COUNT(*)          FROM resena;
 
@@ -1028,3 +1175,6 @@ WHERE  r.valor_total <>
 -- =============================================================================
 -- FIN DEL SCRIPT DE CARGA
 -- =============================================================================
+
+-- Aceptacion obligatoria: detiene la corrida si algun criterio no se cumple.
+@@scripts/verificar_entrega1.sql

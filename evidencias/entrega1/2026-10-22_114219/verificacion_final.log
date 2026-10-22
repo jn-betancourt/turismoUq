@@ -1,0 +1,41 @@
+=== VERIFICACION DE ESTRUCTURA Y DATOS TURISMOUQ ===
+OK: las 22 tablas del modelo estan presentes.
+
+PL/SQL procedure successfully completed.
+
+OK: MUNICIPIO=12; minimo=12
+OK: ALOJAMIENTO=60; minimo=60
+OK: HABITACION=400; minimo=400
+OK: CLIENTE=3000; minimo=3000
+OK: RESERVA=25000; minimo=25000
+OK: RESERVA_SERVICIO=42735; minimo=40000
+OK: Restricciones deshabilitadas o sin validar = 0.
+OK: Tablas sin llave primaria = 0.
+OK: llaves unicas requeridas y llave de tramos historicos.
+OK: llaves foraneas requeridas, incluida la FK compuesta de tramos.
+OK: Reservas sin alojamiento o con fechas invalidas/con hora = 0.
+OK: Reservas sin habitaciones asignadas = 0.
+OK: Habitaciones de otro alojamiento o con capacidad excedida = 0.
+OK: Servicios de otro alojamiento o con subtotal inconsistente = 0.
+OK: Pagos asociados a otro cliente = 0.
+OK: Resenas de otro alojamiento o de estadias no finalizadas = 0.
+OK: Temporadas con fechas invalidas/con hora = 0.
+OK: Temporadas solapadas = 0.
+OK: Discontinuidades en el calendario de temporadas = 0.
+OK: cobertura unica y continua de temporadas durante todas las estadias.
+OK: Combinaciones habitacion/temporada sin tarifa positiva = 0.
+OK: Combinaciones habitacion/temporada duplicadas = 0.
+OK: Reservas solapadas por habitacion (todos los estados) = 0.
+OK: todas las habitaciones reservadas tienen evidencia de tarifa aplicada.
+OK: Tramos con fechas, precio, tipo u origen/evidencia invalidos = 0.
+OK: Tramos fuera de estadia, con huecos o solapados = 0.
+OK: Cobertura exacta e importe historico por habitacion inconsistentes = 0.
+OK: Totales de reserva distintos de hospedaje mas servicios = 0.
+OK: Tabla historica fuera de su tablespace propio = 0.
+OK: Indices historicos fuera del tablespace propio = 0.
+INFORMACION: tramos reconstruidos con evidencia declarada=0
+VERIFICACION ESTRUCTURA Y DATOS E1: APROBADA.
+Esta verificacion no acredita por si sola la ejecucion de las ocho consultas.
+
+PL/SQL procedure successfully completed.
+

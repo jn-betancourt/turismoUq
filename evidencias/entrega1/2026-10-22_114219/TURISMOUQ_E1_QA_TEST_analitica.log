@@ -1,0 +1,45 @@
+
+Session altered.
+
+
+View created.
+
+
+Comment created.
+
+
+View created.
+
+
+Comment created.
+
+
+View created.
+
+
+Comment created.
+
+
+View created.
+
+
+Comment created.
+
+
+Materialized view created.
+
+
+Comment created.
+
+
+OBJECT_NAME															 OBJECT_TYPE		 STATUS
+-------------------------------------------------------------------------------------------------------------------------------- ----------------------- -------
+MV_OCUPACION_MENSUAL														 MATERIALIZED VIEW	 VALID
+MV_OCUPACION_MENSUAL														 TABLE			 VALID
+VW_CALENDARIO_MES														 VIEW			 VALID
+VW_INGRESO_HOSPEDAJE_TEMPORADA													 VIEW			 VALID
+VW_INGRESO_RESERVA														 VIEW			 VALID
+VW_OCUPACION_MENSUAL_BASE													 VIEW			 VALID
+
+6 rows selected.
+

@@ -1,0 +1,308 @@
+
+Session altered.
+
+
+Session altered.
+
+SEMILLA=20262
+REFERENCIA=2026-10-22 12:00:00 America/Bogota
+CONTROL INICIAL: 22 tablas vacias; carga autorizada.
+
+PL/SQL procedure successfully completed.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+1 row created.
+
+
+Commit complete.
+
+Usuarios cargados.
+
+PL/SQL procedure successfully completed.
+
+Alojamientos: 60, habitaciones: 400, servicios: 302
+
+PL/SQL procedure successfully completed.
+
+Temporadas: 31
+
+PL/SQL procedure successfully completed.
+
+Tarifas: 12400
+
+PL/SQL procedure successfully completed.
+
+Reservas generadas: 5000
+Reservas generadas: 10000
+Reservas generadas: 15000
+Reservas generadas: 20000
+Reservas generadas: 25000
+Reservas: 25000 | habitaciones reservadas: 30973 | tramos capturados: 32993 | lineas de servicio: 42735 | intentos: 81450
+
+PL/SQL procedure successfully completed.
+
+
+25000 rows updated.
+
+
+Commit complete.
+
+
+PL/SQL procedure successfully completed.
+
+Resenas: 8211 de 20679 reservas finalizadas.
+
+PL/SQL procedure successfully completed.
+
+
+3037 rows updated.
+
+
+Commit complete.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+Table altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+TABLA		      FILAS	MINIMO CU
+---------------- ---------- ---------- --
+MUNICIPIO		 12	    12 SI
+ALOJAMIENTO		 60	    60 SI
+HABITACION		400	   400 SI
+CLIENTE 	       3000	  3000 SI
+RESERVA 	      25000	 25000 SI
+RESERVA_SERVICIO      42735	 40000 SI
+
+6 rows selected.
+
+
+TABLA			    FILAS
+---------------------- ----------
+USUARIO_SISTEMA 	     3037
+PROPIETARIO		       30
+TIPO_ALOJAMIENTO		6
+TIPO_HABITACION 		6
+COMODIDAD		       14
+ALOJAMIENTO_COMODIDAD	      376
+SERVICIO		      302
+TEMPORADA		       31
+TARIFA			    12400
+RESERVA_HABITACION	    30973
+TRAMOS_TARIFA_APLICADA	    32993
+PAGO			    45723
+RESENA			     8211
+
+13 rows selected.
+
+
+      ANIO ESTADO	  RESERVAS
+---------- ------------ ----------
+      2024 CANCELADA	       863
+      2024 FINALIZADA	      7443
+      2025 CANCELADA	       820
+      2025 FINALIZADA	      7425
+      2026 CANCELADA	       840
+      2026 CHECKED_IN		44
+      2026 CONFIRMADA	      1379
+      2026 FINALIZADA	      5811
+      2026 PENDIENTE	       375
+
+9 rows selected.
+
+
+SOLAPAMIENTOS
+-------------
+	    0
+
+
+TEMPORADAS_SOLAPADAS
+--------------------
+		   0
+
+
+RESERVAS_INCONSISTENTES
+-----------------------
+		      0
+
+=== VERIFICACION DE ESTRUCTURA Y DATOS TURISMOUQ ===
+OK: las 22 tablas del modelo estan presentes.
+
+PL/SQL procedure successfully completed.
+
+OK: MUNICIPIO=12; minimo=12
+OK: ALOJAMIENTO=60; minimo=60
+OK: HABITACION=400; minimo=400
+OK: CLIENTE=3000; minimo=3000
+OK: RESERVA=25000; minimo=25000
+OK: RESERVA_SERVICIO=42735; minimo=40000
+OK: Restricciones deshabilitadas o sin validar = 0.
+OK: Tablas sin llave primaria = 0.
+OK: llaves unicas requeridas y llave de tramos historicos.
+OK: llaves foraneas requeridas, incluida la FK compuesta de tramos.
+OK: Reservas sin alojamiento o con fechas invalidas/con hora = 0.
+OK: Reservas sin habitaciones asignadas = 0.
+OK: Habitaciones de otro alojamiento o con capacidad excedida = 0.
+OK: Servicios de otro alojamiento o con subtotal inconsistente = 0.
+OK: Pagos asociados a otro cliente = 0.
+OK: Resenas de otro alojamiento o de estadias no finalizadas = 0.
+OK: Temporadas con fechas invalidas/con hora = 0.
+OK: Temporadas solapadas = 0.
+OK: Discontinuidades en el calendario de temporadas = 0.
+OK: cobertura unica y continua de temporadas durante todas las estadias.
+OK: Combinaciones habitacion/temporada sin tarifa positiva = 0.
+OK: Combinaciones habitacion/temporada duplicadas = 0.
+OK: Reservas solapadas por habitacion (todos los estados) = 0.
+OK: todas las habitaciones reservadas tienen evidencia de tarifa aplicada.
+OK: Tramos con fechas, precio, tipo u origen/evidencia invalidos = 0.
+OK: Tramos fuera de estadia, con huecos o solapados = 0.
+OK: Cobertura exacta e importe historico por habitacion inconsistentes = 0.
+OK: Totales de reserva distintos de hospedaje mas servicios = 0.
+OK: Tabla historica fuera de su tablespace propio = 0.
+OK: Indices historicos fuera del tablespace propio = 0.
+INFORMACION: tramos reconstruidos con evidencia declarada=0
+VERIFICACION ESTRUCTURA Y DATOS E1: APROBADA.
+Esta verificacion no acredita por si sola la ejecucion de las ocho consultas.
+
+PL/SQL procedure successfully completed.
+

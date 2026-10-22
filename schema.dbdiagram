@@ -98,6 +98,12 @@
         "y": 616
       },
       {
+        "name": "reserva_habitacion_tarifa_aplicada",
+        "schemaName": "public",
+        "x": 3325,
+        "y": 616
+      },
+      {
         "name": "pago",
         "schemaName": "public",
         "x": 2621.7177734375,
