@@ -1,0 +1,646 @@
+{
+  "status": "PASS",
+  "schemas": [
+    "TURISMOUQ_E1_QA",
+    "TURISMOUQ_E1_QA_REPRO",
+    "TURISMOUQ_E1_QA_TEST"
+  ],
+  "preserved_schema": "TURISMOUQ",
+  "run_id": "2026-10-22_114219",
+  "source_sha256": {
+    "01_DDL_TURISMOUQ_ORACLE21C.sql": "37580adb692c8a235e150db8c6835999cdc1be06e8b36422ef00b34b24fb2042",
+    "02_carga.sql": "34a7ffcaf26daf543c7d4a4ac12953fa5b7171fe491a9871b3ca4d56a569f86f",
+    "03_consultas_analisis.sql": "831d398795807b79e0128df6971c1634290e01f372db78f10a8ec0a113f99db5",
+    "consultas/01_ocupacion_municipio_mes.sql": "5ffe4d7ca605a1da80d259e413a7bb833fcc29c990c1f2234fde6901a63ad4e5",
+    "consultas/02_ingresos_temporada.sql": "6d8d834e5521e76fe1f81722df298f56449e58b17ba652fb39572dec414c1738",
+    "consultas/03_top_alojamientos.sql": "f88baa1b9d24a5eb8decbfd0961adbf06499be2acabe680cf5f6a0eb31b68427",
+    "consultas/04_variacion_ingresos.sql": "e980b4a563b05c9b2bba10adf0e046c90b8c660a233b44cd6b5965c738e63ecc",
+    "consultas/05_consulta_parametrizada.sql": "ee629f742e5398934681bd8dc973d4943ad7fa65afaa9fb9608201fd231da87e",
+    "consultas/06_ocupacion_materializada.sql": "1f6b9f376d199847cf92c93958888241d90e22afb91133ed5e8ba965af181de5",
+    "consultas/07_composicion_ingresos.sql": "5da92ef11d6e3367dc36afb6aad4e8173d52492c1878148dc5552fee001579e7",
+    "consultas/08_anticipacion_cancelaciones.sql": "717e383fbd46ea8aa17e4f8bd61bdea82be194bc7c0eec9708304ca4a23907c9",
+    "migraciones/001_tramos_tarifarios.sql": "c450ef557c5b14e4038ca23e9e545b4df134127b3579ee4c5c79ccf451c532eb",
+    "scripts/crear_tablespace.sql": "1d094ec3c675df550d274ca08d88aa5bbec00171a13d45184ab7465e53ac484f",
+    "scripts/ejecutar_consulta_parametrizada_sqlplus.sql": "0fb0c5b0a325a16aee4a7a9eb915849bbfacba87b0b7a0c71096c59749f5fc53",
+    "scripts/preparar_analitica.sql": "0eab391378ea9a0b4c8b6ec6a62dc8e5f4bd06d126031b39f45aaaef116917a7",
+    "scripts/refrescar_ocupacion.sql": "6a08e335800fbd64639147c4bf8c7e189cb0907fe88ab86b7f316d6bc3cbd23c",
+    "scripts/validar_parametros_consulta.sql": "660bddd288ebd886d9d274747d43130e666867dbda98dc26ecedf1d701530194",
+    "scripts/verificar_entrega1.sql": "5b7b22053e2b007f607ee3e1824e07f022cfad8529368f33a4e6ece21f2ef1a5",
+    "tests/probar_consultas.py": "29dc28fc30e777810f1bb61668139838057e534f855df12b4af3045fdfe5b483",
+    "tests/validar_local.py": "606c5ae30a59a00bdbf58bc0882f9edab726e93b2e2aa78ae012f7d839e8b86c"
+  },
+  "tests": [
+    {
+      "id": "I01",
+      "status": "PASS",
+      "expected": "Rechazar las tres anomalias de cobertura/capacidad",
+      "observed": [
+        {
+          "anomaly": "tarifa faltante",
+          "rejected_with": 20116
+        },
+        {
+          "anomaly": "capacidad excedida",
+          "rejected_with": 20108
+        },
+        {
+          "anomaly": "temporadas solapadas",
+          "rejected_with": 20113
+        }
+      ]
+    },
+    {
+      "id": "I02",
+      "status": "PASS",
+      "expected": "Aceptar contiguas y rechazar superpuestas",
+      "observed": {
+        "contiguous_pairs_accepted": 3736,
+        "overlap_error": 20118
+      }
+    },
+    {
+      "id": "P04",
+      "status": "PASS",
+      "expected": "Resultados iguales con binds desde dos clientes",
+      "observed": {
+        "clients": [
+          "SQLPlus",
+          "python-oracledb"
+        ],
+        "rows": 60
+      }
+    },
+    {
+      "id": "P01",
+      "status": "PASS",
+      "expected": {
+        "reservations": 2,
+        "income": 200
+      },
+      "observed": {
+        "binds": {
+          "fecha_ini": "2025-06-01",
+          "fecha_fin": "2025-07-31"
+        },
+        "rows": [
+          {
+            "municipio": "Municipio prueba",
+            "alojamiento": "A",
+            "num_reservas": 2,
+            "ingreso_total": 200,
+            "ticket_promedio": 100,
+            "noches_promedio": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "P02",
+      "status": "PASS",
+      "expected": {
+        "reservations": 1,
+        "income": 100
+      },
+      "observed": {
+        "binds": {
+          "fecha_ini": "2025-06-01",
+          "fecha_fin": "2025-06-01"
+        },
+        "rows": [
+          {
+            "municipio": "Municipio prueba",
+            "alojamiento": "A",
+            "num_reservas": 1,
+            "ingreso_total": 100,
+            "ticket_promedio": 100,
+            "noches_promedio": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "P03",
+      "status": "PASS",
+      "expected": {
+        "null": 20051,
+        "format": 20052,
+        "invalid_date": 20052,
+        "reversed": 20053
+      },
+      "observed": [
+        {
+          "fecha_ini": null,
+          "fecha_fin": "2025-07-31",
+          "oracle_code": 20051
+        },
+        {
+          "fecha_ini": "2025-6-01",
+          "fecha_fin": "2025-07-31",
+          "oracle_code": 20052
+        },
+        {
+          "fecha_ini": "2025-02-30",
+          "fecha_fin": "2025-07-31",
+          "oracle_code": 20052
+        },
+        {
+          "fecha_ini": "2025-07-31",
+          "fecha_fin": "2025-06-01",
+          "oracle_code": 20053
+        }
+      ]
+    },
+    {
+      "id": "H01",
+      "status": "PASS",
+      "expected": {
+        "ALTA": 200,
+        "BAJA": 300,
+        "total": 500
+      },
+      "observed": {
+        "detail": {
+          "ALTA": 200,
+          "BAJA": 300
+        },
+        "total": {
+          "municipio": "*** TOTAL GENERAL ***",
+          "tipo_alojamiento": null,
+          "temporada": null,
+          "nivel_agregacion": 7,
+          "ingreso_hospedaje": 500,
+          "importe_sin_desglose": 0,
+          "detalles_sin_desglose": 0
+        }
+      }
+    },
+    {
+      "id": "H02",
+      "status": "PASS",
+      "expected": {
+        "historical": 500,
+        "new_quote": 540
+      },
+      "observed": {
+        "historical": 500,
+        "new_quote": 540
+      }
+    },
+    {
+      "id": "H03",
+      "status": "PASS",
+      "expected": {
+        "total": 500,
+        "without_breakdown": 500
+      },
+      "observed": {
+        "municipio": "Municipio prueba",
+        "tipo_alojamiento": "Hotel",
+        "temporada": "SIN DESGLOSE HISTORICO",
+        "nivel_agregacion": 0,
+        "ingreso_hospedaje": 500,
+        "importe_sin_desglose": 500,
+        "detalles_sin_desglose": 1
+      }
+    },
+    {
+      "id": "O01",
+      "status": "PASS",
+      "expected": {
+        "nights": 367,
+        "january_2025_nights": 1
+      },
+      "observed": {
+        "total_nights": 367,
+        "january": {
+          "noches_ocupadas": 1,
+          "noches_disponibles": 62,
+          "porcentaje": 1.61
+        },
+        "pivot_2025": {
+          "municipio": "Municipio prueba",
+          "anio": 2025,
+          "ene": 1.1,
+          "feb": 0,
+          "mar": 0,
+          "abr": 0,
+          "may": 0,
+          "jun": 0,
+          "jul": 0,
+          "ago": 0,
+          "sep": 0,
+          "oct": 0,
+          "nov": 0,
+          "dic": 0
+        }
+      }
+    },
+    {
+      "id": "O02",
+      "status": "PASS",
+      "expected": {
+        "january_nights": 1,
+        "february_nights": 0
+      },
+      "observed": {
+        "january": {
+          "noches_ocupadas": 1,
+          "noches_disponibles": 62,
+          "porcentaje": 1.61
+        },
+        "february": {
+          "noches_ocupadas": 0,
+          "noches_disponibles": 56,
+          "porcentaje": 0
+        }
+      }
+    },
+    {
+      "id": "O03",
+      "status": "PASS",
+      "expected": {
+        "A": 16.13,
+        "B": 0,
+        "municipality": 10.8
+      },
+      "observed": {
+        "A": {
+          "noches_ocupadas": 10,
+          "noches_disponibles": 62,
+          "porcentaje": 16.13
+        },
+        "B": {
+          "noches_ocupadas": 0,
+          "noches_disponibles": 31,
+          "porcentaje": 0
+        },
+        "municipality_january": 10.8
+      }
+    },
+    {
+      "id": "O04",
+      "status": "PASS",
+      "expected": {
+        "A": 0,
+        "B": 0,
+        "municipality": 0
+      },
+      "observed": {
+        "A": {
+          "noches_ocupadas": 0,
+          "noches_disponibles": 56,
+          "porcentaje": 0
+        },
+        "B": {
+          "noches_ocupadas": 0,
+          "noches_disponibles": 28,
+          "porcentaje": 0
+        },
+        "municipality_february": 0
+      }
+    },
+    {
+      "id": "O05",
+      "status": "PASS",
+      "expected": {
+        "available_nights": 0,
+        "percentage": null
+      },
+      "observed": {
+        "occupancy": {
+          "noches_ocupadas": 0,
+          "noches_disponibles": 0,
+          "porcentaje": null
+        },
+        "municipality_january": null
+      }
+    },
+    {
+      "id": "L01",
+      "status": "PASS",
+      "expected": {
+        "february_change": -1000,
+        "february_pct": -100,
+        "march_change": 1500,
+        "march_pct": null
+      },
+      "observed": {
+        "february": {
+          "mes": "2025-02",
+          "ingreso": 0,
+          "ingreso_mes_anterior": 1000,
+          "ingreso_mismo_mes_anio_ant": 0,
+          "variacion_absoluta": -1000,
+          "variacion_pct": -100,
+          "variacion_anual_pct": null
+        },
+        "march": {
+          "mes": "2025-03",
+          "ingreso": 1500,
+          "ingreso_mes_anterior": 0,
+          "ingreso_mismo_mes_anio_ant": 0,
+          "variacion_absoluta": 1500,
+          "variacion_pct": null,
+          "variacion_anual_pct": null
+        }
+      }
+    },
+    {
+      "id": "L02",
+      "status": "PASS",
+      "expected": {
+        "previous_year": 100,
+        "annual_pct": 50
+      },
+      "observed": {
+        "mes": "2025-01",
+        "ingreso": 150,
+        "ingreso_mes_anterior": 0,
+        "ingreso_mismo_mes_anio_ant": 100,
+        "variacion_absoluta": 150,
+        "variacion_pct": null,
+        "variacion_anual_pct": 50
+      }
+    },
+    {
+      "id": "R01",
+      "status": "PASS",
+      "expected": {
+        "detail": 500,
+        "grouping_1": 500,
+        "grouping_3": 500,
+        "grouping_7": 500
+      },
+      "observed": [
+        {
+          "municipio": "Municipio prueba",
+          "tipo_alojamiento": "Hotel",
+          "temporada": "ALTA",
+          "nivel_agregacion": 0,
+          "ingreso_hospedaje": 200,
+          "importe_sin_desglose": 0,
+          "detalles_sin_desglose": 0
+        },
+        {
+          "municipio": "Municipio prueba",
+          "tipo_alojamiento": "Hotel",
+          "temporada": "BAJA",
+          "nivel_agregacion": 0,
+          "ingreso_hospedaje": 300,
+          "importe_sin_desglose": 0,
+          "detalles_sin_desglose": 0
+        },
+        {
+          "municipio": "Municipio prueba",
+          "tipo_alojamiento": "Hotel",
+          "temporada": "* Subtotal tipo *",
+          "nivel_agregacion": 1,
+          "ingreso_hospedaje": 500,
+          "importe_sin_desglose": 0,
+          "detalles_sin_desglose": 0
+        },
+        {
+          "municipio": "Municipio prueba",
+          "tipo_alojamiento": "** Subtotal municipio **",
+          "temporada": null,
+          "nivel_agregacion": 3,
+          "ingreso_hospedaje": 500,
+          "importe_sin_desglose": 0,
+          "detalles_sin_desglose": 0
+        },
+        {
+          "municipio": "*** TOTAL GENERAL ***",
+          "tipo_alojamiento": null,
+          "temporada": null,
+          "nivel_agregacion": 7,
+          "ingreso_hospedaje": 500,
+          "importe_sin_desglose": 0,
+          "detalles_sin_desglose": 0
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "status": "PASS",
+      "expected": {
+        "ranks": [
+          1,
+          2,
+          3,
+          3
+        ]
+      },
+      "observed": [
+        {
+          "municipio": "Municipio prueba",
+          "puesto": 1,
+          "alojamiento": "A",
+          "num_reservas": 1,
+          "ingreso_total": 500
+        },
+        {
+          "municipio": "Municipio prueba",
+          "puesto": 2,
+          "alojamiento": "B",
+          "num_reservas": 1,
+          "ingreso_total": 400
+        },
+        {
+          "municipio": "Municipio prueba",
+          "puesto": 3,
+          "alojamiento": "C",
+          "num_reservas": 1,
+          "ingreso_total": 300
+        },
+        {
+          "municipio": "Municipio prueba",
+          "puesto": 3,
+          "alojamiento": "D",
+          "num_reservas": 1,
+          "ingreso_total": 300
+        }
+      ]
+    },
+    {
+      "id": "U01",
+      "status": "PASS",
+      "expected": {
+        "HOSPEDAJE": [
+          800,
+          80
+        ],
+        "SERVICIOS": [
+          200,
+          20
+        ]
+      },
+      "observed": [
+        {
+          "municipio": "Municipio prueba",
+          "anio": 2025,
+          "concepto": "HOSPEDAJE",
+          "valor": 800,
+          "pct_del_total": 80
+        },
+        {
+          "municipio": "Municipio prueba",
+          "anio": 2025,
+          "concepto": "SERVICIOS",
+          "valor": 200,
+          "pct_del_total": 20
+        }
+      ]
+    },
+    {
+      "id": "U02",
+      "status": "PASS",
+      "expected": {
+        "HOSPEDAJE": [
+          0,
+          null
+        ],
+        "SERVICIOS": [
+          0,
+          null
+        ]
+      },
+      "observed": [
+        {
+          "municipio": "Municipio prueba",
+          "anio": 2025,
+          "concepto": "HOSPEDAJE",
+          "valor": 0,
+          "pct_del_total": null
+        },
+        {
+          "municipio": "Municipio prueba",
+          "anio": 2025,
+          "concepto": "SERVICIOS",
+          "valor": 0,
+          "pct_del_total": null
+        }
+      ]
+    },
+    {
+      "id": "N01",
+      "status": "PASS",
+      "expected": {
+        "season": "ALTA",
+        "reservations": 1,
+        "nights": 4
+      },
+      "observed": [
+        {
+          "tipo_temporada": "ALTA",
+          "total_reservas": 1,
+          "canceladas": 0,
+          "pct_cancelacion": 0,
+          "anticipacion_promedio_dias": 30,
+          "anticipacion_mediana_dias": 30,
+          "noches_promedio": 4
+        }
+      ]
+    },
+    {
+      "id": "N02",
+      "status": "PASS",
+      "expected": {
+        "reservations": 10,
+        "cancelled": 2,
+        "cancellation_pct": 20
+      },
+      "observed": [
+        {
+          "tipo_temporada": "BAJA",
+          "total_reservas": 10,
+          "canceladas": 2,
+          "pct_cancelacion": 20,
+          "anticipacion_promedio_dias": 30,
+          "anticipacion_mediana_dias": 30,
+          "noches_promedio": 1
+        }
+      ]
+    },
+    {
+      "id": "M01",
+      "status": "PASS",
+      "expected": {
+        "old_nights": 10,
+        "new_nights": 20,
+        "source_differences": 0
+      },
+      "observed": {
+        "initial_query": [
+          {
+            "municipio": "Municipio prueba",
+            "alojamiento": "B",
+            "mes": "2025-12",
+            "noches_ocupadas": 0,
+            "capacidad_noches_bruta": 31,
+            "pct_ocupacion_bruta": 0
+          },
+          {
+            "municipio": "Municipio prueba",
+            "alojamiento": "A",
+            "mes": "2025-12",
+            "noches_ocupadas": 10,
+            "capacidad_noches_bruta": 62,
+            "pct_ocupacion_bruta": 16.13
+          }
+        ],
+        "stale_nights": 10,
+        "source_nights": 20,
+        "refreshed_nights": 20,
+        "final_query": [
+          {
+            "municipio": "Municipio prueba",
+            "alojamiento": "B",
+            "mes": "2025-12",
+            "noches_ocupadas": 0,
+            "capacidad_noches_bruta": 31,
+            "pct_ocupacion_bruta": 0
+          }
+        ],
+        "source_differences": 0,
+        "remaining_fixture_rows": 0,
+        "remaining_mv_rows": 0
+      }
+    }
+  ],
+  "oracle": "Oracle Database 21c Express Edition Release 21.0.0.0.0 - Production\nVersion 21.3.0.0.0",
+  "python_oracledb": "26.0.1",
+  "python": "3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)]",
+  "operating_system": "Windows-11-10.0.26200-SP0",
+  "oracle_client": [
+    21,
+    3,
+    0,
+    0,
+    0
+  ],
+  "base_commit": "864e13ca48df1425bfa12b4020eec5028c27e25d",
+  "service": "localhost:1521/xepdb1",
+  "seed": 20262,
+  "reference_time": "2026-10-22T12:00:00-05:00",
+  "reproducibility": {
+    "status": "PASS",
+    "tables": 22,
+    "all_rows_identical": true,
+    "initial_client_calendars": [
+      "GREGORIAN",
+      "PERSIAN"
+    ]
+  },
+  "calendar_profile": {
+    "status": "PASS",
+    "initial": "PERSIAN",
+    "effective": "GREGORIAN",
+    "queries_executed": 8
+  },
+  "original_preserved": {
+    "status": "PASS",
+    "tables": 21,
+    "all_rows_identical": true
+  },
+  "duration_seconds": 92.14
+}

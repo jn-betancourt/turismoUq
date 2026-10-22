@@ -3,7 +3,7 @@
 // Plataforma de reservas turísticas del Quindío
 // Motor: Oracle XE 21c
 // Dialecto: DBML (para renderizado en dbdiagram.io)
-// Modelo Físico Completo y Normalizado (21 Tablas - Entrega 1)
+// Modelo físico de 22 tablas - Entrega 1. El DDL Oracle es el contrato ejecutable.
 // =============================================================================
 
 // -----------------------------------------------------------------------------
@@ -233,7 +233,7 @@ Table tarifa {
   indexes {
     (id_habitacion, id_temporada) [unique]
   }
-  Note: 'Tarifa aplicable sujeta a trigger de auditoría de sentencia'
+  Note: 'Catálogo vigente. El trigger de auditoría de sentencia sigue pendiente de Entrega 2'
 }
 
 // Auditoría Física de Variaciones de Precios (Entrega 2 DDL)
@@ -246,7 +246,7 @@ Table auditoria_tarifa {
   precio_nuevo number(12,2) [not null, note: 'Nuevo valor establecido']
   operacion operacion_auditoria_enum [not null, note: 'Operación DML interceptada']
 
-  Note: 'Histórico físico para el disparador de sentencia de la Entrega 2'
+  Note: 'Soporte futuro de Entrega 2, sin trigger instalado. DELETE requiere rediseñar precio_nuevo y la FK antes de implementarse'
 }
 
 // Cabecera Transaccional de Reserva (25.000 reservas)
@@ -268,12 +268,31 @@ Table reserva_habitacion {
   id_reserva number [not null, note: 'FK: Reserva padre']
   id_habitacion number [not null, note: 'FK: Habitación asignada']
   personas_hospedadas number [not null, note: 'Ocupantes asignados a la habitación (> 0)']
-  precio_estadia_habitacion number(12,2) [not null, note: 'Liquidado por fn_valor_estadia']
+  precio_estadia_habitacion number(12,2) [not null, note: 'Importe contratado de la habitación; fn_valor_estadia está pendiente de Entrega 2']
 
   indexes {
     (id_reserva, id_habitacion) [pk]
   }
   Note: 'Resuelve la relación N:M permitiendo múltiples habitaciones por reserva'
+}
+
+// Precios contratados por tramo de noches, con final exclusivo
+Table reserva_habitacion_tarifa_aplicada {
+  id_reserva number [not null]
+  id_habitacion number [not null]
+  fecha_inicio_tramo date [not null, note: 'Día incluido; fecha sin hora']
+  fecha_fin_tramo date [not null, note: 'Día excluido; sin hora y mayor al inicio']
+  id_temporada number [not null, note: 'Referencia a la temporada de origen']
+  tipo_temporada_aplicado varchar2(5) [not null, note: 'Tipo congelado: ALTA, MEDIA o BAJA']
+  precio_noche_aplicado number(12,2) [not null, note: 'Precio contratado por noche, mayor que cero']
+  origen_dato varchar2(24) [not null, note: 'CAPTURADO o RECONSTRUIDO_VALIDADO; sin valor implícito']
+  referencia_evidencia varchar2(200) [note: 'No puede estar vacía para RECONSTRUIDO_VALIDADO; opcional para CAPTURADO']
+
+  indexes {
+    (id_reserva, id_habitacion, fecha_inicio_tramo) [pk, name: 'pk_reserva_habitacion_tarifa_aplicada']
+    id_temporada [name: 'ix_reserva_tarifa_temporada']
+  }
+  Note: 'Intervalos [inicio, fin). DDL impone fechas de día, precio positivo, dominios y evidencia. Cobertura, no solapamiento y total pactado se validan como conjunto. No se reconstruye el pasado con TARIFA vigente'
 }
 
 // Transacciones Financieras de Reserva
@@ -355,9 +374,9 @@ Table historico_reserva {
   fecha_checkout date [not null, note: 'Fecha de salida']
   estado varchar2(20) [not null, note: 'Estado final (FINALIZADA, CANCELADA)']
   valor_total number(12,2) [not null, note: 'Monto total consolidado']
-  fecha_archivado timestamp [not null, default: `systimestamp`, note: 'Fecha de migración al tablespace histórico']
+  fecha_archivado timestamp [not null, default: `systimestamp`, note: 'Fecha de creación de la copia histórica']
 
-  Note: 'Almacenado físicamente en el tablespace TS_HISTORICO_RESERVAS (Entrega 1)'
+  Note: 'Copia en TS_HISTORICO_RESERVAS que conserva la reserva original mediante su FK; no traslada ni purga el origen'
 }
 
 // -----------------------------------------------------------------------------
@@ -390,6 +409,8 @@ Ref: reserva.id_cliente > cliente.id_usuario
 Ref: reserva.id_alojamiento > alojamiento.id_alojamiento
 Ref: reserva_habitacion.id_reserva > reserva.id_reserva
 Ref: reserva_habitacion.id_habitacion > habitacion.id_habitacion
+Ref: reserva_habitacion_tarifa_aplicada.(id_reserva, id_habitacion) > reserva_habitacion.(id_reserva, id_habitacion) [delete: cascade]
+Ref: reserva_habitacion_tarifa_aplicada.id_temporada > temporada.id_temporada
 Ref: reserva_servicio.id_reserva > reserva.id_reserva
 Ref: reserva_servicio.id_servicio > servicio.id_servicio
 
@@ -431,6 +452,7 @@ TableGroup Politica_Precios {
 TableGroup Reservas_Transacciones {
   reserva
   reserva_habitacion
+  reserva_habitacion_tarifa_aplicada
   reserva_servicio
   pago
   resena

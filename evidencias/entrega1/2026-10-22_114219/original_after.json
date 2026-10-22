@@ -1,0 +1,86 @@
+{
+  "ALOJAMIENTO": {
+    "rows": 60,
+    "sha256": "d59899a5db700eba8f34bbe5cce7f9f8b1683e561f7727d80708f751ac00071c"
+  },
+  "ALOJAMIENTO_COMODIDAD": {
+    "rows": 376,
+    "sha256": "787bd3cdac5dd0640f8bcb3ef0e67f5786fba35454cb8bf599415acbb62d290f"
+  },
+  "AUDITORIA_TARIFA": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "CLIENTE": {
+    "rows": 3000,
+    "sha256": "2497ff6f33b96f76e81c92058d363d96ce9dda36796c6a60181029d2ed6ac9e9"
+  },
+  "COMODIDAD": {
+    "rows": 14,
+    "sha256": "f3f909905a89e70d39987c75c4bf7d308fa461ea65d68428507ea900268a67aa"
+  },
+  "HABITACION": {
+    "rows": 400,
+    "sha256": "8b6ccb9e84e68c5120e5530d3a9ffbaf05c24f4c7f2128bdb8dfb01c3e51f7ff"
+  },
+  "HISTORICO_RESERVA": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "LIQUIDACION_MENSUAL": {
+    "rows": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "MUNICIPIO": {
+    "rows": 12,
+    "sha256": "c11803e0fd8dc37880c0ec2fbc6247a8dc353d72984627ad67be07fc3817e468"
+  },
+  "PAGO": {
+    "rows": 45725,
+    "sha256": "987823547e5f6e50f6a5e1d09956509465b7786a099591db773665c3243c6bee"
+  },
+  "PROPIETARIO": {
+    "rows": 30,
+    "sha256": "a5dadf4584c128383a61903f4d7955494e6e36a61fb20f92d32312d4946e8360"
+  },
+  "RESENA": {
+    "rows": 20681,
+    "sha256": "2db07ca8f2cd153f41c3736f207ecd51704469fa7efe10e8cbab8d57bf23de7c"
+  },
+  "RESERVA": {
+    "rows": 25000,
+    "sha256": "06601d5cc3c038fddfdd30c868bf22e9f4c3421ad05847bd383a6ece03dc0590"
+  },
+  "RESERVA_HABITACION": {
+    "rows": 30979,
+    "sha256": "231d4f506fe0c6bd68603632685659f47f571bdf0b95e4b52fc8a85a022b5c6b"
+  },
+  "RESERVA_SERVICIO": {
+    "rows": 42736,
+    "sha256": "4618eb4b98c9c62ace56a57e68ceda2a1b855f6a8b6d335fac6a56938b5e481d"
+  },
+  "SERVICIO": {
+    "rows": 302,
+    "sha256": "2d093f1421369a0bb7d8149b972f465b6811a3ab7f0f2f56d05f386d3f9385d7"
+  },
+  "TARIFA": {
+    "rows": 12400,
+    "sha256": "5e47c35648f1042b1396a8d4c1fe02776f2a95988d03a764b5a0c9118f9e1969"
+  },
+  "TEMPORADA": {
+    "rows": 31,
+    "sha256": "688d1f49e34260dec5960d20cf506240b6db76d405115525b342620ba410511b"
+  },
+  "TIPO_ALOJAMIENTO": {
+    "rows": 6,
+    "sha256": "8f7a3974615194cea1037385f138c60d13edc697c35638a69ef37361fef9d2e3"
+  },
+  "TIPO_HABITACION": {
+    "rows": 6,
+    "sha256": "ccd0cfaaab34873f4c3e61bfadc4b33cbc76bc99545d79f8d44d39bf9d0ec5a6"
+  },
+  "USUARIO_SISTEMA": {
+    "rows": 3037,
+    "sha256": "9f5cb913650a33dab8ea2833c2c4c4b78de9dad1cb42b8b78a4d01e63d7cf18a"
+  }
+}
