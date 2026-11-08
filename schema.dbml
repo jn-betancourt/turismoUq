@@ -297,6 +297,18 @@ Table reserva_habitacion_tarifa_aplicada {
 }
 
 // Transacciones Financieras de Reserva
+Table solicitud_pago {
+  usuario_oracle varchar2(128) [not null, note: 'SESSION_USER']
+  token_solicitud raw(16) [not null]
+  id_pago number [not null, unique]
+
+  indexes {
+    (usuario_oracle, token_solicitud) [pk]
+  }
+
+  Note: 'Entrega 3: relaciona la solicitud de recepción con su comprobante; no se concede acceso directo a esta tabla.'
+}
+
 Table pago {
   id_pago number [pk, increment, note: 'PK: Consecutivo de pago']
   id_reserva number [not null, note: 'FK: Reserva que genera el compromiso']
@@ -419,6 +431,7 @@ Ref: reserva_servicio.id_reserva > reserva.id_reserva
 Ref: reserva_servicio.id_servicio > servicio.id_servicio
 
 // Pagos, Reseñas, Liquidaciones e Histórico
+Ref: solicitud_pago.id_pago - pago.id_pago
 Ref: pago.id_reserva > reserva.id_reserva
 Ref: pago.id_cliente > cliente.id_usuario
 Ref: resena.id_reserva - reserva.id_reserva
@@ -459,6 +472,7 @@ TableGroup Reservas_Transacciones {
   reserva_habitacion_tarifa_aplicada
   reserva_servicio
   pago
+  solicitud_pago
   resena
   liquidacion_mensual
   historico_reserva

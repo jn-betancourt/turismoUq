@@ -16,7 +16,7 @@ SCRIPTS_DIR = BASE_DIR / "scripts"
 DEFAULT_DB_HOST = os.getenv("ORACLE_HOST", "localhost")
 DEFAULT_DB_PORT = int(os.getenv("ORACLE_PORT", "1521"))
 DEFAULT_DB_SERVICE = os.getenv("ORACLE_SERVICE", "xepdb1")
-DEFAULT_DB_USER = os.getenv("ORACLE_USER", "TURISMOUQ_E2")
+DEFAULT_DB_USER = os.getenv("ORACLE_USER", "TURISMOUQ_E3")
 DEFAULT_DB_PASSWORD = os.getenv("ORACLE_PASSWORD", "")
 
 # Informacion de consultas analiticas

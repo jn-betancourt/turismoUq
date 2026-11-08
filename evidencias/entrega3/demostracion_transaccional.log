@@ -1,0 +1,13 @@
+
+Session altered.
+
+
+Session altered.
+
+Primera reserva y pago listos en esta transaccion: 25008 / 45729
+Segundo intento rechazado: ORA-20401: El monto debe cubrir el total vigente de la reserva.
+Rollback parcial verificado: se conservo el primer trabajo y no quedo la segunda reserva.
+La demostracion revirtio el primer trabajo antes de salir.
+
+PL/SQL procedure successfully completed.
+

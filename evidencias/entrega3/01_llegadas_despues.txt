@@ -1,0 +1,24 @@
+SQL_ID  b2tnc2dgxc0b4, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS */ /* E3_bcc8e74a_despues_01_llegadas
+*/ id_reserva, fecha_checkin, estado, valor_total FROM reserva WHERE
+id_alojamiento = :alojamiento   AND fecha_checkin >= :inicio AND
+fecha_checkin < :fin ORDER BY fecha_checkin, id_reserva
+
+Plan hash value: 1011106839
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                             | Name                       | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                      |                            |      1 |        |      2 |00:00:00.01 |       4 |       |       |          |
+|   1 |  SORT ORDER BY                        |                            |      1 |      1 |      2 |00:00:00.01 |       4 |  2048 |  2048 | 2048  (0)|
+|*  2 |   FILTER                              |                            |      1 |        |      2 |00:00:00.01 |       4 |       |       |          |
+|   3 |    TABLE ACCESS BY INDEX ROWID BATCHED| RESERVA                    |      1 |      1 |      2 |00:00:00.01 |       4 |       |       |          |
+|*  4 |     INDEX RANGE SCAN                  | IX_E3_RESERVA_ALOJ_CHECKIN |      1 |      1 |      2 |00:00:00.01 |       2 |       |       |          |
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(:FIN>:INICIO)
+   4 - access("ID_ALOJAMIENTO"=:ALOJAMIENTO AND "FECHA_CHECKIN">=:INICIO AND "FECHA_CHECKIN"<:FIN)

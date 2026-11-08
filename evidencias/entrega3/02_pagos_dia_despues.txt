@@ -1,0 +1,24 @@
+SQL_ID  a44vsz0uxa3kf, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS */ /*
+E3_bcc8e74a_despues_02_pagos_dia */ COUNT(*) AS pagos, SUM(monto) AS
+total FROM pago WHERE TRUNC(fecha_pago) >= :inicio AND
+TRUNC(fecha_pago) < :fin
+
+Plan hash value: 2996118834
+
+------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                             | Name           | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                      |                |      1 |        |      1 |00:00:00.01 |      48 |
+|   1 |  SORT AGGREGATE                       |                |      1 |      1 |      1 |00:00:00.01 |      48 |
+|*  2 |   FILTER                              |                |      1 |        |     49 |00:00:00.01 |      48 |
+|   3 |    TABLE ACCESS BY INDEX ROWID BATCHED| PAGO           |      1 |     83 |     49 |00:00:00.01 |      48 |
+|*  4 |     INDEX RANGE SCAN                  | IX_E3_PAGO_DIA |      1 |     83 |     49 |00:00:00.01 |       2 |
+------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(:FIN>:INICIO)
+   4 - access("PAGO"."SYS_NC00008$">=:INICIO AND "PAGO"."SYS_NC00008$"<:FIN)

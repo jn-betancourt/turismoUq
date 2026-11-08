@@ -1,0 +1,11 @@
+
+Session altered.
+
+
+PL/SQL procedure successfully completed.
+
+
+MVIEW_NAME															 REFRESH_M REFRESH_ LAST_REF LAST_REFRESH_DATE	STALENESS	    COMPILE_STATE
+-------------------------------------------------------------------------------------------------------------------------------- --------- -------- -------- ------------------ ------------------- -------------------
+MV_OCUPACION_MENSUAL														 DEMAND    COMPLETE COMPLETE 07-NOV-26		FRESH		    VALID
+

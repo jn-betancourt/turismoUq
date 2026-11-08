@@ -1,12 +1,18 @@
-# TurismoUQ — Entregas 1 y 2
+# TurismoUQ — Entregas 1, 2 y 3
 
-Modelo de reservas turísticas para Oracle Database XE 21c, con 22 tablas, carga sintética reproducible y ocho consultas de análisis. Las definiciones de métricas, procedencia de precios y límites están en [el contrato analítico](docs/entrega1/contrato_analitico.md).
+Modelo de reservas turísticas para Oracle Database XE 21c, con 22 tablas base, carga sintética reproducible y ocho consultas de análisis. Las definiciones de métricas, procedencia de precios y límites están en [el contrato analítico](docs/entrega1/contrato_analitico.md).
+
+Para abrir la interfaz en Windows, haz doble clic en **`run_app.cmd`**. El [paso a paso de la interfaz](ABRIR_INTERFAZ_WINDOWS.md) explica preparación, conexión Oracle, cierre y solución de problemas.
 
 Para usar el esquema local ya preparado, seguir [EMPEZAR_AQUI.md](EMPEZAR_AQUI.md). La [validación final](docs/entrega1/resultado_validacion.md) aprobó 23 casos y las ocho consultas; [su evidencia](evidencias/entrega1/2026-10-22_114219/resultado.json) registra el entorno y los hashes del código ejecutado.
 
 La **Entrega 2 ya tiene implementación PL/SQL**: `pkg_turismouq` agrupa la función de estadía, la creación de reservas y la liquidación con cursor explícito parametrizado. Tres triggers compuestos auditan el precio de TARIFA y protegen los detalles y la cabecera frente a solapamientos.
 
 Para sustentar Entrega 2, seguir la [guía de ejecución](docs/entrega2/guia_sustentacion.md) y consultar el [resultado de validación](docs/entrega2/resultado_validacion.md). Su esquema local es **`TURISMOUQ_E2`**; los originales `TURISMOUQ` y `TURISMOUQ_E1` se conservan. El [plan del incremento](docs/entrega2/plan_incremento_plsql.md) queda como referencia del diseño.
+
+## Entrega 3: reserva y pago, índices y seguridad
+
+El esquema local **`TURISMOUQ_E3`** ya está instalado y validado en Oracle XE 21c. La GUI ofrece reserva y pago en una sola operación y muestra los módulos según la cuenta conectada. Para elegir la clave de una cuenta de demostración, abrir la GUI, instalar desde cero o reproducir los resultados, sigue la [guía de Entrega 3](docs/entrega3/guia_sustentacion.md). La [evidencia de Oracle](evidencias/entrega3) incluye los planes ejecutados y la prueba de concurrencia con dos sesiones.
 
 ## Entrega 2: ejecución e instalación
 
@@ -24,7 +30,7 @@ python tests/validar_entrega2.py --schema-prefix TURISMOUQ_E2_OTRA
 
 Requiere un clon Git con el historial E1 —incluido `06f5bd4`—, el mismo Python, `oracledb` y cliente Oracle indicados más abajo, autenticación administrativa local y ambos esquemas preservados existentes. El ZIP permite instalar y demostrar mediante SQL; el ejecutor automatizado necesita además ese historial Git. Si el cliente no se detecta, usar `--sqlplus` y `--oracle-client-lib`. Rechaza cuentas ya existentes; no borra ni restablece los esquemas preservados. `--resume-owned-run` se limita a una corrida propia acreditada y rota las claves de sus cuentas de validación; usarlo solo durante diagnóstico, antes de asignar contraseñas personales a esas cuentas.
 
-El usuario operativo de prueba recibe EXECUTE del paquete y carece de DML directo. Los triggers son objetos externos al paquete y combinan fases por fila/sentencia para evitar tabla mutante; la interpretación literal de esos rótulos de la rúbrica no fue confirmada por la profesora. El usuario autorizó esta solución técnica sin esperar esa respuesta. No hay GUI en este incremento.
+El usuario operativo de prueba recibe EXECUTE del paquete y carece de DML directo. Los triggers son objetos externos al paquete y combinan fases por fila/sentencia para evitar tabla mutante; la interpretación literal de esos rótulos de la rúbrica no fue confirmada por la profesora. El usuario autorizó esta solución técnica sin esperar esa respuesta. La GUI incluye módulos para consultar y operar esta capa.
 
 ## Archivos y responsabilidades
 

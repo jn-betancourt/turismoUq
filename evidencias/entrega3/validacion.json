@@ -1,0 +1,98 @@
+{
+  "oracle": "21.3.0.0.0",
+  "esquema": "TURISMOUQ_E3",
+  "fixture": {
+    "room": 1,
+    "lodging": 1,
+    "customer": 101
+  },
+  "atomicidad": {
+    "error_pago": -20401,
+    "trabajo_previo_conservado": true,
+    "rollback_final_demostracion": true
+  },
+  "seguridad": {
+    "roles_verificados": [
+      "RECEPCION",
+      "ADMIN_ALOJAMIENTO",
+      "GERENTE",
+      "AUDITOR"
+    ],
+    "limites": {
+      "CONNECT_TIME": "240",
+      "IDLE_TIME": "15",
+      "SESSIONS_PER_USER": "3"
+    },
+    "ora_cuarta_sesion": 2391,
+    "recepcion_solo_vistas": true,
+    "grants_objetos": [
+      [
+        "TURISMOUQ_E3_ADMIN_ALOJAMIENTO",
+        "V_E3_ADMIN_TARIFAS",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_ADMIN_ALOJAMIENTO",
+        "V_E3_ADMIN_TARIFAS",
+        "UPDATE"
+      ],
+      [
+        "TURISMOUQ_E3_AUDITOR",
+        "V_E3_AUDITORIA_TARIFA",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_GERENTE",
+        "V_E3_GERENCIA_MENSUAL",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_RECEPCION",
+        "V_E3_ALOJAMIENTOS",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_RECEPCION",
+        "V_E3_CLIENTES",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_RECEPCION",
+        "V_E3_HABITACIONES",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_RECEPCION",
+        "V_E3_SOLICITUD_PAGO",
+        "INSERT"
+      ],
+      [
+        "TURISMOUQ_E3_RECEPCION",
+        "V_E3_SOLICITUD_PAGO",
+        "SELECT"
+      ],
+      [
+        "TURISMOUQ_E3_RECEPCION",
+        "V_E3_TARIFAS_COTIZACION",
+        "SELECT"
+      ]
+    ]
+  },
+  "concurrencia": {
+    "sin_bloqueo": {
+      "reservas_solapadas": 2,
+      "insercion_b_ms": 0.483
+    },
+    "con_for_update": {
+      "sid_a": 862,
+      "sid_b": 1347,
+      "evento_oracle": "enq: TX - row lock contention",
+      "sesion_bloqueante": 862,
+      "rechazo_b": 20304,
+      "espera_b_ms": 23.218,
+      "reservas_confirmadas": 1,
+      "pagos": 1,
+      "comprobante_visible_solo_para_el_emisor": true
+    }
+  }
+}

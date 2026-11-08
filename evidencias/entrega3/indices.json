@@ -1,0 +1,219 @@
+{
+  "oracle": "21.3.0.0.0",
+  "repetitions": 15,
+  "cases": {
+    "01_llegadas": {
+      "binds": {
+        "inicio": "2025-06-15",
+        "fin": "2025-06-16",
+        "alojamiento": 27
+      },
+      "antes": {
+        "executions_including_warmup": 16,
+        "median_ms": 0.727,
+        "buffer_gets_per_execution": 220.0,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 1013941710,
+        "indexes": [],
+        "result_rows": 2
+      },
+      "despues": {
+        "executions_including_warmup": 16,
+        "median_ms": 0.268,
+        "buffer_gets_per_execution": 4.5,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 1011106839,
+        "indexes": [
+          "IX_E3_RESERVA_ALOJ_CHECKIN"
+        ],
+        "result_rows": 2
+      },
+      "mismas_filas": true,
+      "resultado": [
+        [
+          5405,
+          "2025-06-15T00:00:00",
+          "FINALIZADA",
+          2006000.0
+        ],
+        [
+          18163,
+          "2025-06-15T00:00:00",
+          "FINALIZADA",
+          1871000.0
+        ]
+      ]
+    },
+    "02_pagos_dia": {
+      "binds": {
+        "inicio": "2025-06-15",
+        "fin": "2025-06-16"
+      },
+      "antes": {
+        "executions_including_warmup": 16,
+        "median_ms": 26.553,
+        "buffer_gets_per_execution": 374.19,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 1585264519,
+        "indexes": [],
+        "result_rows": 1
+      },
+      "despues": {
+        "executions_including_warmup": 16,
+        "median_ms": 0.209,
+        "buffer_gets_per_execution": 48.12,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 2996118834,
+        "indexes": [
+          "IX_E3_PAGO_DIA"
+        ],
+        "result_rows": 1
+      },
+      "mismas_filas": true,
+      "resultado": [
+        [
+          49,
+          40870000
+        ]
+      ]
+    },
+    "03_salidas": {
+      "binds": {
+        "inicio": "2025-06-15",
+        "fin": "2025-06-16"
+      },
+      "antes": {
+        "executions_including_warmup": 16,
+        "median_ms": 0.943,
+        "buffer_gets_per_execution": 219.5,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 1013941710,
+        "indexes": [],
+        "result_rows": 13
+      },
+      "despues": {
+        "executions_including_warmup": 16,
+        "median_ms": 0.184,
+        "buffer_gets_per_execution": 15.5,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 4271371332,
+        "indexes": [
+          "IX_E3_RESERVA_ESTADO_CHECKOUT"
+        ],
+        "result_rows": 13
+      },
+      "mismas_filas": true,
+      "resultado": [
+        [
+          1024,
+          21,
+          "2025-06-15T00:00:00",
+          2218000.0
+        ],
+        [
+          1181,
+          38,
+          "2025-06-15T00:00:00",
+          966000.0
+        ],
+        [
+          1566,
+          51,
+          "2025-06-15T00:00:00",
+          1017000.0
+        ],
+        [
+          3587,
+          24,
+          "2025-06-15T00:00:00",
+          579000.0
+        ],
+        [
+          6993,
+          54,
+          "2025-06-15T00:00:00",
+          1068000.0
+        ],
+        [
+          11779,
+          49,
+          "2025-06-15T00:00:00",
+          2656000.0
+        ],
+        [
+          11914,
+          46,
+          "2025-06-15T00:00:00",
+          419000.0
+        ],
+        [
+          14166,
+          53,
+          "2025-06-15T00:00:00",
+          462000.0
+        ],
+        [
+          17155,
+          28,
+          "2025-06-15T00:00:00",
+          817000.0
+        ],
+        [
+          19151,
+          23,
+          "2025-06-15T00:00:00",
+          828000.0
+        ],
+        [
+          20520,
+          18,
+          "2025-06-15T00:00:00",
+          240000.0
+        ],
+        [
+          22977,
+          31,
+          "2025-06-15T00:00:00",
+          2121000.0
+        ],
+        [
+          24882,
+          35,
+          "2025-06-15T00:00:00",
+          986000.0
+        ]
+      ]
+    },
+    "04_pagos_todo_el_periodo": {
+      "binds": {
+        "inicio": "2023-01-01",
+        "fin": "2027-02-01"
+      },
+      "antes": {
+        "executions_including_warmup": 16,
+        "median_ms": 28.249,
+        "buffer_gets_per_execution": 373.12,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 1585264519,
+        "indexes": [],
+        "result_rows": 1
+      },
+      "despues": {
+        "executions_including_warmup": 16,
+        "median_ms": 29.043,
+        "buffer_gets_per_execution": 373.12,
+        "disk_reads_per_execution": 0.0,
+        "plan_hash": 1585264519,
+        "indexes": [],
+        "result_rows": 1
+      },
+      "mismas_filas": true,
+      "resultado": [
+        [
+          45723,
+          30833414000
+        ]
+      ]
+    }
+  }
+}

@@ -300,6 +300,30 @@ CREATE OR REPLACE PACKAGE BODY pkg_turismouq AS
         p_id_reserva OUT NUMBER,
         p_valor_total OUT NUMBER
     ) IS
+    BEGIN
+        SAVEPOINT turismouq_crear_reserva;
+        crear_reserva_en_sentencia(
+            p_id_cliente, p_id_alojamiento, p_fecha_in, p_fecha_out,
+            p_habitaciones, p_servicios, p_id_reserva, p_valor_total
+        );
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK TO turismouq_crear_reserva;
+            RAISE;
+    END sp_crear_reserva;
+
+    PROCEDURE crear_reserva_en_sentencia(
+        p_id_cliente IN NUMBER,
+        p_id_alojamiento IN NUMBER,
+        p_fecha_in IN DATE,
+        p_fecha_out IN DATE,
+        p_habitaciones IN lista_solicitudes_habitacion,
+        p_servicios IN lista_solicitudes_servicio,
+        p_id_reserva OUT NUMBER,
+        p_valor_total OUT NUMBER
+    )
+        ACCESSIBLE BY (PACKAGE pkg_turismouq, PACKAGE pkg_reserva_pago_interno)
+    IS
         v_ids lista_identificadores := lista_identificadores();
         v_ids_ordenados lista_identificadores;
         v_habitaciones lista_habitaciones_capturadas;
@@ -318,7 +342,6 @@ CREATE OR REPLACE PACKAGE BODY pkg_turismouq AS
     BEGIN
         p_id_reserva := NULL;
         p_valor_total := NULL;
-        SAVEPOINT turismouq_crear_reserva;
         validar_fechas(p_fecha_in, p_fecha_out);
         SELECT COUNT(*) INTO v_cantidad FROM cliente WHERE id_usuario = p_id_cliente;
         IF v_cantidad <> 1 THEN
@@ -490,11 +513,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_turismouq AS
         END LOOP;
         p_id_reserva := v_id_reserva;
         p_valor_total := v_total;
-    EXCEPTION
-        WHEN OTHERS THEN
-            ROLLBACK TO turismouq_crear_reserva;
-            RAISE;
-    END sp_crear_reserva;
+    END crear_reserva_en_sentencia;
 
     PROCEDURE sp_liquidar_mes(
         p_anio IN NUMBER,

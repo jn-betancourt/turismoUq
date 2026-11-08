@@ -1,0 +1,30 @@
+{
+  "streamlit_apptest": [
+    {
+      "role": "RECEPCION",
+      "menu": "Reserva y pago · Entrega 3",
+      "module_rendered": true,
+      "simulacion_sin_persistencia": true,
+      "registro_confirmado_oracle": true
+    },
+    {
+      "role": "ADMIN_ALOJAMIENTO",
+      "menu": "Administrar tarifas",
+      "module_rendered": true
+    },
+    {
+      "role": "GERENTE",
+      "menu": "Resumen mensual",
+      "module_rendered": true
+    },
+    {
+      "role": "AUDITOR",
+      "menu": "Cambios de tarifa",
+      "module_rendered": true
+    }
+  ],
+  "recepcion_thin": {
+    "simulacion": true,
+    "registro_confirmado_oracle": true
+  }
+}

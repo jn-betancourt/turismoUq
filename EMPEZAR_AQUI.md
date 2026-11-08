@@ -1,5 +1,7 @@
 # Empezar aquí — Entrega 1 de TurismoUQ
 
+Para usar la **interfaz en el navegador de Windows**, sigue [ABRIR_INTERFAZ_WINDOWS.md](ABRIR_INTERFAZ_WINDOWS.md) y abre `run_app.cmd`. La interfaz abre por defecto `TURISMOUQ_E3`; usa la [guía de Entrega 3](docs/entrega3/guia_sustentacion.md) para elegir una cuenta. El recorrido SQL de este documento corresponde a Entrega 1.
+
 Esta guía corresponde a los informes de **Entrega 1** en `TURISMOUQ_E1`. Para ejecutar la capa PL/SQL implementada de **Entrega 2**, utiliza el esquema separado `TURISMOUQ_E2` y su [guía de sustentación](docs/entrega2/guia_sustentacion.md).
 
 El esquema para usar la entrega es **`TURISMOUQ_E1`**. Ya contiene el modelo y la carga corregidos. El esquema original **`TURISMOUQ`** se conserva para comparación.

@@ -1,0 +1,24 @@
+SQL_ID  buq5dq0yahkzs, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS */ /* E3_bcc8e74a_despues_03_salidas
+*/ id_reserva, id_alojamiento, fecha_checkout, valor_total FROM reserva
+WHERE estado = 'FINALIZADA'   AND fecha_checkout >= :inicio AND
+fecha_checkout < :fin ORDER BY fecha_checkout, id_reserva
+
+Plan hash value: 4271371332
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                             | Name                          | Starts | E-Rows | A-Rows |   A-Time   | Buffers |  OMem |  1Mem | Used-Mem |
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                      |                               |      1 |        |     13 |00:00:00.01 |      15 |       |       |          |
+|   1 |  SORT ORDER BY                        |                               |      1 |     38 |     13 |00:00:00.01 |      15 |  2048 |  2048 | 2048  (0)|
+|*  2 |   FILTER                              |                               |      1 |        |     13 |00:00:00.01 |      15 |       |       |          |
+|   3 |    TABLE ACCESS BY INDEX ROWID BATCHED| RESERVA                       |      1 |     38 |     13 |00:00:00.01 |      15 |       |       |          |
+|*  4 |     INDEX RANGE SCAN                  | IX_E3_RESERVA_ESTADO_CHECKOUT |      1 |     38 |     13 |00:00:00.01 |       2 |       |       |          |
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(:FIN>:INICIO)
+   4 - access("ESTADO"='FINALIZADA' AND "FECHA_CHECKOUT">=:INICIO AND "FECHA_CHECKOUT"<:FIN)

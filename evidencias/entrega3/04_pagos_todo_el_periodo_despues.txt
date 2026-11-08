@@ -1,0 +1,24 @@
+SQL_ID  adff0n4gggwn5, child number 0
+-------------------------------------
+SELECT /*+ GATHER_PLAN_STATISTICS */ /*
+E3_bcc8e74a_despues_04_pagos_todo_el_periodo */ COUNT(*) AS pagos,
+SUM(monto) AS total FROM pago WHERE TRUNC(fecha_pago) >= :inicio AND
+TRUNC(fecha_pago) < :fin
+
+Plan hash value: 1585264519
+
+--------------------------------------------------------------------------------------
+| Id  | Operation           | Name | Starts | E-Rows | A-Rows |   A-Time   | Buffers |
+--------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT    |      |      1 |        |      1 |00:00:00.03 |     373 |
+|   1 |  SORT AGGREGATE     |      |      1 |      1 |      1 |00:00:00.03 |     373 |
+|*  2 |   FILTER            |      |      1 |        |  45723 |00:00:00.03 |     373 |
+|*  3 |    TABLE ACCESS FULL| PAGO |      1 |  45723 |  45723 |00:00:00.03 |     373 |
+--------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - filter(:FIN>:INICIO)
+   3 - filter((TRUNC(INTERNAL_FUNCTION("FECHA_PAGO"))>=:INICIO AND
+              TRUNC(INTERNAL_FUNCTION("FECHA_PAGO"))<:FIN))

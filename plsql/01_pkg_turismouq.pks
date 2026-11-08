@@ -64,6 +64,19 @@ CREATE OR REPLACE PACKAGE pkg_turismouq AUTHID DEFINER AS
         p_valor_total OUT NUMBER
     );
 
+    -- Sin control transaccional: solo para la escritura atomica desde E3.
+    PROCEDURE crear_reserva_en_sentencia(
+        p_id_cliente IN NUMBER,
+        p_id_alojamiento IN NUMBER,
+        p_fecha_in IN DATE,
+        p_fecha_out IN DATE,
+        p_habitaciones IN lista_solicitudes_habitacion,
+        p_servicios IN lista_solicitudes_servicio,
+        p_id_reserva OUT NUMBER,
+        p_valor_total OUT NUMBER
+    )
+        ACCESSIBLE BY (PACKAGE pkg_turismouq, PACKAGE pkg_reserva_pago_interno);
+
     PROCEDURE sp_liquidar_mes(
         p_anio IN NUMBER,
         p_mes IN NUMBER,

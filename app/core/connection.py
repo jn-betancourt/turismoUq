@@ -3,6 +3,7 @@ import time
 from contextlib import contextmanager
 from typing import Generator, Optional, Tuple, Dict, Any
 import oracledb
+import streamlit as st
 from app.config import (
     DEFAULT_DB_HOST,
     DEFAULT_DB_PORT,
@@ -49,12 +50,17 @@ class DatabaseConnectionManager:
         conn = oracledb.connect(
             user=self.user,
             password=self.password,
-            dsn=self.dsn
+            dsn=self.dsn,
+            tcp_connect_timeout=5
         )
-        # Inicializar sesion segun contrato del proyecto
-        with conn.cursor() as cursor:
-            cursor.execute("ALTER SESSION SET NLS_CALENDAR = 'GREGORIAN'")
-            cursor.execute("ALTER SESSION SET ISOLATION_LEVEL = READ COMMITTED")
+        conn.call_timeout = 30_000
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute("ALTER SESSION SET NLS_CALENDAR = 'GREGORIAN'")
+                cursor.execute("ALTER SESSION SET ISOLATION_LEVEL = READ COMMITTED")
+        except oracledb.Error:
+            conn.close()
+            raise
         return conn
 
     @contextmanager
@@ -100,5 +106,15 @@ class DatabaseConnectionManager:
         except Exception as exc:
             return False, f"Error de red o configuracion: {str(exc)}", {"error": str(exc)}
 
-# Instancia singleton para compartir estado entre componentes
-db_manager = DatabaseConnectionManager()
+class SessionDatabaseManager:
+    """Resuelve las credenciales del navegador actual, sin compartirlas entre sesiones."""
+
+    def __getattr__(self, name):
+        manager = st.session_state.get("_oracle_connection_manager")
+        if manager is None:
+            manager = DatabaseConnectionManager()
+            st.session_state["_oracle_connection_manager"] = manager
+        return getattr(manager, name)
+
+
+db_manager = SessionDatabaseManager()
