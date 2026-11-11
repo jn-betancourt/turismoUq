@@ -76,13 +76,21 @@ class Entrega3Service:
             views = {name for (name,) in cursor}
             cursor.execute("SELECT role FROM session_roles")
             roles = {role for (role,) in cursor}
-            is_owner = connection.username.upper() == self.owner
+            conn_user = connection.username.upper()
+            is_owner = conn_user == self.owner
+            is_admin = conn_user in ("SYS", "SYSTEM")
+            table_count = 0
+            if is_owner:
+                cursor.execute("SELECT COUNT(*) FROM user_tables")
+                table_count = int(cursor.fetchone()[0])
         return {
             "booking": VIEWS["receipts"] in views and (is_owner or f"{self.owner}_RECEPCION" in roles),
             "administration": VIEWS["administration"] in views,
             "management": VIEWS["management"] in views,
             "audit": VIEWS["audit"] in views,
-            "legacy": is_owner,
+            "legacy": is_owner and table_count > 0,
+            "migrations": is_owner or is_admin,
+            "schema_empty": (is_owner and table_count == 0) or is_admin,
             "roles": sorted(role for role in roles if role.startswith(f"{self.owner}_")),
         }
 

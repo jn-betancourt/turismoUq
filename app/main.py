@@ -23,6 +23,7 @@ from app.views.dashboard_consultas import render_dashboard
 from app.views.cotizador_reservas import render_cotizador_reservas
 from app.views.liquidaciones import render_liquidaciones
 from app.views.auditoria_tarifas import render_auditoria
+from app.views.migraciones import render_migraciones
 
 def load_css():
     css_file = APP_DIR / "static" / "style.css"
@@ -130,6 +131,8 @@ def main():
         st.markdown("---")
         st.markdown("### 🧭 Navegación")
         modules = {}
+        if access.get("migrations") and access.get("schema_empty"):
+            modules["🗄️ Migraciones e Inicialización (DDL / PL/SQL)"] = (render_migraciones, ())
         for permission, label, renderer in (
             ("booking", "Reserva y pago · Entrega 3", render_booking_payment),
             ("administration", "Administrar tarifas", render_tariff_administration),
@@ -145,6 +148,8 @@ def main():
                 "📑 Liquidación Mensual Contable": (render_liquidaciones, ()),
                 "🛡️ Auditoría de Tarifas & Triggers": (render_auditoria, ()),
             })
+        if access.get("migrations") and not access.get("schema_empty"):
+            modules["🗄️ Migraciones e Inicialización (DDL / PL/SQL)"] = (render_migraciones, ())
         documentation = "📖 Documentación & Modelo"
         modules[documentation] = (render_documentacion, ())
         menu = st.radio("Seleccione un módulo:", list(modules))

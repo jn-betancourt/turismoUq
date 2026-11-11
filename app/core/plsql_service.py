@@ -266,43 +266,44 @@ class PLSQLService:
     @staticmethod
     def get_clientes(limit: int = 50) -> pd.DataFrame:
         sql = f"""
-        SELECT c.id_cliente, u.nombre_completo, u.email, c.tipo_documento, c.numero_documento
+        SELECT c.id_usuario AS id_cliente, u.nombre_completo, u.email, c.tipo_documento, c.numero_documento
         FROM cliente c
         JOIN usuario_sistema u ON u.id_usuario = c.id_usuario
+        ORDER BY c.id_usuario
         FETCH FIRST {limit} ROWS ONLY
         """
         try:
             return PLSQLService._fetch_df(sql)
         except Exception:
             return pd.DataFrame([{
-                "id_cliente": 1, "nombre_completo": "Juan Perez",
+                "id_cliente": 101, "nombre_completo": "Juan Perez",
                 "email": "juan@turismouq.com", "tipo_documento": "CC", "numero_documento": "1094888001"
             }])
 
     @staticmethod
     def get_servicios(id_alojamiento: Optional[int] = None) -> pd.DataFrame:
-        sql = "SELECT id_servicio, id_alojamiento, nombre, precio, tipo_cobro FROM servicio"
+        sql = "SELECT id_servicio, id_alojamiento, nombre, precio_unitario AS precio, estado AS tipo_cobro FROM servicio WHERE estado = 'ACTIVO'"
         if id_alojamiento:
-            sql += f" WHERE id_alojamiento = {id_alojamiento}"
+            sql += f" AND id_alojamiento = {id_alojamiento}"
         sql += " ORDER BY nombre"
         try:
             return PLSQLService._fetch_df(sql)
         except Exception:
             return pd.DataFrame([{
                 "id_servicio": 1, "id_alojamiento": 1, "nombre": "Tour Cafetero",
-                "precio": 50000.0, "tipo_cobro": "POR_PERSONA"
+                "precio": 50000.0, "tipo_cobro": "ACTIVO"
             }])
 
     @staticmethod
     def get_auditorias(limit: int = 50) -> pd.DataFrame:
         sql = f"""
-        SELECT id_auditoria, id_tarifa, usuario,
-               TO_CHAR(fecha_modificacion, 'YYYY-MM-DD HH24:MI:SS') AS fecha_utc,
+        SELECT id_auditoria, id_tarifa, usuario_oracle AS usuario,
+               TO_CHAR(fecha_cambio, 'YYYY-MM-DD HH24:MI:SS') AS fecha_utc,
                precio_anterior, precio_nuevo,
                (precio_nuevo - precio_anterior) AS variacion,
-               operacion, identificador_sentencia
+               operacion, RAWTOHEX(id_sentencia) AS identificador_sentencia
         FROM auditoria_tarifa
-        ORDER BY fecha_modificacion DESC, id_auditoria DESC
+        ORDER BY fecha_cambio DESC, id_auditoria DESC
         FETCH FIRST {limit} ROWS ONLY
         """
         try:
@@ -313,14 +314,15 @@ class PLSQLService:
     @staticmethod
     def get_liquidaciones(limit: int = 50) -> pd.DataFrame:
         sql = f"""
-        SELECT l.id_liquidacion, a.nombre AS alojamiento, l.anio, l.mes,
+        SELECT l.id_liquidacion, a.nombre AS alojamiento, l.periodo_anio AS anio, l.periodo_mes AS mes,
                l.total_hospedaje, l.total_servicios,
                (l.total_hospedaje + l.total_servicios) AS base_total,
-               l.porcentaje_comision, l.valor_comision, l.valor_neto_propietario,
-               l.estado, TO_CHAR(l.fecha_calculo, 'YYYY-MM-DD HH24:MI') AS fecha_calculo
+               l.porcentaje_comision, l.comision_plataforma AS valor_comision,
+               l.neto_propietario AS valor_neto_propietario,
+               l.estado, TO_CHAR(l.fecha_liquidacion, 'YYYY-MM-DD') AS fecha_calculo
         FROM liquidacion_mensual l
         JOIN alojamiento a ON a.id_alojamiento = l.id_alojamiento
-        ORDER BY l.anio DESC, l.mes DESC, a.nombre
+        ORDER BY l.periodo_anio DESC, l.periodo_mes DESC, a.nombre
         FETCH FIRST {limit} ROWS ONLY
         """
         try:

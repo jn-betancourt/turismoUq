@@ -47,10 +47,16 @@ class DatabaseConnectionManager:
 
     def connect(self) -> oracledb.Connection:
         """Crea una nueva conexion e inicializa las directivas de sesion."""
+        auth_mode = (
+            oracledb.AUTH_MODE_SYSDBA
+            if self.user.strip().upper() == "SYS"
+            else oracledb.AUTH_MODE_DEFAULT
+        )
         conn = oracledb.connect(
             user=self.user,
             password=self.password,
             dsn=self.dsn,
+            mode=auth_mode,
             tcp_connect_timeout=5
         )
         conn.call_timeout = 30_000
